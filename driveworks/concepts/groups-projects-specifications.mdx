@@ -1,0 +1,33 @@
+---
+title: Groups, Projects, and Specifications
+sidebarTitle: Groups and Projects
+description: Core DriveWorks containers — Group database, Project design container, and Specification runtime instance.
+type: explanation
+audience: operator
+---
+
+## Group
+
+A **Group** is the DriveWorks database: Projects, security, captured components, Group tables, and shared assets. Autex production uses **AUTEX GLOBAL**; development uses **AUTEX DEV** (see [environment map](/driveworks/structure)).
+
+## Project
+
+A **Project** (`.driveprojx`) holds forms, Rules, Specification Flow, documents, and component sets. Authors edit Projects in **DriveWorks Administrator**.
+
+## Specification
+
+A **Specification** is one run of a **Project** — a configured order or quote instance. Live and Autopilot execute Specification Flow against released data.
+
+## Modes in Toolkit
+
+| Mode    | Scope                                  |
+| ------- | -------------------------------------- |
+| Project | Active open Project                    |
+| Group   | Group-level data or loops all Projects |
+
+Confirm mode before **Writes on Run** scripts. See [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window).
+
+## Related
+
+- [How Autex hosts DriveWorks](/driveworks/concepts/how-autex-hosts-driveworks)
+- [Specification Host Input Values](/driveworks/how-to/specification-host-input-values)

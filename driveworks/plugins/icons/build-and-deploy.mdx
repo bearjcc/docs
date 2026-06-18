@@ -1,0 +1,38 @@
+---
+title: Icons — Build and deploy
+sidebarTitle: Build and deploy
+description: Build AutexIcons, embed SVG/PNG packs, and deploy the Shared Project Extender.
+type: how-to
+audience: maintainer
+---
+
+**AutexIcons** (`AutexIcons.dll`, `Autex.Icons.AutexIconsExtender`) embeds icon packs from `Icons/src/` as resources. **SvgCompressor** runs at build time to optimize SVG before embedding.
+
+<Steps>
+## Add or change icons
+
+Place SVG or PNG under `Icons/src/<PackName>/`. Use `_Template` suffix for dynamic text placeholders. Run build so resources regenerate.
+
+## Debug build
+
+```powershell
+.\Icons\Build.ps1
+```
+
+## Release deploy
+
+```powershell
+.\Icons\Build-Release.ps1
+```
+
+## Deploy and register
+
+Copy `AutexIcons.dll` to the DriveWorks plugins folder. Restart DriveWorks. Register the extender in the **Project**. Functions appear under **Autex Dynamic Icons** in Rule Builder.
+
+<Check>`AutexIcon("pack","name")` returns a data URI in a test Rule.</Check>
+</Steps>
+
+## Related
+
+- [Icons operator reference](/driveworks/plugins/icons)
+- [Plugin development hub](/driveworks/plugins/maintain)

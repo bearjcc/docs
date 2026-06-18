@@ -1,0 +1,37 @@
+---
+title: Create data
+sidebarTitle: Create data
+description: Create one DriveWorks item of the selected data type in the open Project or Group.
+type: reference
+audience: operator
+---
+
+**Create data** adds a single Constant, Variable, form control, document, or other DriveWorks item through Autex Tools instead of the native UI.
+
+**Danger level:** Writes on Run.
+
+## Requirements
+
+| Requirement  | Value                                               |
+| ------------ | --------------------------------------------------- |
+| Mode         | Project or Group                                    |
+| Open Project | Required for Project-scoped types                   |
+| Group mode   | Loops Projects or runs Group-only depending on type |
+
+## Inputs
+
+| Input               | Default    | Description                                      |
+| ------------------- | ---------- | ------------------------------------------------ |
+| Data type           | (required) | Constants, Variables, Forms, Form Controls, etc. |
+| Name                | (required) | Item name                                        |
+| Value / Code / etc. | (varies)   | Type-specific fields shown in the script UI      |
+
+## Output
+
+Session log confirms creation. Result table shows created item details.
+
+## Related
+
+- [List data](/driveworks/plugins/toolkit/scripts-release/list-data)
+- [Delete data](/driveworks/plugins/toolkit/scripts-release/delete-data)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

@@ -1,0 +1,33 @@
+---
+title: About DriveWorks plugin architecture at Autex
+sidebarTitle: Plugin architecture
+description: Why Autex ships Administrator plugins, Shared Project Extenders, and Project document assemblies separately.
+type: explanation
+audience: maintainer
+---
+
+Autex delivers five DriveWorks extensions. Each maps to a different host integration point; picking the wrong shape causes duplicate SDK code, wrong deploy folders, or features that never register.
+
+## Integration shapes
+
+| Shape                       | Host                                                          | Examples                            | Runs when                                                   |
+| --------------------------- | ------------------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| **Administrator plugin**    | DriveWorks Administrator `IApplication`                       | Autex Toolkit                       | Design time: scripts, UI injection, Group Constants sidebar |
+| **Shared Project Extender** | Rule Builder / Specification Flow via `SharedProjectExtender` | AutexCustom, Icons, ConvertUnits    | Rules evaluate; tasks run in Specification Flow             |
+| **Project document**        | Document generation pipeline                                  | AutexCustom DXF, AutexPdfExport PDF | Specification releases documents                            |
+
+**Autex Toolkit** is the only Administrator plugin. It centralizes SDK access through `DriveWorksInterface` and exposes **Scripts** as a plugin-within-a-plugin. Do not open parallel SDK paths from scripts; add behavior on `ProjectOpen` / `GroupOpen` aggregates first.
+
+**AutexCustom** is primarily a Shared Project Extender assembly but also registers **Project document** designers. **AutexPdfExport** is a separate DLL type-forwarded from AutexCustom so PDF generation can ship and version independently.
+
+**Icons** and **ConvertUnits** are extenders only: UDFs in Rule Builder, no Administrator UI.
+
+## Compute once, consume many
+
+Expensive work (parse Group Constants TOML, slab packing solve, icon bytes) should run once per coherent unit of work and surface a single result. Consumers read cached output until invalidation (file write, Project close, Specification transition). See Toolkit **Group Constants** and slab packing tasks for reference patterns.
+
+## Where to go next
+
+- [Build and deploy](/driveworks/plugins/maintain/build-and-deploy)
+- [Toolkit architecture map](/driveworks/plugins/toolkit/architecture)
+- [Administrator injection](/driveworks/plugins/toolkit/injection)

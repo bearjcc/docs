@@ -1,46 +1,52 @@
 ---
 title: Permissions
-sidebarTitle: Permission Layers
-description: Procedures for DriveWorks user, team, DriveApp, and project permission management.
+description: Manage DriveWorks user, team, DriveApp, and Project permissions, and recover from permission drift.
+type: how-to
+audience: operator
 ---
 
+DriveWorks access is layered: login, DriveApp by region or team, Project run/edit rights, and catalog visibility. Set these in **Security Settings** (Stage 1) and the **DriveApp Admin** dashboard (Stage 7), and revalidate after any Group copy or restore.
 
-## Permission Layers
+## Permission layers
 
-Permissions are controlled at multiple levels:
+1. DriveWorks login access.
+2. DriveApp access by region or team.
+3. Project run and edit permissions.
+4. Catalog item and category visibility.
 
-1. DriveWorks login access
-2. DriveApp access by region/team
-3. Project run/edit permissions
-4. Catalog item and category visibility
+## Group security settings
 
-## Group Security Settings
-
-In Stage 1 > Security Settings:
+In **Stage 1 > Security Settings**:
 
 1. Create users and teams.
 2. Assign users to teams.
-3. Set project-level permissions (typically Run only for non-admin teams).
+3. Set Project-level permissions (typically **Run** only for non-admin teams).
 
-## DriveApp Permissions
+## DriveApp permissions
 
-In Stage 7 DriveApp:
+In **Stage 7 DriveApp**:
 
-1. Open Admin dashboard.
-2. Add or remove project items in the catalog.
+1. Open the **Admin** dashboard.
+2. Add or remove Project items in the catalog.
 3. Configure category content visibility for teams.
-4. Validate tab-level settings (General, Catalog, Custom Fields, Orders, Tabs, Columns).
+4. Validate the tab-level settings (General, Catalog, Custom Fields, Orders, Tabs, Columns).
 
-## Regional Access Notes
+## Regional access
 
-- Team-region mapping should be explicit.
-- Multi-region user setups can cause runtime ambiguity if not configured correctly.
-- Revalidate permissions after Group copy or environment restore operations.
+- Map teams to regions explicitly.
+- Multi-region user setups can cause runtime ambiguity when configured incorrectly.
+- Revalidate permissions after a Group copy or environment restore.
 
-## Troubleshooting Permission Drift
+## Recover from permission drift
 
-If all categories become unavailable:
+If every category becomes unavailable:
 
-1. Compare security teams with a known-good Group.
-2. Recreate missing administrator team structure if needed.
+1. Compare the security teams with a known-good Group.
+2. Recreate the missing administrator team structure if needed.
 3. Copy security users and teams from a working environment.
+
+## Related
+
+- [Data Management](/driveworks/how-to/data-management) — revalidate after a copy
+- [Administrator](/driveworks/how-to/administrator) — project-level work
+- [Login credentials](/driveworks/login-credentials) — service and SQL accounts

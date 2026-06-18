@@ -1,0 +1,48 @@
+---
+title: Navigate decompiled DriveWorks assemblies
+sidebarTitle: Decompiled assemblies
+description: Maintainer workflow for using local decompiled SDK sources without publishing them to Mintlify.
+type: how-to
+audience: maintainer
+---
+
+Local decompiled assemblies are **authoring references** for maintainers and agents. Use them to confirm behavior; publish distilled pages here instead of copying decompile text.
+
+<Steps>
+## Start from a symptom or API name
+
+Identify the product area (Rules, Applications UI, SOLIDWORKS capture, Specification Flow). Open the matching assembly decompile for your DriveWorks version baseline.
+
+## Prefer focused search
+
+Decompile files are huge. Search for the type or method name (`RuleSearchProcess`, `ICommandBarManager`, `ReleaseModelsTask`) rather than reading top to bottom.
+
+## Map to shipping seams
+
+| Question                      | Assemblies to search                                        |
+| ----------------------------- | ----------------------------------------------------------- |
+| Rule parse/search/rename      | `DriveWorks.Engine`                                         |
+| Administrator UI              | `DriveWorks.Applications`, `DriveWorks.Applications.Shared` |
+| Rule language runtime         | `Titan.Rules`                                               |
+| SOLIDWORKS capture/generation | `DriveWorks.SolidWorks`                                     |
+
+## Write findings into Mintlify
+
+Extract invariants, parameters, and one example into a single [concept](/driveworks/concepts) or [maintainer](/driveworks/plugins/maintain) page. Do not link readers to decompile paths.
+
+<Check>Published page stands alone with DriveWorks product terms and no local file paths.</Check>
+</Steps>
+
+## Key entry types (22.x baseline)
+
+| Area          | Types                                                      |
+| ------------- | ---------------------------------------------------------- |
+| Host          | `IApplication`, `IGroupService`, `IProjectService`         |
+| Project model | `Project`, `ProjectUtility`                                |
+| Collections   | `ProjectVariables`, `ProjectConstants`, `ProjectDocuments` |
+| Rules         | `RuleSearchProcess`, `RenameProcess`                       |
+
+## Related
+
+- [Rules search reference](/driveworks/concepts/rules-search-and-replace)
+- [Plugin development hub](/driveworks/plugins/maintain)

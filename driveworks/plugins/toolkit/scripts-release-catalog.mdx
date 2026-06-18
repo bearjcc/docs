@@ -2,47 +2,45 @@
 title: Autex Toolkit — Release scripts catalog
 sidebarTitle: Release scripts catalog
 description: End-user catalog of Release scripts available in Autex Tools for DriveWorks Administrator.
+type: reference
+audience: operator
 ---
 
+This catalog lists Autex Toolkit **Release** scripts in Autex Tools. Check **Danger level** before **Run**; mutating scripts need a development Group or Project copy and a current backup.
 
-## Release scripts catalog
-
-This catalog lists the Autex Toolkit Release scripts found in the current Toolkit source. Use it as an end-user guide for what each script does before running it in DriveWorks Administrator.
-
-Danger levels are practical operating guidance: **Read-only**, **File export**, **Preview then apply**, or **Writes on Run**.
+Danger levels: **Read-only**, **File export**, **Preview then apply**, or **Writes on Run**.
 
 ## Catalog
 
-| Script | Purpose | Typical inputs | Danger level | More detail |
-|--------|---------|----------------|--------------|-------------|
-| **Just fix it** | Opens a quick troubleshooting video in the results panel. | None. | Read-only | `Autex Toolkit/docs/scripts/Release/JustFixIt.md` |
-| **Find and replace** | Finds text in Rules and static values, then previews replacements before applying. | Find text, replacement text, data type/filter options. | Preview then apply | `Autex Toolkit/docs/scripts/Release/FindReplaceInRules.md` |
-| **Unreferenced data** | Finds cleanup candidates such as unreferenced Constants, Variables, Simple Tables, Calc Tables, and Specification Macros. | Data type, indirect-reference option, cross-project option. | Preview then apply delete | `Autex Toolkit/docs/scripts/Release/UnreferencedData.md` |
-| **List data** | Lists DriveWorks data by type for inspection and filtering. | Data type, name/rule/value filters, optional form control type filter. | Read-only | `Autex Toolkit/docs/scripts/Release/ListData.md` |
-| **Check names (PascalCase & spelling)** | Checks names for PascalCase and spelling issues, then applies selected renames. | Data type, PascalCase checkbox, spelling checkbox, diagnostics checkbox. | Preview then apply rename | `Autex Toolkit/docs/scripts/Release/CheckNames.md` |
-| **Compare projects** | Compares newer and older Project sources and shows an HTML diff report. | Source 1 type/path, Source 2 type/path. | Read-only | `Autex Toolkit/docs/scripts/Release/CompareProjects.md` |
-| **Create data** | Creates one DriveWorks item of the selected type. | Data type, name, value/rule options, and type-specific fields. | Writes on Run | `Autex Toolkit/docs/scripts/Release/CreateData.md` |
-| **Drive controls** | Sets up table-driven defaults for form controls. | Table type, copy existing defaults. | Writes on Run | `Autex Toolkit/docs/scripts/Release/DriveControls.md` |
-| **Export Snapshots** | Exports Group and Project snapshots to TOML files in the Group `AutexToolkit` folder. | Optional delta export and baseline folder. | File export | `Autex Toolkit/docs/scripts/Release/ExportGroupProjectToml.md` |
-| **Format all rules** | Formats Project Rules to a consistent style. | None. | Writes on Run | `Autex Toolkit/docs/scripts/Release/FormatAllRules.md` |
-| **Macro triggers** | Shows where a Specification Macro is triggered in the current Project. | Macro name. | Read-only | `Autex Toolkit/docs/scripts/Release/MacroTriggers.md` |
-| **Table from form control type** | Creates a Simple, Calc, or Group table from merged form control property metadata. | Table name, table type, form control types, replace existing table. | Two-step preview then apply create | [How-to: table-driven form control properties](/driveworks/how-to/table-driven-form-control-properties) |
-| **Sync 3D environment (group)** | Copies 3D document environment settings from a template Project/document to selected 3D documents across the Group. | Toolkit Project name, template 3D document name, exclude Toolkit Project. | Preview then apply across Group | [Short guide](/driveworks/plugins/toolkit/scripts-release/sync-3d-environment-group) |
-| **Copy selected project data** | Copies selected Project data from a source Project to one or more destination Projects. | Source data type/filter, override existing, destination Project selection. | Preview then apply copy/save | [Short guide](/driveworks/plugins/toolkit/scripts-release/copy-selected-project-data) |
-| **Delete data** | Deletes one DriveWorks item by type and identifier. | Data type and item name/id. | Writes on Run delete | [Short guide](/driveworks/plugins/toolkit/scripts-release/delete-data) |
+| Script                                  | Purpose                                                                                    | Typical inputs                                                       | Danger level                    | Reference                                                                                               |
+| --------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Just fix it**                         | Opens a troubleshooting video in the results panel.                                        | None.                                                                | Read-only                       | [Just fix it](/driveworks/plugins/toolkit/scripts-release/just-fix-it)                                  |
+| **Find and replace**                    | Finds text in Rules and static values, then previews replacements before applying.         | Find text, replacement text, data type/filter options.               | Preview then apply              | [Find and replace](/driveworks/plugins/toolkit/scripts-release/find-and-replace)                        |
+| **Unreferenced data**                   | Finds cleanup candidates: unreferenced Constants, Variables, tables, Specification Macros. | Data type, indirect-reference option.                                | Preview then apply delete       | [Unreferenced data](/driveworks/plugins/toolkit/scripts-release/unreferenced-data)                      |
+| **List data**                           | Lists DriveWorks data by type for inspection and filtering.                                | Data type, name/rule/value filters, optional form control type.      | Read-only                       | [List data](/driveworks/plugins/toolkit/scripts-release/list-data)                                      |
+| **Check names (PascalCase & spelling)** | Checks names for PascalCase and spelling, then applies selected renames.                   | Data type, PascalCase, spelling, diagnostics checkboxes.             | Preview then apply rename       | [Check names](/driveworks/plugins/toolkit/scripts-release/check-names)                                  |
+| **Compare projects**                    | Compares newer and older Project sources and shows an HTML diff report.                    | Source 1 type/path, Source 2 type/path.                              | Read-only                       | [Compare projects](/driveworks/plugins/toolkit/scripts-release/compare-projects)                        |
+| **Create data**                         | Creates one DriveWorks item of the selected type.                                          | Data type, name, value/rule options, type-specific fields.           | Writes on Run                   | [Create data](/driveworks/plugins/toolkit/scripts-release/create-data)                                  |
+| **Drive controls**                      | Sets up table-driven defaults for form controls.                                           | Table type, copy existing defaults.                                  | Writes on Run                   | [Drive controls](/driveworks/plugins/toolkit/scripts-release/drive-controls)                            |
+| **Export Snapshots**                    | Exports Group and Project snapshots to TOML in the Group `AutexToolkit` folder.            | Optional delta export and baseline folder.                           | File export                     | [Export snapshots](/driveworks/plugins/toolkit/scripts-release/export-snapshots)                        |
+| **Format all rules**                    | Formats Project Rules to a consistent style.                                               | None.                                                                | Writes on Run                   | [Format all rules](/driveworks/plugins/toolkit/scripts-release/format-all-rules)                        |
+| **Macro triggers**                      | Shows where a Specification Macro is triggered in the current Project.                     | Macro name (selected in review grid).                                | Read-only                       | [Macro triggers](/driveworks/plugins/toolkit/scripts-release/macro-triggers)                            |
+| **Table from form control type**        | Creates a table from merged form control property metadata.                                | Table name, table type, form control types, replace existing.        | Preview then apply create       | [How-to: table-driven form control properties](/driveworks/how-to/table-driven-form-control-properties) |
+| **Sync 3D environment (group)**         | Copies 3D document environment settings from a template across the Group.                  | Toolkit Project name, template 3D document, exclude Toolkit Project. | Preview then apply across Group | [Sync 3D environment](/driveworks/plugins/toolkit/scripts-release/sync-3d-environment-group)            |
+| **Copy selected project data**          | Copies selected Project data to destination Projects.                                      | Source data type/filter, override existing, destinations.            | Preview then apply copy/save    | [Copy selected project data](/driveworks/plugins/toolkit/scripts-release/copy-selected-project-data)    |
+| **Delete data**                         | Deletes one DriveWorks item by type and identifier.                                        | Data type and item name/id.                                          | Writes on Run delete            | [Delete data](/driveworks/plugins/toolkit/scripts-release/delete-data)                                  |
 
 ## Extra cautions
 
-**Writes on Run** scripts do not use the usual preview-only **Run** step. Use them only after testing on a disposable Project or Group copy.
+**Writes on Run** scripts do not use preview-only **Run**. Test on a disposable Project or Group copy first.
 
-**Group mode** can open, modify, save, and close multiple Projects depending on the script. Confirm the target Group and Project list before applying.
+**Group mode** can open, modify, save, and close multiple Projects. Confirm the target Group and Project list before applying.
 
-**Delete** actions should be treated as irreversible unless you have a fresh backup or source-controlled snapshot.
+**Delete** actions are irreversible without backup or source-controlled snapshots.
 
 ## Related
 
-- [Release script pages](/driveworks/plugins/toolkit/scripts-release)
-- [Scripts](/driveworks/plugins/toolkit/scripts)
+- [Release scripts index](/driveworks/plugins/toolkit/scripts-release)
+- [Scripts overview](/driveworks/plugins/toolkit/scripts)
 - [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)
-- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)
-- [Toolkit hub](/driveworks/plugins/toolkit/index)
+- [Toolkit hub](/driveworks/plugins/toolkit)

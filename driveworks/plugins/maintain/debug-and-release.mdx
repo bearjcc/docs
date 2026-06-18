@@ -1,0 +1,36 @@
+---
+title: Debug vs Release plugin behavior
+sidebarTitle: Debug vs Release
+description: Compile-time Debug and Release split for Autex plugins — not runtime environment toggles.
+type: explanation
+audience: maintainer
+---
+
+Autex plugins separate maintainer experiments from production behavior **at compile time**, not with process environment variables on the DriveWorks host.
+
+## Builds
+
+| Audience                 | Script              | Configuration |
+| ------------------------ | ------------------- | ------------- |
+| Maintainers              | `Build.ps1`         | Debug         |
+| Production plugin shares | `Build-Release.ps1` | Release       |
+
+Use `#if DEBUG` / `#if !DEBUG` for diagnostic UI, probes, and experimental Form Designer paths. Ship user-facing behavior only through Release builds after gates are removed or the code is production-ready.
+
+## Toolkit script categories
+
+| Folder                                          | Release compile |
+| ----------------------------------------------- | --------------- |
+| `Scripts/Release/`                              | Included        |
+| `Scripts/Dev/`, `Scripts/Test/`, `Scripts/WIP/` | Debug only      |
+
+Operators should not rely on Dev/Test/WIP scripts unless a maintainer explicitly validates that Debug build.
+
+## Verification habit
+
+One logical change per session, **`Build.ps1`** after each step, AutexScan on substantive edits. Do not stack changes on a broken build.
+
+## Related
+
+- [Build and deploy](/driveworks/plugins/maintain/build-and-deploy)
+- [Plugin development hub](/driveworks/plugins/maintain)

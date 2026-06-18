@@ -1,0 +1,37 @@
+---
+title: Export snapshots
+sidebarTitle: Export snapshots
+description: Export Group and Project snapshots to TOML files in the Group AutexToolkit folder.
+type: reference
+audience: operator
+---
+
+**Export snapshots** captures the current Group and each Project as TOML files for version control and diffing. Output goes to the Group `AutexToolkit` folder (alongside Group Constants). When the folder is inside a Git repo, the script writes `base_commit.txt` with the current HEAD.
+
+**Danger level:** File export.
+
+## Requirements
+
+| Requirement  | Value                                      |
+| ------------ | ------------------------------------------ |
+| Mode         | Project or Group                           |
+| Open Project | Not required for Group-only export         |
+| Group mode   | Exports Group plus all Projects in one run |
+
+## Inputs
+
+None.
+
+## Output
+
+| File                  | Contents                                         |
+| --------------------- | ------------------------------------------------ |
+| `GroupInfo.toml`      | Group-level data                                 |
+| `Project_<Name>.toml` | One file per Project                             |
+| `base_commit.txt`     | Current Git HEAD when export folder is in a repo |
+
+## Related
+
+- [Compare projects](/driveworks/plugins/toolkit/scripts-release/compare-projects)
+- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

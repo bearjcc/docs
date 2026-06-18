@@ -1,51 +1,52 @@
 ---
 title: Live and IIS
-sidebarTitle: IIS Websites
-description: Procedures for DriveWorks Live web delivery and IIS-hosted integration theme configuration.
+description: DriveWorks Live websites, static file locations, config files, and server topology for the Autex integration theme.
+type: how-to
+audience: operator
 ---
 
+DriveWorks Live is delivered through three IIS websites backed by an integration theme. Front-end sites serve static files and a `config.js`; the backend site holds the integration theme and its `DriveWorksConfigUser.xml`. After any change, recheck bindings and hard-refresh to confirm.
 
-## IIS Websites
+## IIS websites
 
-Current websites:
-
-- `AutexGlobalLive` (front end)
-- `AutexGlobalDev` (front end)
-- `AutexDriveWorksMain` (backend integration theme)
+- `AutexGlobalLive` — front end
+- `AutexGlobalDev` — front end
+- `AutexDriveWorksMain` — backend integration theme
 
 After changes:
 
-1. Verify `https` bindings and SSL certificates.
-2. Verify static file root paths.
-3. Restart website/application pool if required.
-4. Validate with hard refresh (`Ctrl+F5`) in browser.
+1. Verify the `https` bindings and SSL certificates.
+2. Verify the static file root paths.
+3. Restart the website or application pool if required.
+4. Validate with a browser hard refresh (<kbd>Ctrl</kbd> <kbd>F5</kbd>).
 
-## Static File Locations
+## Static file locations
 
-- Dev: `C:\DriveWorks\StaticFiles\Autex\AutexGlobalDev`
-- Live: `C:\DriveWorks\StaticFiles\Autex\AutexGlobalLive`
-- Main: `C:\ProgramData\DriveWorks\22\Live\Themes\Integration`
+| Site | Path |
+| --- | --- |
+| Dev | `C:\DriveWorks\StaticFiles\Autex\AutexGlobalDev` |
+| Live | `C:\DriveWorks\StaticFiles\Autex\AutexGlobalLive` |
+| Main | `C:\ProgramData\DriveWorks\22\Live\Themes\Integration` |
 
-## Configuration Files
+## Configuration files
 
-### Backend
+- **Backend** — `DriveWorksConfigUser.xml` in the integration theme folder defines the Group and backend connection context.
+- **Front end** — `config.js` in each static site folder defines the DriveApp aliases and front-end runtime settings.
 
-- `DriveWorksConfigUser.xml` in integration theme folder
-- Defines Group and backend connection context
-
-### Frontend
-
-- `config.js` in each static site folder
-- Defines DriveApp aliases and front-end runtime settings
-
-## Server Topology Notes
+## Server topology
 
 - Administrator and Live are hosted on `AZDWLIVE01`.
-- Autopilot runs on a server with SOLIDWORKS installed (`AZDWAPP01` in current setup).
-- Separate hosts reduce operational risk and simplify troubleshooting boundaries.
+- Autopilot runs on a server with SOLIDWORKS installed (`AZDWAPP01` in the current setup).
+- Keeping the hosts separate reduces operational risk and clarifies troubleshooting boundaries.
 
-## Troubleshooting Entry Points
+## Troubleshooting
 
-- If login page loads but content does not, verify backend alias mapping.
-- If users report stale assets, use browser hard refresh and confirm deployed static file timestamps.
-- If creating a new test environment, duplicate static site folder and update both backend and frontend config files consistently.
+- Login page loads but content does not → verify the backend alias mapping.
+- Users report stale assets → hard-refresh and confirm the deployed static file timestamps.
+- Creating a new test environment → duplicate the static site folder and update both the backend and front-end config files consistently.
+
+## Related
+
+- [Data Management](/driveworks/how-to/data-management) — environment copy
+- [Permissions](/driveworks/how-to/permissions) — DriveApp access
+- [Troubleshooting](/driveworks/troubleshooting) — Live UI and connection issues

@@ -2,9 +2,9 @@
 title: Adding Form Control Properties
 sidebarTitle: Adding Form Control Properties
 description: How the Autex Toolkit registers DynamicProperty values on User Form controls, surfaces them in the Form Designer property grid, and bridges them to CSS for DriveWorks Live.
+type: how-to
+audience: maintainer
 ---
-
-
 
 This guide explains how the Autex Toolkit adds new **User Form** control properties that appear in the DriveWorks Administrator **Form Designer** property grid, persist on the **Project**, and (when you wire the web layer) affect layout at runtime in **DriveWorks Live**. The canonical shipping example is the **Layout Grid** quartet: **Row**, **Column**, **Row Span**, and **Column Span**.
 
@@ -19,7 +19,9 @@ Use other injection surfaces when the context is not a control property:
 - **Rules Builder toolbar** for rule-editing actions ([Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)).
 
 <Warning>
-Registering a property in Administrator does **not** make DriveWorks Live render it. Properties that should change CSS or HTML at runtime need a deliberate web bridge and Integration Theme assets.
+  Registering a property in Administrator does **not** make DriveWorks Live
+  render it. Properties that should change CSS or HTML at runtime need a
+  deliberate web bridge and Integration Theme assets.
 </Warning>
 
 ## Architecture overview
@@ -191,7 +193,10 @@ Administrator injection alone does **not** update customer Live sites. For **Dri
 Without theme CSS, properties persist in the **Project** and show in Administrator, but Live keeps using absolute **Left** / **Top** positioning.
 
 <Info>
-CSS-first grid and the Form Designer adorner (drag outlines tied to Left/Top) can disagree. Comments in `FormDesignerWebLayoutBridgeInjection` document dead-end JS patches; the supported direction is theme variables plus bridge, not adorner geometry hacks.
+  CSS-first grid and the Form Designer adorner (drag outlines tied to Left/Top)
+  can disagree. Comments in `FormDesignerWebLayoutBridgeInjection` document
+  dead-end JS patches; the supported direction is theme variables plus bridge,
+  not adorner geometry hacks.
 </Info>
 
 ## Step-by-step: add a new property
@@ -281,4 +286,4 @@ Because WebTech adapters and Form Designer internals are not fully public, messa
 - [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools)
 - [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass) — CSS via **Metadata**, a different path from `DynamicProperty`
 - [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
-- Maintainer doc: `Autex Toolkit/docs/custom-form-control-plugin-pattern.md` (plugin control checklist and Live theme load order)
+- [Plugin form control pattern](/driveworks/plugins/toolkit/injection/add-form-control-properties) — checklist summarized in this guide

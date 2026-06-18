@@ -1,0 +1,43 @@
+---
+title: AutexCustom — Build and deploy
+sidebarTitle: Build and deploy
+description: Build, deploy, and register the AutexCustom Shared Project Extender and document types.
+type: how-to
+audience: maintainer
+---
+
+**AutexCustom** ships as `AutexCustom.dll` (Shared Project Extender plus document designers). Deploy with **AutexPdfExport** when Projects use the PDF document type; deploy with **Autex Toolkit** when using form-control conversion tasks.
+
+<Steps>
+## Debug build
+
+```powershell
+.\AutexCustom\Build.ps1
+```
+
+Output: `AutexCustom\bin\Debug\AutexCustom.dll` (and copied PdfExport satellites when the project references build).
+
+## Release deploy
+
+From `main`:
+
+```powershell
+.\AutexCustom\Build-Release.ps1
+```
+
+## Copy to plugin folder
+
+Place `AutexCustom.dll` (and `AutexPdfExport.dll` when needed) in the DriveWorks plugins folder for your environment. Restart DriveWorks so extenders register.
+
+## Register in Project
+
+Enable the extender in the target **Project** per your Autex deployment checklist. Confirm **Functions** categories and document designers appear in Administrator.
+
+<Check>`AutexCustomPluginLoaded()` returns true in a test Rule.</Check>
+</Steps>
+
+## Related
+
+- [AutexCustom hub](/driveworks/plugins/autexcustom)
+- [AutexPdfExport build](/driveworks/plugins/autexpdfexport/build-and-deploy)
+- [Add a custom function](/driveworks/plugins/maintain/add-custom-function)

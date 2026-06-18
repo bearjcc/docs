@@ -1,27 +1,34 @@
 ---
 title: Licensing
-sidebarTitle: License Model
-description: DriveWorks license management and service restart procedure for floating licenses.
+description: Recover a DriveWorks floating license by restarting the network license service.
+type: how-to
+audience: operator
 ---
 
+When DriveWorks Administrator reports no license available, the floating license is usually held or the network license service has stalled. Restarting the service from DriveWorks License Manager clears it.
 
-## License Model
+## License model
 
 - One DriveWorks Administrator license per user session.
-- Live concurrent usage is controlled by available licensing capacity.
+- DriveWorks Live concurrent usage is capped by available licensing capacity.
 
-## No License Available (Floating License)
+## No license available
 
-If DriveWorks Administrator reports no license availability:
+<Steps>
+## Rule out the simple causes
 
-1. Confirm the license has not expired.
-2. Confirm another user is not currently consuming the floating license.
-3. Restart the network license service.
+Confirm the license has not expired, and that another user is not currently holding the floating license.
 
-## Restart Network License Service
+## Restart the network license service
 
-1. Open DriveWorks License Manager.
-2. Go to the `Network License Server` tab.
-3. Click `Stop Service`.
-4. Click `Start Service`.
-5. Retry opening DriveWorks Administrator.
+Open **DriveWorks License Manager**, go to the **Network License Server** tab, click **Stop Service**, then click **Start Service**.
+
+## Retry
+
+<Check>DriveWorks Administrator opens with a license.</Check>
+</Steps>
+
+## Related
+
+- [Login credentials](/driveworks/login-credentials) — service and SQL accounts
+- [Troubleshooting](/driveworks/troubleshooting) — startup and connection issues

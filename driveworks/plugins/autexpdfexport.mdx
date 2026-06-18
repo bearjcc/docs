@@ -1,0 +1,45 @@
+---
+title: AutexPdfExport
+sidebarTitle: AutexPdfExport
+description: DriveWorks PDF Project document type using WebView2 print-to-PDF from local HTML, HTM, or SVG.
+type: reference
+audience: operator
+---
+
+**AutexPdfExport** implements the **PDF Document** Project document type (`Autex.Custom.Documents.PdfDocument`). It renders a local `.html`, `.htm`, or `.svg` through WebView2 and prints to PDF (A4 landscape with fixed print settings).
+
+## Deploy
+
+Deploy **both** `AutexCustom.dll` and `AutexPdfExport.dll` (plus WebView2 runtime satellites) to the same DriveWorks plugin folder. **AutexCustom** type-forwards the PDF document type to this assembly, so existing Projects keep working when both DLLs are present.
+
+**Requirements:** .NET Framework 4.8, DriveWorks 22.x (match your install), WebView2 Evergreen runtime on the host.
+
+## Where it appears
+
+In **DriveWorks Administrator**, add a **PDF Document** output under **Project documents**. **Picker name:** **PDF Document** (`PdfDocumentDesigner`).
+
+## Project document Rules
+
+| Rule row     | Purpose                                                             |
+| ------------ | ------------------------------------------------------------------- |
+| DocumentPath | Output folder for the generated PDF                                 |
+| DocumentName | File name (without extension)                                       |
+| PdfSource    | Full or Specification-relative path to the HTML, HTM, or SVG source |
+
+## Behavior
+
+Generation runs on the DriveWorks document host (Administrator, Autopilot, or Live depending on your Specification Flow). The source file must be reachable from the host process at generation time.
+
+## Troubleshooting
+
+| Symptom              | Check                                                                 |
+| -------------------- | --------------------------------------------------------------------- |
+| PDF missing or blank | **PdfSource** path, file exists on generation host                    |
+| WebView2 error       | Evergreen WebView2 runtime installed                                  |
+| Type not found       | Both **AutexCustom** and **AutexPdfExport** DLLs in the plugin folder |
+
+## Related
+
+- [AutexCustom document types](/driveworks/plugins/autexcustom/documents)
+- [AutexCustom hub](/driveworks/plugins/autexcustom)
+- [Plugins hub](/driveworks/plugins)

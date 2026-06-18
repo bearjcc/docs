@@ -1,82 +1,84 @@
 ---
 title: Data Management
-sidebarTitle: Copy Group (DEV to LIVE)
-description: Canonical procedures for Copy Group, Pack and Go, and project transfer workflows.
+description: Copy Group, copy Projects, and Pack and Go procedures in the DriveWorks Data Management tool.
+type: how-to
+audience: operator
 ---
 
+Move Groups and Projects between environments with the **DriveWorks Data Management** tool. Copy Group promotes DEV to LIVE or creates a backup Group; Pack and Go produces a portable package. Back up SQL and the target Group before any copy.
 
 ## Copy Group (DEV to LIVE)
 
-### Preconditions
+Before you start:
 
-1. Backup SQL databases.
-2. Confirm target Group data is backed up.
-3. Close open DriveWorks Administrator projects.
+1. Back up the SQL databases.
+2. Confirm the target Group data is backed up.
+3. Close open DriveWorks Administrator Projects.
 
-### Procedure
+Then:
 
-1. Open DriveWorks Data Management.
-2. Log in to source Group.
-3. Open `DriveWorks Tasks > Copy Group`.
-4. Browse target Group and connect successfully.
-5. Select required projects and rule history.
-6. Select required Group tables.
-7. Select `Copy new security users and teams` and `Copy all connectors` where needed.
-8. Review included files and models.
-9. Finish and validate copied output.
+1. Open **DriveWorks Data Management**.
+2. Log in to the source Group.
+3. Open **DriveWorks Tasks > Copy Group**.
+4. Browse to the target Group and connect.
+5. Select the required Projects and rule history.
+6. Select the required Group tables.
+7. Select **Copy new security users and teams** and **Copy all connectors** where needed.
+8. Review the included files and models.
+9. Finish and validate the copied output.
 
-## Copy Group (Create New Backup Group)
+## Copy Group (create a new backup Group)
 
-1. In Copy Group, choose `Create new group`.
-2. Choose `Shared`.
-3. Provide Group name and server.
-4. Complete connection and copy wizard.
-5. Exclude `Quotes` folder unless specifications are intentionally required.
+1. In Copy Group, choose **Create new group**.
+2. Choose **Shared**.
+3. Provide the Group name and server.
+4. Complete the connection and copy wizard.
+5. Exclude the **Quotes** folder unless the Specifications are intentionally required.
 
-## Copy Project Within a Group
+## Copy a Project within a Group
 
-1. Close project in all sessions.
-2. Prepare target folder.
-3. Use `Import Project`.
-4. Validate model references.
-5. Re-apply project visibility and DriveApp catalog permissions.
+1. Close the Project in all sessions.
+2. Prepare the target folder.
+3. Use **Import Project**.
+4. Validate the model references.
+5. Re-apply Project visibility and DriveApp catalog permissions.
 
-## Copy Project to a Different Group
+## Copy a Project to a different Group
 
-1. Use `Copy Group` wizard with project-scoped include selection.
-2. Include only required project and model folders.
-3. Validate in target Group and update permissions.
+1. Use the **Copy Group** wizard with project-scoped include selection.
+2. Include only the required Project and model folders.
+3. Validate in the target Group and update permissions.
 
-## Pack and Go (Package Group)
+## Pack and Go (package a Group)
 
-Use `DriveWorks Tasks > Pack and Go` to create a package:
+Use **DriveWorks Tasks > Pack and Go** to create a package:
 
-1. Select projects and rule history.
-2. Select required tables and components.
+1. Select Projects and rule history.
+2. Select the required tables and components.
 3. Include connectors as required.
-4. Avoid unnecessary extra content if packaging fails with date parsing issues.
+4. Avoid unnecessary extra content if packaging fails with date-parsing errors.
 
 Pack and Go produces an Individual Group package, not a Shared Group runtime deployment.
 
-## Post-Copy Tasks
+## After a copy
 
-### Relink Group Settings
+### Relink Group settings
 
-1. Open copied Group in DriveWorks Administrator.
-2. Update specification/root folder settings.
-3. Relink DriveApps and validate CPQ database bindings.
+1. Open the copied Group in DriveWorks Administrator.
+2. Update the specification and root folder settings.
+3. Relink DriveApps and validate the CPQ database bindings.
 
-### Update Group Tables
+### Update Group tables
 
-Update Group table database names (for example `DEVAutexNZCPQ`) after environment copy.
+Update the Group table database names (for example `DEVAutexNZCPQ`) after an environment copy.
 
 ### Start Autopilot
 
-Open DriveWorks Autopilot and start required Groups after copy operations.
+Open **DriveWorks Autopilot** and start the required Groups after copy operations.
 
-## Related Pages
+## Related
 
-- [Administrator](/driveworks/how-to/administrator)
-- [Live and IIS](/driveworks/how-to/live-and-iis)
-- [Permissions](/driveworks/how-to/permissions)
-- [SQL](/driveworks/how-to/sql)
+- [Administrator](/driveworks/how-to/administrator) — project-level work
+- [Permissions](/driveworks/how-to/permissions) — revalidate access after a copy
+- [Live and IIS](/driveworks/how-to/live-and-iis) — web delivery
+- [SQL](/driveworks/how-to/sql) — database tables and bindings

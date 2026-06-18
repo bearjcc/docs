@@ -1,0 +1,45 @@
+---
+title: Rules search, rename, and replace
+sidebarTitle: Rules search
+description: DriveWorks SDK rule search and rename processes, plus Autex Toolkit bulk find/replace.
+type: reference
+audience: operator
+---
+
+**Rule search** finds formulas containing a substring or token across **Rule sections**. **Rename** and **replace** processes update references when names or literals change.
+
+## SDK rule search
+
+`project.Utility.CreateRuleSearchProcess(pattern)` returns a search process. Call `Search()` (optionally scoped with `RuleSection`).
+
+| `RuleSection`       | Typical contents            |
+| ------------------- | --------------------------- |
+| `Variables`         | Variable Rules              |
+| `Documents`         | Document path/name Rules    |
+| `Controls`          | Form control property Rules |
+| `CalculationTables` | Calc table cell Rules       |
+| `All`               | Every searchable section    |
+
+Results expose `FoundItems` with `Target`, `Rule`, `Location`, and `Section`. Use multiple patterns by passing several strings to `CreateRuleSearchProcess`.
+
+## Rename vs substring replace
+
+| Tool                                   | Matching         | Use when                                                          |
+| -------------------------------------- | ---------------- | ----------------------------------------------------------------- |
+| Rules Builder **Replace in All Rules** | Token boundaries | Renaming a symbol that should not match inside longer names       |
+| Toolkit **Find and replace**           | Substring        | `AutexUserAUState` inside `AutexUserAUState()`; path suffix swaps |
+
+Toolkit **Find and replace** previews in a grid; **Replace selected** applies checked rows only. See [Find and replace](/driveworks/plugins/toolkit/scripts-release/find-and-replace).
+
+## Global rename
+
+`project.Utility.CreateRenameProcess` updates qualified references when renaming **Variables**, **Constants**, and related symbols. Prefer SDK rename for symbol renames; use Toolkit find/replace for literal path or substring migrations.
+
+## Finding unused Constants
+
+For each Constant name, run `CreateRuleSearchProcess(constantName).Search()`. Empty `FoundItems` means no Rule references (verify indirect `Indirect()` usage separately). Toolkit **Unreferenced data** automates this across types.
+
+## Related
+
+- [Check names](/driveworks/plugins/toolkit/scripts-release/check-names)
+- [Rules evaluation and dependencies](/driveworks/concepts/rules-evaluation-and-dependencies)

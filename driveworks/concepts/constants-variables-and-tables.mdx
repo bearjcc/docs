@@ -1,0 +1,44 @@
+---
+title: Constants, Variables, and tables
+sidebarTitle: Constants vs Variables
+description: Which DriveWorks containers hold literal values vs Rule text, and how Autex docs refer to them.
+type: explanation
+audience: operator
+---
+
+DriveWorks splits **data** from **formulas**. Autex Toolkit and AutexCustom assume this model; putting Rule text in a static table cell breaks export, compare, and spell-check tools.
+
+## Hold values only (no Rule Builder text)
+
+| Container                             | Rule text?                                           |
+| ------------------------------------- | ---------------------------------------------------- |
+| **Project Constants**                 | Value only (may be a formula result stored as value) |
+| **Group Constants**                   | Literal TOML values (`GroupConstants.toml`)          |
+| **Simple Tables** / **Group Tables**  | Cell values only                                     |
+| **Specification Properties** (static) | Configured values                                    |
+
+## Hold Rule text
+
+| Container               | Rule text?                       |
+| ----------------------- | -------------------------------- |
+| **Variables**           | Yes — primary formula store      |
+| **Calc Tables**         | Per-cell Rules where configured  |
+| Form control properties | Often Rule-driven                |
+| Model Rules             | SOLIDWORKS capture parameters    |
+| Specification Flow      | Operations and conditions        |
+| **Project documents**   | Path, name, and generation Rules |
+
+## Qualified names in Rules
+
+Rules reference other items with qualified names (`DWVariableFoo`, `DWConstantBar`, `DwLookupTable`). Rename and search tools use these strings.
+
+## Autex tooling
+
+- **Group Constants** sidebar edits `GroupConstants.toml` — not Rule definitions.
+- **Export snapshots** writes TOML for compare; Constants and Variables export with correct separation.
+- **AutexCustom** `AutexGetLocalised` reads **Group table** `TextStrings` cells as data, not Rules.
+
+## Related
+
+- [Terminology](/autex/terminology)
+- [Group Constants](/driveworks/plugins/toolkit/group-constants)

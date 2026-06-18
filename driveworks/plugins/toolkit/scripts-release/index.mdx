@@ -2,30 +2,41 @@
 title: Autex Toolkit — Release scripts
 sidebarTitle: Release scripts
 description: Release-category Autex Tools scripts for DriveWorks Administrator users.
+type: reference
+audience: operator
 ---
 
+Release scripts are the end-user scripts normally available in **Autex Tools**. Start with the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) for danger levels and one-line purposes.
 
-## Release scripts
+## Read-only and export
 
-Release scripts are the end-user scripts normally available in **Autex Tools**. Start with the user-facing catalog:
+- [Just fix it](/driveworks/plugins/toolkit/scripts-release/just-fix-it)
+- [List data](/driveworks/plugins/toolkit/scripts-release/list-data)
+- [Compare projects](/driveworks/plugins/toolkit/scripts-release/compare-projects)
+- [Macro triggers](/driveworks/plugins/toolkit/scripts-release/macro-triggers)
+- [Export snapshots](/driveworks/plugins/toolkit/scripts-release/export-snapshots)
 
-- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)
-- [Scripts overview](/driveworks/plugins/toolkit/scripts)
+## Preview then apply
 
-## Per-script guides
-
-- [Sync 3D environment (group)](/driveworks/plugins/toolkit/scripts-release/sync-3d-environment-group)
+- [Find and replace](/driveworks/plugins/toolkit/scripts-release/find-and-replace)
+- [Unreferenced data](/driveworks/plugins/toolkit/scripts-release/unreferenced-data)
+- [Check names](/driveworks/plugins/toolkit/scripts-release/check-names)
 - [Copy selected project data](/driveworks/plugins/toolkit/scripts-release/copy-selected-project-data)
+- [Sync 3D environment (group)](/driveworks/plugins/toolkit/scripts-release/sync-3d-environment-group)
+
+## Writes on Run
+
+- [Create data](/driveworks/plugins/toolkit/scripts-release/create-data)
+- [Drive controls](/driveworks/plugins/toolkit/scripts-release/drive-controls)
+- [Format all rules](/driveworks/plugins/toolkit/scripts-release/format-all-rules)
 - [Delete data](/driveworks/plugins/toolkit/scripts-release/delete-data)
 
 ## Safety
 
-Most mutating scripts use **Run** for preview and **Apply selected** for the write step. Some scripts write during **Run**; the catalog marks those as **Writes on Run**.
-
-Use a development Group or Project and a current backup before bulk edits.
+Most mutating scripts use **Run** for preview and **Apply selected** for the write step. Scripts marked **Writes on Run** in the catalog change data on **Run**. Use a development Group or Project and a current backup before bulk edits.
 
 ## Related
 
+- [Scripts overview](/driveworks/plugins/toolkit/scripts)
 - [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)
-- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)
-- [Toolkit hub](/driveworks/plugins/toolkit/index)
+- [Toolkit hub](/driveworks/plugins/toolkit)

@@ -1,80 +1,81 @@
 ---
 title: Administrator
-sidebarTitle: DriveWorks Administrator Scope
-description: DriveWorks Administrator procedures for project configuration, forms, macros, and table updates.
+description: Project-level work in DriveWorks Administrator — pushing DEV to LIVE, form and Rule maintenance, Group tables, and macro reuse.
+type: how-to
+audience: operator
 ---
 
+Project-level procedures in **DriveWorks Administrator**: promoting changes, maintaining forms and Rules, updating Group tables, and reusing macros across Projects. Group-wide and environment operations live on their own pages:
 
-## DriveWorks Administrator Scope
+- [Data Management](/driveworks/how-to/data-management) — Group copy and Pack and Go
+- [Live and IIS](/driveworks/how-to/live-and-iis) — web delivery
+- [Permissions](/driveworks/how-to/permissions) — access setup
+- [Licensing](/driveworks/how-to/licensing) — license operations
 
-This page focuses on project-level work in DriveWorks Administrator.
+## Push DEV changes to LIVE
 
-- Group copy and package operations are documented in [Data Management](/driveworks/how-to/data-management).
-- Live web and IIS operations are documented in [Live and IIS](/driveworks/how-to/live-and-iis).
-- Access setup is documented in [Permissions](/driveworks/how-to/permissions).
-- License operations are documented in [Licensing](/driveworks/how-to/licensing).
+Before copying the Group:
 
-## Push DEV Changes to LIVE
-
-Before pushing:
-
-1. Reset form defaults in all changed projects.
+1. Reset form defaults in all changed Projects.
 2. Validate teams and user permissions.
 3. Save a backup of the current LIVE Group.
-4. Close open projects in DriveWorks Administrator.
+4. Close open Projects in DriveWorks Administrator.
 
 Then follow the Group copy procedure in [Data Management](/driveworks/how-to/data-management#copy-group-dev-to-live).
 
-## Form and Rule Maintenance
+## Form and Rule maintenance
 
-### Form Control Image Size
+### Form control image size
 
-Use image assets near 2x intended display size for quality/performance balance.
+Use image assets near 2× the intended display size to balance quality and performance.
 
-### Form Control Return Values
+### Form control return values
 
 1. Create a display table (for example `XXXTableDisplay`).
 2. Export document data to that table.
-3. Bind form controls to returned values.
+3. Bind form controls to the returned values.
 
-### Add New Data Field
+### Add a new data field
 
-To add a new field (for example an address line):
+To add a field such as an address line:
 
-1. Add the form control in the project.
-2. Add a corresponding column in the calculation table.
-3. Add the matching column in SQL with appropriate data type.
+1. Add the form control in the Project.
+2. Add a matching column in the calculation table.
+3. Add the matching column in SQL with an appropriate data type.
 
-## Group Table Updates
+## Group table updates
 
-For pricing/material updates:
+For pricing or material updates:
 
 1. Update the region spreadsheet source.
-2. Refresh macro-generated table output.
+2. Refresh the macro-generated table output.
 3. Copy final values into Group tables in Stage 1.
 
-## Project-Level Macro Reuse
+## Project-level macro reuse
 
-When copying macro behavior between projects:
+When copying macro behaviour between Projects:
 
-1. Open source and target projects in separate sessions.
-2. Copy required macros, then related variables/constants.
-3. Recreate required Specification Flow operations/triggers.
+1. Open the source and target Projects in separate sessions.
+2. Copy the required macros, then the related Variables and Constants.
+3. Recreate the required Specification Flow operations and transitions.
 4. Test in DriveWorks Live and validate SQL outcomes.
 
-## Quality and Diagnostics
+## Quality and diagnostics
 
-### Throw Error on Colour TBC
+### Throw an error on colour TBC
 
-Use a boolean/table flag to:
+Use a boolean or table flag to disable draft generation controls and notify users that unresolved colour selections remain.
 
-- disable draft generation controls
-- notify users that unresolved colour selections remain
+### Change unit system
 
-### Change Unit System
+Generation Tasks can change drawing unit systems. Validate positional properties against the unit system in effect at task execution time.
 
-Generation tasks can change drawing unit systems. Validate positional properties against the unit system at task execution time.
+### Verbose Specification Explorer logging
 
-### Verbose Specification Explorer Logging
+Enable Project logging through Project settings when you need deeper diagnostics.
 
-Enable project logging through project settings when deeper diagnostics are needed.
+## Related
+
+- [Data Management](/driveworks/how-to/data-management) — Copy Group and Pack and Go
+- [SQL](/driveworks/how-to/sql) — tables, exports, and queries
+- [Force a data refresh](/driveworks/how-to/force-data-refresh) — macros and recalculation triggers

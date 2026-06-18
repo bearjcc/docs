@@ -2,14 +2,13 @@
 title: Autex Toolkit — Delete data
 sidebarTitle: Delete data
 description: Delete a single DriveWorks item by data type and name or form message code; writes during Run when confirmed.
+type: how-to
+audience: operator
 ---
-
 
 ## Delete data
 
-This Release script removes **one** item per run, chosen by **Data type** and either **Name** or **Form Messages** numeric **Code**. It uses the same `TryDelete` paths as **Unreferenced data** and ships with **Writes on Run** behavior when **Confirm delete** is checked.
-
-Implementation reference: `Autex Toolkit/DWPlugin/Scripts/Release/DeleteDataScript.cs`.
+This Release script removes **one** item per run, chosen by **Data type** and either **Name** or **Form Messages** numeric **Code**. It uses the same delete paths as **Unreferenced data** and ships with **Writes on Run** behavior when **Confirm delete** is checked.
 
 ## How to open and run
 
@@ -31,9 +30,10 @@ For **Group Tables**, **Teams**, or **Users**, an open **Group** is required; **
 
 This script sets `MutationsOnlyInApplySelected` to **false**: **Run performs the delete** once **Confirm delete** is true.
 
-<Danger>
-Deleted **Project** data is persisted immediately (`Save()` on success). Treat deletes as irreversible without backup or snapshots.
-</Danger>
+<Warning>
+  Deleted **Project** data is persisted immediately (`Save()` on success). Treat
+  deletes as irreversible without backup or snapshots.
+</Warning>
 
 ## Verify labels in build
 

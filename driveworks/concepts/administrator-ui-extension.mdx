@@ -1,0 +1,37 @@
+---
+title: Administrator UI extension model
+sidebarTitle: UI extension
+description: How DriveWorks Administrator plugins register commands, views, and chrome through IApplication and command managers.
+type: explanation
+audience: maintainer
+---
+
+**DriveWorks Administrator** plugins implement `IApplicationPlugin` and receive `IApplication` at startup. UI extension uses command registration plus optional custom **views** in the shell.
+
+## Command surfaces
+
+| Surface               | SDK seam                                       | Autex Toolkit example     |
+| --------------------- | ---------------------------------------------- | ------------------------- |
+| Command Manager group | `ICommandBarManager`, `ICommandManager`        | **Autex Toolkit** toolbar |
+| Title-bar QuickBar    | Command registration with display hints        | Autex icon                |
+| Rules Builder         | Editor integration hooks                       | Spell check, icon picker  |
+| Form Designer         | Context menus, WebView bridge                  | Metaclass tools           |
+| Left sidebar (ToDo)   | `IViewRegistrationService` / reflection insert | **Group Constants** view  |
+
+Commands map **name constants** → **handlers** → **icons** in centralized registration partials. See [Injection guides](/driveworks/plugins/toolkit/injection).
+
+## Views vs floating windows
+
+- **Sidebar views** persist in the Administrator tree beside native views.
+- **Floating windows** (`AutexToolsWindow`, pickers) use WPF shells with optional WebView2 content hosts.
+
+Pick the surface by where the user should discover the feature, not by implementation convenience.
+
+## Reflection vs SDK registration
+
+Some sidebar slots lack public SDK registration APIs. Toolkit uses documented reflection (`InsertControlViewAfter`) where SDK registration is unavailable; prefer official APIs when they exist.
+
+## Related
+
+- [Administrator UI map](/driveworks/plugins/toolkit/injection/administrator-ui-map)
+- [Plugin architecture at Autex](/driveworks/plugins/maintain/plugin-architecture)

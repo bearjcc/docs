@@ -2,6 +2,8 @@
 title: Creating a Toolkit Window
 sidebarTitle: Creating a Toolkit Window
 description: How to add a new floating window or modal dialog in DriveWorks Administrator through the Autex Toolkit plugin, with patterns from Autex Tools, Version Control, and the Autex Icon picker.
+type: how-to
+audience: maintainer
 ---
 
 
@@ -31,9 +33,9 @@ Toolkit windows are built from layers already documented elsewhere. Read these b
 | ---------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | **WPF**                | Outer `Window`, shell `UserControl`, design tokens                                        | [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views)                             |
 | **WebView2**           | UI3 HTML/CSS/JS inside `ToolkitWebViewHostControl`                                        | [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui)                           |
-| **WinForms**           | Modal chrome for Rules Builder pickers (`ToolkitWebViewChromeForm`)                       | [WinForms WebView chrome](/driveworks/plugins/toolkit/architecture/winforms-webview-chrome) |
+| **WinForms**           | Modal chrome for Rules Builder pickers (`ToolkitWebViewChromeForm`)                       | [WinForms WebView chrome](/driveworks/plugins/toolkit/architecture/webview-ui) |
 | **Embedded WebAssets** | Scriban templates, `_shared` CSS/JS, virtual host `https://toolkit.webassets/`            | [Embedded assets](/driveworks/plugins/toolkit/architecture/assets-and-services)             |
-| **Bridge**             | `postMessage` actions between web UI and C# (`ToolkitWebBridgeActions`, feature handlers) | [WebView bridge](/driveworks/plugins/toolkit/architecture/webview-bridge)                   |
+| **Bridge**             | `postMessage` actions between web UI and C# (`ToolkitWebBridgeActions`, feature handlers) | [WebView bridge](/driveworks/plugins/toolkit/architecture/webview-ui)                   |
 | **Icons**              | Semantic keys → embedded PNG via `ToolkitIconLoader` / `ToolkitIconLoaderWpf`             | [Assets and services](/driveworks/plugins/toolkit/architecture/assets-and-services)         |
 
 Scriban page builders (for example `ScriptToolsWebViewPageBuilder`, picker HTML builders) live beside their feature under `Autex Toolkit/DWPlugin/`. Prefer extending an existing builder or partial before adding a parallel template tree.
@@ -261,7 +263,5 @@ If the window shows Group or Project context, add a static `Refresh*` method and
 - [Adding a Left Sidebar Menu Item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item)
 - [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views)
 - [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui)
-- [WinForms WebView chrome](/driveworks/plugins/toolkit/architecture/winforms-webview-chrome)
-- [WebView bridge](/driveworks/plugins/toolkit/architecture/webview-bridge)
 - [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry)
 - [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

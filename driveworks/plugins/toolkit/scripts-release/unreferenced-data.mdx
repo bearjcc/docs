@@ -1,0 +1,38 @@
+---
+title: Unreferenced data
+sidebarTitle: Unreferenced data
+description: Find Constants, Variables, Simple Tables, Calc Tables, and Specification Macros not referenced in any Rule.
+type: reference
+audience: operator
+---
+
+**Unreferenced data** lists DriveWorks items that never appear in Rules so you can review or delete cleanup candidates. Enumeration covers `DWConstant`, `DWVariable`, `DwLookup`, and `DWCalc` references, including 3D Preview property Rules and Environment Settings the SDK search omits.
+
+**Danger level:** Preview then apply delete.
+
+## Requirements
+
+| Requirement  | Value                               |
+| ------------ | ----------------------------------- |
+| Mode         | Project or Group                    |
+| Open Project | Required                            |
+| Group mode   | Runs per Project and merges results |
+
+## Inputs
+
+| Input                          | Default   | Description                                                                                                                                                 |
+| ------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Data type                      | Constants | Constants, Variables, Simple Tables, Calc Tables, or Specification Macros (aligned with [List data](/driveworks/plugins/toolkit/scripts-release/list-data)) |
+| Search for indirect references | unchecked | Also search partial matches inside `Indirect()` calls                                                                                                       |
+
+## Output
+
+Each row includes **Data type** so **Delete selected** targets the correct item even if you change the dropdown after **Run**. Columns vary by type (name, category, value/rule, table dimensions).
+
+**Delete selected** removes ticked items from the Project(s).
+
+## Related
+
+- [Find and replace](/driveworks/plugins/toolkit/scripts-release/find-and-replace)
+- [List data](/driveworks/plugins/toolkit/scripts-release/list-data)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

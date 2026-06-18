@@ -1,0 +1,36 @@
+---
+title: ConvertUnits — Build and deploy
+sidebarTitle: Build and deploy
+description: Build and deploy the AutexConvertUnits Shared Project Extender.
+type: how-to
+audience: maintainer
+---
+
+**AutexConvertUnits** (`Autex.Units.AutexUnitsExtender`) adds length, area, time, and mass conversion UDFs under **Autex Unit Conversions** in Rule Builder.
+
+<Steps>
+## Debug build
+
+```powershell
+.\ConvertUnits\Build.ps1
+```
+
+## Release deploy
+
+```powershell
+.\ConvertUnits\Build-Release.ps1
+```
+
+## Deploy and register
+
+Copy `AutexConvertUnits.dll` to the plugins folder. Restart DriveWorks. Register the extender in the **Project**.
+
+<Check>`AutexConvertMMToInch(25.4,0)` returns `1` in a test Rule.</Check>
+</Steps>
+
+Unit aliases and error strings are defined in source; unknown units return `#ERROR!` with accepted aliases listed.
+
+## Related
+
+- [ConvertUnits operator reference](/driveworks/plugins/convertunits)
+- [Plugin development hub](/driveworks/plugins/maintain)

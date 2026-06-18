@@ -1,0 +1,35 @@
+---
+title: Drive controls
+sidebarTitle: Drive controls
+description: Create the DriveControls table and SetDefaults Specification Macro for table-driven form control defaults.
+type: reference
+audience: operator
+---
+
+**Drive controls** identifies input form controls, adds them as rows in a lookup or Calc table, and creates a **SetDefaults** Specification Macro that drives default values from the table.
+
+**Danger level:** Writes on Run.
+
+## Requirements
+
+| Requirement  | Value        |
+| ------------ | ------------ |
+| Mode         | Project only |
+| Open Project | Required     |
+
+## Inputs
+
+| Input                  | Default      | Description                                                 |
+| ---------------------- | ------------ | ----------------------------------------------------------- |
+| Table type             | Lookup table | Lookup (PowerPack task) or Calc table                       |
+| Copy existing defaults | unchecked    | Copy each control's current default into the Default column |
+
+## Output
+
+Creates the DriveControls table, **SetDefaults** macro, and optionally the **Drive Default Controls from Table** task. Session log confirms each step.
+
+## Related
+
+- [How to: table-driven form control properties](/driveworks/how-to/table-driven-form-control-properties)
+- [Macro triggers](/driveworks/plugins/toolkit/scripts-release/macro-triggers)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

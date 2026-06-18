@@ -1,0 +1,39 @@
+---
+title: Compare projects
+sidebarTitle: Compare projects
+description: Compare two Project sources at ProjectData level and show a color-coded HTML diff report.
+type: reference
+audience: operator
+---
+
+**Compare projects** generates a side-by-side HTML diff of two Projects. Sources can be the open Project, a TOML or JSON snapshot, or `.driveprojx` archive data.
+
+**Danger level:** Read-only.
+
+## Requirements
+
+| Requirement  | Value                                     |
+| ------------ | ----------------------------------------- |
+| Mode         | No connection, or Project                 |
+| Open Project | Optional (file-only comparison supported) |
+
+## Inputs
+
+| Input                 | Default         | Description                |
+| --------------------- | --------------- | -------------------------- |
+| Source 1 type (newer) | Current project | Newer version source       |
+| Source 1 (newer)      | (file path)     | Path when Source 1 is File |
+| Source 2 type (older) | File            | Older version source       |
+| Source 2 (older)      | (file path)     | Path when Source 2 is File |
+
+Mixing `.driveprojx` with a snapshot may apply subset normalization so keys align fairly; the report notes when that happens.
+
+## Output
+
+HTML report with color-coded changes, collapsible sections, and optional **Export CSV**.
+
+## Related
+
+- [Export snapshots](/driveworks/plugins/toolkit/scripts-release/export-snapshots)
+- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

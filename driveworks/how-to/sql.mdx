@@ -1,80 +1,82 @@
 ---
 title: SQL
-sidebarTitle: Run SQL Queries
-description: SQL procedures used for DriveWorks support, maintenance, and troubleshooting.
+description: Run queries, create and link tables, back up and restore databases, and unlock frozen items for DriveWorks support.
+type: how-to
+audience: operator
 ---
 
+SQL Server backs the DriveWorks Groups and CPQ data. Use SQL Server Management Studio (SSMS) to query and maintain tables, back up and restore databases, and recover items stuck after a crash. Back up before any destructive change.
 
-## Run SQL Queries
+## Run SQL queries
 
-1. Open SQL Server Management Studio.
-2. Open the target table with `Select Top 1000 Rows` or a new query window.
-3. Write and execute SQL statements.
-
-Example:
+1. Open **SQL Server Management Studio**.
+2. Open the target table with **Select Top 1000 Rows**, or open a new query window.
+3. Write and execute the statement.
 
 ```sql
 SELECT * FROM dbo.Specifications;
 ```
 
-## Create and Link a Table
+## Create and link a table
 
-### Create Table
+### Create the table
 
-1. Create table in SQL UI.
-2. Use a unique ID column with `newid()` default where appropriate.
-3. Add required data columns.
+1. Create the table in the SSMS UI.
+2. Use a unique ID column with a `newid()` default where appropriate.
+3. Add the required data columns.
 
-### Link to DriveWorks
+### Link it to DriveWorks
 
-1. In DriveWorks Administrator, create a Stage 4 `Documents > Data` export.
-2. Choose SQL Server data export.
-3. Configure server, authentication, database, and table.
-4. Map DriveWorks values to SQL columns.
-5. Trigger export from project macros.
+1. In DriveWorks Administrator, create a **Stage 4 > Documents > Data** export.
+2. Choose the SQL Server data export.
+3. Configure the server, authentication, database, and table.
+4. Map DriveWorks values to the SQL columns.
+5. Trigger the export from Project macros.
 
-## Edit and Delete Tables
+## Edit and delete tables
 
-- Edit columns in SQL table design view.
-- Refresh query views (`Ctrl+Shift+R`) after schema changes.
-- Before deleting tables, check dependencies and remove linked DriveWorks logic first.
+- Edit columns in the SQL table design view.
+- Refresh query views (<kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>R</kbd>) after schema changes.
+- Before deleting a table, check dependencies and remove the linked DriveWorks logic first.
 
-## Database Backup and Restore
+## Back up and restore a database
 
-### Back Up SQL Database Manually
+### Back up manually
 
-1. Create backup folder.
-2. In SQL, open database `Tasks > Back Up`.
-3. Replace destination path and run backup.
+1. Create a backup folder.
+2. In SSMS, open the database **Tasks > Back Up**.
+3. Replace the destination path and run the backup.
 4. Repeat for all required databases.
 
-### Restore SQL Database Manually
+### Restore manually
 
-1. In SQL, select `Databases > Restore Database`.
-2. Select backup device file.
-3. Provide target database name.
-4. Use overwrite option where needed.
+1. In SSMS, select **Databases > Restore Database**.
+2. Select the backup device file.
+3. Provide the target database name.
+4. Use the overwrite option where needed.
 
-## Delete SQL Database Contents
+## Delete database contents
 
-Use this only for controlled environment resets:
+<Warning>
+Destructive and irreversible. Only for controlled environment resets. Back up first, confirm the target database name carefully, and run cleanup scripts one step at a time.
+</Warning>
 
-1. Back up databases first.
-2. Confirm target database repeatedly.
-3. Execute cleanup scripts carefully.
+## Unlock a frozen item
 
-## Unlock Frozen Item
+When a DriveApp item is stuck in the `running` state after a crash:
 
-If a DriveApp item is stuck in `running` state after a crash:
-
-1. Find `OrderNumber` in `driveApp-CPQ-Order`.
-2. Resolve related `SpecificationId` via `driveApp-CPQ-OrderItems`.
-3. Update state values in `AutexGLOBAL.dbo.Specifications` to unlocked state.
-
-Example update:
+1. Find the `OrderNumber` in `driveApp-CPQ-Order`.
+2. Resolve the related `SpecificationId` via `driveApp-CPQ-OrderItems`.
+3. Update the state values in `AutexGLOBAL.dbo.Specifications` to the unlocked state.
 
 ```sql
 UPDATE [AutexGLOBAL].[dbo].[Specifications]
 SET StateId = '<unlocked-state-id>', StateName = 'Complete', StateType = 1
 WHERE Id = '<specification-id>';
 ```
+
+## Related
+
+- [Data Management](/driveworks/how-to/data-management) — Group copy and SQL bindings
+- [Login credentials](/driveworks/login-credentials) — SQL accounts
+- [Force a data refresh](/driveworks/how-to/force-data-refresh) — `QueryData` and `DbQuery` from Rules

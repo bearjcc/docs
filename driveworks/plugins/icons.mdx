@@ -2,11 +2,11 @@
 title: Icons (AutexIcons)
 sidebarTitle: Icons
 description: Custom functions that resolve embedded SVG/PNG icons to Base64 data URIs for picture-capable Rules, plus list and search helpers.
+type: reference
+audience: operator
 ---
 
-import { DriveWorksRule } from '/snippets/DriveWorksRule.jsx';
-
-
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
 
 ## Icons
 
@@ -20,7 +20,7 @@ In **Rule Builder**, open **Functions** and the category **`Autex Dynamic Icons`
 
 ### Deploy and registration
 
-**Assembly:** `AutexIcons.dll`. **Class:** `Autex.Icons.AutexIconsExtender` (**Shared Project Extender**). Build output from **`Icons/Build.ps1`**. Exact DriveWorks host folder and registration steps for your version are **TBD** — treat like other **Shared Project Extender** DLLs for your environment.
+**Assembly:** `AutexIcons.dll`. **Class:** `Autex.Icons.AutexIconsExtender` (**Shared Project Extender**). Build with **`Icons/Build.ps1`**; Release deploy with **`Icons/Build-Release.ps1`**. See [Icons build and deploy](/driveworks/plugins/icons/build-and-deploy).
 
 **SvgCompressor** (`Icons/SvgCompressor/`) is a separate **build-time** console tool; authors only need it if your pipeline compresses SVG before embedding.
 
@@ -33,13 +33,13 @@ In **Rule Builder**, open **Functions** and the category **`Autex Dynamic Icons`
 
 ### Functions at a glance
 
-| Function | Purpose |
-|----------|---------|
-| [AutexIcon](#autexicon) | Load an icon by pack and name as a data URI |
-| [AutexProgressBar](#autexprogressbar) | SVG progress bar as a data URI |
-| [AutexIconPacksList](#autexiconpackslist) | Pipe-delimited list of pack names |
-| [AutexIconsList](#autexiconslist) | Pipe-delimited list of icon names in one pack |
-| [AutexIconSearch](#autexiconsearch) | First icon matching a search string across all packs |
+| Function                                  | Purpose                                                           |
+| ----------------------------------------- | ----------------------------------------------------------------- |
+| [AutexIcon](#autexicon)                   | Load an icon by pack and name as a data URI                       |
+| [AutexProgressBar](#autexprogressbar)     | SVG progress bar as a data URI                                    |
+| [AutexIconPacksList](#autexiconpackslist) | Pipe-delimited list of pack names                                 |
+| [AutexIconsList](#autexiconslist)         | Pipe-delimited list of icon names in one pack                     |
+| [AutexIconSearch](#autexiconsearch)       | First icon matching a search string across all packs              |
 | [AutexIconSearchAll](#autexiconsearchall) | All `Pack.Icon` matches as a pipe-delimited list (may be non-UDF) |
 
 ### AutexIcon
@@ -107,9 +107,7 @@ AutexIconPacksList()
 
 **Example:**
 
-<DriveWorksRule>
-AutexIconPacksList()
-</DriveWorksRule>
+<DriveWorksRule>AutexIconPacksList()</DriveWorksRule>
 
 ### AutexIconsList
 
@@ -127,13 +125,11 @@ AutexIconsList(iconPack)
 
 **Example:**
 
-<DriveWorksRule>
-AutexIconsList("DriveWorks")
-</DriveWorksRule>
+<DriveWorksRule>AutexIconsList("DriveWorks")</DriveWorksRule>
 
 ### AutexIconSearch
 
-**Description:** Returns the **first** icon whose key matches the search string anywhere in **any** pack, as a **data URI**. Search is case- and punctuation-insensitive. Optional **colour** and **dynamicText** match **AutexIcon** semantics. *(In the assembly, the first parameter’s Rule Builder name is **`iconName`**; it behaves as a search fragment.)*
+**Description:** Returns the **first** icon whose key matches the search string anywhere in **any** pack, as a **data URI**. Search is case- and punctuation-insensitive. Optional **colour** and **dynamicText** match **AutexIcon** semantics. _(In the assembly, the first parameter’s Rule Builder name is **`iconName`**; it behaves as a search fragment.)_
 
 **Syntax:**
 
@@ -171,9 +167,7 @@ AutexIconSearchAll(iconName)
 
 **Example:**
 
-<DriveWorksRule>
-AutexIconSearchAll("arrow")
-</DriveWorksRule>
+<DriveWorksRule>AutexIconSearchAll("arrow")</DriveWorksRule>
 
 ## Related
 

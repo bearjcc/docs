@@ -1,0 +1,58 @@
+---
+title: Build and deploy any Autex plugin
+sidebarTitle: Build and deploy
+description: How to build and deploy Autex DriveWorks plugins with Build.ps1 and Build-Release.ps1.
+type: how-to
+audience: maintainer
+---
+
+Every Autex DriveWorks plugin repo ships **`Build.ps1`** (local Debug) and, where production deploy applies, **`Build-Release.ps1`** (Release + plugin shares). Use the script for the folder you changed; do not run raw `dotnet build` or `msbuild` on plugin `.csproj` files.
+
+<Steps>
+## Close hosts when prompted
+
+Scripts close **DriveWorks Administrator** and **Data Management Tool** when DLLs are locked, then reopen after success.
+
+## Local verification (Debug)
+
+From the workspace root:
+
+```powershell
+.\Autex Toolkit\Build.ps1
+.\AutexCustom\Build.ps1
+.\AutexPdfExport\Build.ps1
+.\Icons\Build.ps1
+.\ConvertUnits\Build.ps1
+```
+
+Debug builds may expose **Dev**, **Test**, and **WIP** Toolkit script categories.
+
+## Production deploy (Release)
+
+Merge to `main` per team policy, then from a `main` checkout:
+
+```powershell
+.\Autex Toolkit\Build-Release.ps1
+.\AutexCustom\Build-Release.ps1
+.\AutexPdfExport\Build-Release.ps1
+.\Icons\Build-Release.ps1
+.\ConvertUnits\Build-Release.ps1
+```
+
+Release Toolkit builds exclude Dev/Test/WIP scripts from the compile.
+
+<Check>Target plugin share or local plugins folder contains the new DLL timestamp; restart DriveWorks on servers that cache extenders.</Check>
+</Steps>
+
+## Deploy pairs
+
+| Pair                         | Rule                                                                          |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| AutexCustom + AutexPdfExport | Deploy both; PDF type forwards to PdfExport                                   |
+| AutexCustom + Autex Toolkit  | Deploy both when using form-control conversion tasks or Toolkit metadata APIs |
+| Icons / ConvertUnits         | Extender DLL only; register in Project per deploy guide                       |
+
+## Related
+
+- [Debug vs Release](/driveworks/plugins/maintain/debug-and-release)
+- [Plugin architecture](/driveworks/plugins/maintain/plugin-architecture)

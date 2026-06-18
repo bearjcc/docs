@@ -1,0 +1,303 @@
+---
+title: AutexCustom — Core custom functions
+sidebarTitle: Core functions
+description: Sanity flags, user/team helpers, images, localisation, geometry, and slab packing Rule functions.
+type: reference
+audience: operator
+---
+
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
+import { CustomFunctionDoc } from "/snippets/autex/CustomFunctionDoc.jsx";
+
+<CustomFunctionDoc
+  name="AutexCustomPluginLoaded"
+  availability="Function"
+  inputs="none"
+  output="Boolean, always true when the assembly is loaded (sanity flag in Rules)."
+  example="AutexCustomPluginLoaded()"
+/>
+
+<CustomFunctionDoc
+  name="AutexIsRunningInAdministrator"
+  availability="Function"
+  inputs="none"
+  output="Boolean, true when the host is DriveWorks Administrator (not Live / Live runtime)."
+  example="AutexIsRunningInAdministrator()"
+/>
+
+<CustomFunctionDoc
+  name="AutexConvertLinearToMM"
+  availability="Both"
+  functionInputs="`length` (Number); optional `roundTo` (Number, 0 = no rounding)"
+  functionOutput="Number, length in mm. If the current user resolves as US (team-based), treats `length` as inches and converts to mm; otherwise passes mm through. Uses the open Project's Group for user resolution."
+  example="AutexConvertLinearToMM(10,0)"
+  taskPicker="Autex Convert Linear to mm"
+  taskInputs="Length, RoundTo (task properties)"
+  taskOutputs="Length (Number)"
+/>
+
+<CustomFunctionDoc
+  name="AutexConvertMMToLinear"
+  availability="Both"
+  functionInputs="`length` (Number, mm); optional `roundTo` (Number)"
+  functionOutput="Number, linear units: inches when current user is US; otherwise mm unchanged."
+  example="AutexConvertMMToLinear(254,0)"
+  taskPicker="Autex Convert mm to Linear"
+  taskInputs="Length, RoundTo"
+  taskOutputs="Length (Number)"
+/>
+
+<CustomFunctionDoc
+  name="AutexIsUserIn"
+  availability="Both"
+  functionInputs="`username` (String); `criteria1` (String); optional `criteria2` (String). Criteria: two-letter region code treated as team-name prefix (NZ, AU, US, UK per internal map) or arbitrary substring on team name. When `criteria2` is set, both must match."
+  functionOutput="Boolean"
+  example='AutexIsUserIn("john.doe","US")'
+  taskPicker="Autex Is User In"
+  taskInputs="Username, Criteria1, Criteria2 (blank Criteria2 allowed)"
+  taskOutputs="Result (Boolean). Blank username or Criteria1 fails the task."
+/>
+
+<CustomFunctionDoc
+  name="AutexIsCurrentUserIn"
+  availability="Both"
+  functionInputs="`criteria1` (String); optional `criteria2` (String). Same matching rules as `AutexIsUserIn`."
+  functionOutput="Boolean"
+  example='AutexIsCurrentUserIn("US")'
+  taskPicker="Autex Is Current User In"
+  taskInputs="Criteria1, Criteria2"
+  taskOutputs="Result (Boolean)"
+/>
+
+<CustomFunctionDoc
+  name="AutexNowLocal"
+  availability="Both"
+  functionInputs="none, or `username` (String) for that user's region-based clock"
+  functionOutput="String, local time `dd MMM yyyy HH:mm` in the Windows time zone inferred from team membership (stable priority NZ, AU, US, UK when multiple region codes appear)."
+  example="AutexNowLocal()"
+  taskPicker="Autex Now Local"
+  taskInputs="`username` (optional; blank = current user)"
+  taskOutputs="Local Time (String)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/now-local">Now Local reference</a>
+  </p>
+</CustomFunctionDoc>
+
+<CustomFunctionDoc
+  name="AutexMachineMovementTime"
+  availability="Both"
+  functionInputs="`AutexMachineMovementTime(distance,maxVelocity,acceleration,dwellTime,quantity)`"
+  functionOutput="Number, seconds"
+  example="AutexMachineMovementTime(1000,500,100,0.5,2)"
+  taskPicker="Autex Machine Movement Time"
+  taskInputs="distance, maxVelocity, acceleration, dwellTime, quantity"
+  taskOutputs="Time (Number)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/machine-movement-time">
+      Machine Movement Time reference
+    </a>
+  </p>
+</CustomFunctionDoc>
+
+<CustomFunctionDoc
+  name="AutexGetUserState"
+  availability="Function"
+  inputs="`country` (String, two-letter). For `AU` only, scans current user’s team names for Australian state tokens (WA, NSW, QLD, VIC, TAS, SA, ACT, NT). Other countries return empty string from this Function."
+  output="String (state code or empty)"
+  example='AutexGetUserState("AU")'
+/>
+
+- **Details:** [User country and region](/driveworks/plugins/autexcustom/user-country-and-region)
+
+<CustomFunctionDoc
+  name="AutexGetUserCountry"
+  availability="Both (Function + task with different wiring)"
+  functionInputs="none"
+  functionOutput='String, two-letter country code (NZ, AU, US, UK) from team membership / Login Group constant resolution (`Common.GetUserCountry`). On unexpected error the extender returns `"NZ"`.'
+  example="AutexGetUserCountry()"
+  taskPicker="Autex User Country"
+  taskInputs="none (uses Specification context)"
+  taskOutputs="Country (String)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/user-country-and-region">
+      User country and region
+    </a>
+  </p>
+</CustomFunctionDoc>
+
+<CustomFunctionDoc
+  name="Autex Get User State"
+  availability="Task (picker: Autex Get User State). Differs from the `AutexGetUserState` Function: task resolves country from Specification context, then state."
+  inputs="none"
+  output="State (String), Australian state when country resolves to AU; otherwise empty"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/user-country-and-region">
+      User country and region
+    </a>
+  </p>
+</CustomFunctionDoc>
+
+<CustomFunctionDoc
+  name="AutexImageSwatch"
+  availability="Function"
+  inputs="`fileName` (String). Resolved under the Group’s content folder `Assets\Swatches`. Extension optional; tries `.svg`, `.png`, `.jpg`, `.bmp`."
+  output="String, full path, or `#REF! File does not exist`"
+  example='AutexImageSwatch("Oak")'
+/>
+
+<CustomFunctionDoc
+  name="AutexImageProductView"
+  availability="Function"
+  inputs="`fileName` (String), under `Assets\ProductViews` with the same extension rules as swatches."
+  output="String, full path, or `#REF! File does not exist`"
+  example='AutexImageProductView("Widget-A")'
+/>
+
+<CustomFunctionDoc
+  name="AutexGetLocalised"
+  availability="Function"
+  inputs="`key` (String); optional `region` (String). Reads Group table named `TextStrings` or `DWGroupTableTextStrings`: column 0 = key, column 1 = default, header row columns 2+ = region codes (NZ, AU, US, UK). Empty `region` uses current user’s resolved country for the Project."
+  output="String, cell text, or `#REF!` / `#KEY!` prefixed errors (including “did you mean …” when a value matches a non-key column)"
+  example='AutexGetLocalised("Title")'
+/>
+
+<CustomFunctionDoc
+  name="AutexPolygonCreateRoundedBox"
+  availability="Function"
+  example="AutexPolygonCreateRoundedBox(0,0,100,50,5,8)"
+>
+  <div className="text-sm text-gray-700 dark:text-gray-300">
+    <p className="font-medium">Overload A</p>
+    <ul className="list-none space-y-1 pl-0">
+      <li>
+        <strong>Inputs:</strong> `x`, `y`, `width`, `height` (Number, mm);
+        `cornerRadius` (Number or pipe list); `segments` (Number)
+      </li>
+      <li>
+        <strong>Output:</strong> Table/array of `x|y` points, or
+        `#INVALIDINPUT!` / `#VALUE!` on failure
+      </li>
+    </ul>
+    <p className="mt-2 font-medium">Overload B</p>
+    <ul className="list-none space-y-1 pl-0">
+      <li>
+        <strong>Inputs:</strong> `x`, `y`, `width`, `height`; per-corner radii;
+        `segments`
+      </li>
+      <li>
+        <strong>Output:</strong> same as overload A
+      </li>
+    </ul>
+  </div>
+</CustomFunctionDoc>
+
+<CustomFunctionDoc
+  name="AutexCircleFromThreePoints"
+  availability="Function"
+  inputs="`pointsList` (String), `x1,y1|x2,y2|x3,y3`"
+  output="String `cx|cy|r` (invariant culture) or `#INVALIDINPUT!` / `#VALUE!` if collinear or bad input"
+  example='AutexCircleFromThreePoints("0,0|100,0|50,80")'
+/>
+
+### AutexCoMTriangle
+
+Returns the **centroid** (center of mass) of a triangle in **millimetres**, using the same **Y-down** nest convention as **Autex Slab Packing** (`PartRotation` about the origin). Useful for label anchors, form layout, and rules that need a point inside the shape rather than the bounding-box centre.
+
+- **Availability:** Function (three overloads; **Autex Custom Functions**)
+- **Output:** String `x|y` (invariant culture), or `#INVALIDINPUT!` when dimensions are invalid or the three scalene sides do not form a triangle
+
+#### Overloads
+
+| Overload | Arguments                             | Triangle type | At rotation 0                                                                                                                         |
+| -------- | ------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| A        | `side`, `rotation`                    | Equilateral   | Base horizontal on the x-axis; apex at the top                                                                                        |
+| B        | `length`, `width`, `rotation`         | Right         | Right angle at `(0,0)`; `length` = vertical leg, `width` = horizontal leg on the x-axis (matches Slab Packing **Length** / **Width**) |
+| C        | `side1`, `side2`, `side3`, `rotation` | Scalene       | Base `side1` on the x-axis from `(0,0)` to `(side1,0)`; third vertex below the base (positive Y-down)                                 |
+
+Slab Packing does **not** accept arbitrary scalene triangles in the parts table; overload C is for general rules and geometry outside the packer.
+
+#### Mathematics
+
+Vertices $(x_1,y_1)$, $(x_2,y_2)$, $(x_3,y_3)$ in local mm (Y-down). The centroid is the arithmetic mean of the vertices:
+
+$$
+\bar{x} = \frac{x_1 + x_2 + x_3}{3}, \qquad \bar{y} = \frac{y_1 + y_2 + y_3}{3}
+$$
+
+**Rotation** $\theta$ (degrees, same as Slab Packing) is applied about the origin:
+
+$$
+\begin{pmatrix} x' \\ y' \end{pmatrix}
+=
+\begin{pmatrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta
+\end{pmatrix}
+\begin{pmatrix} \bar{x} \\ \bar{y} \end{pmatrix}
+$$
+
+The function returns $x'|y'$.
+
+**Scalene** third vertex with base $s_1$ on the x-axis and edges $s_2$, $s_3$ to $(0,0)$ and $(s_1,0)$:
+
+$$
+x_3 = \frac{s_1^2 + s_3^2 - s_2^2}{2 s_1}, \qquad
+y_3 = \sqrt{s_3^2 - x_3^2}
+$$
+
+(Requires triangle inequality on $s_1,s_2,s_3$ and $y_3 > 0$.)
+
+**Equilateral** example ($s$ = side): $(s/2,0)$, $(0, s\sqrt{3}/2)$, $(s, s\sqrt{3}/2)$. **Right** example: $(0,0)$, $(W,0)$, $(0,L)$.
+
+#### Example
+
+<DriveWorksRule>AutexCoMTriangle(500,500,0)</DriveWorksRule>
+
+Right triangle 500 mm × 500 mm, no rotation → `166.666666667|166.666666667` (approximately $W/3$, $L/3$).
+
+#### Related behaviour
+
+Nest **SVG** and **DXF** part ID labels for **Triangle** shapes use the same polygon centroid as the drawn outline (not the placed bounding-box centre). See **Autex Slab Packing** and **DXF Document (Nest)** below.
+
+<CustomFunctionDoc
+  name="AutexPolygonTiling"
+  availability="Function"
+  inputs="`pointsList` (String, polygon `x,y|…`); `tileSize` (Number, greater than zero, same units as coordinates)"
+  output="Number (tile count) or error String"
+  example='AutexPolygonTiling("0,0|100,0|100,100|0,100",50)'
+/>
+
+<CustomFunctionDoc
+  name="AutexPolygonTilingSvgRects"
+  availability="Function"
+  inputs="same as `AutexPolygonTiling`"
+  output="String, SVG fragment (`polygon` elements per counted tile), or error String"
+  example='AutexPolygonTilingSvgRects("0,0|100,0|100,100|0,100",50)'
+/>
+
+<CustomFunctionDoc
+  name="AutexSlabPackingImage"
+  availability="Function"
+  inputs="`nestedTable`; `pageNumber` (0 = all layouts); required `settingsTable`; optional `returnSvgRaw`"
+  output="object (SVG / data URI, or `#ERROR!` / `#VALUE!`). Host: Picture control."
+  example="AutexSlabPackingImage(DwLookupNested,1,DWLookupSlabPackingSettings,TRUE)"
+/>
+
+<CustomFunctionDoc
+  name="AutexSlabPackingAnimation"
+  availability="Function (Release)"
+  inputs="`nestedTable`; `cutListTable`; `pageNumber` (1+); required `settingsTable`; optional `animationSpeed`; optional `returnSvgRaw` on 6-arg overload"
+  output="object (animated SVG / data URI, or `#ERROR!`). Host: Picture control."
+  example="AutexSlabPackingAnimation(DWVariableNested,DWVariableCutList,1,DWLookupSlabPackingSettings)"
+/>
+## Related
+
+- [AutexCustom hub](/driveworks/plugins/autexcustom)

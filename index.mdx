@@ -1,17 +1,17 @@
 ---
 title: "Autex Knowledge Base"
-description: "DriveWorks engineering, Autex plugins, and operational how-tos — migrated from the Autex wiki into one searchable reference."
+description: "DriveWorks operations, the Autex plugins, and internal know-how for the Autex DriveWorks team — one searchable reference."
 mode: custom
 ---
 
 <div className="mx-auto flex w-full max-w-[720px] flex-col gap-12 px-4 py-10 lg:gap-14 lg:py-16">
   <div className="flex flex-col items-center gap-6">
-    <div className="flex max-w-[520px] flex-col gap-2 text-center">
+    <div className="flex max-w-[560px] flex-col gap-2 text-center">
       <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">
         Autex Knowledge Base
       </h1>
       <p className="text-balance text-base text-gray-600 dark:text-gray-400">
-        DriveWorks engineering, Autex Toolkit and AutexCustom plugins, and day-to-day operational how-tos. Use the tabs above to browse, or press <kbd>⌘</kbd> <kbd>K</kbd> to search.
+        How to operate DriveWorks, use and maintain the Autex plugins, and find internal know-how. Pick a tab, jump to a task below, or press <kbd>⌘</kbd> <kbd>K</kbd> to search.
       </p>
     </div>
   </div>
@@ -31,7 +31,7 @@ mode: custom
       <div className="flex flex-col gap-1 pt-4">
         <span className="text-base font-medium text-gray-900 dark:text-gray-50">Force a data refresh</span>
         <span className="text-sm leading-5 text-gray-600 dark:text-gray-400">
-          Recalculation triggers when Rules read external data that does not naturally invalidate.
+          Make Rules re-read external data when the engine has no natural dependency on it.
         </span>
       </div>
     </a>
@@ -50,30 +50,27 @@ mode: custom
       <div className="flex flex-col gap-1 pt-4">
         <span className="text-base font-medium text-gray-900 dark:text-gray-50">Autex Toolkit</span>
         <span className="text-sm leading-5 text-gray-600 dark:text-gray-400">
-          Scripts, Group Constants, injection guides, and Administrator surfaces for DriveWorks.
+          Run scripts, manage Group Constants, style forms, and compare Projects in Administrator.
         </span>
       </div>
     </a>
   </div>
 
   <div className="flex flex-col gap-4">
-    <h2 className="text-lg font-medium tracking-tight text-gray-900 dark:text-gray-50">Resources</h2>
+    <h2 className="text-lg font-medium tracking-tight text-gray-900 dark:text-gray-50">Browse by area</h2>
 
     <Columns cols={2}>
       <Card title="DriveWorks" icon="layers" iconType="light" href="/driveworks">
-        Structure, training, troubleshooting, and plugin overview.
+        Operate DriveWorks: how-to guides, structure, version control, and troubleshooting.
       </Card>
-      <Card title="Autex Toolkit" icon="wrench" iconType="light" href="/driveworks/plugins/toolkit">
-        Architecture, scripts, injection, and build guides.
+      <Card title="Plugins" icon="puzzle" iconType="light" href="/driveworks/plugins">
+        The four Autex plugins — use them in DriveWorks and maintain the code behind them.
       </Card>
-    </Columns>
-
-    <Columns cols={2}>
-      <Card title="AutexCustom" icon="puzzle" iconType="light" href="/driveworks/plugins/autexcustom">
-        Custom functions, specification macro tasks, and UDF reference.
+      <Card title="Internal" icon="building-2" iconType="light" href="/autex">
+        Autex products, manufacturing, terminology, and supporting infrastructure.
       </Card>
-      <Card title="How-to guides" icon="book-open" iconType="light" href="/driveworks/how-to">
-        Task-oriented DriveWorks workflows for Administrator, Live, SQL, and more.
+      <Card title="Reference" icon="book-open" iconType="light" href="/reference">
+        Authoring conventions and MDX patterns for contributing to this site.
       </Card>
     </Columns>
   </div>

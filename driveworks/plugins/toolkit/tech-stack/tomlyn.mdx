@@ -1,9 +1,9 @@
 ---
 title: Tomlyn
-sidebarTitle: What it is
 description: .NET TOML parser and serializer used by Autex Toolkit for Group Constants, project snapshots, and git-friendly exports.
+type: reference
+audience: maintainer
 ---
-
 
 **Tomlyn** is the .NET TOML library behind Toolkit snapshot export, import, and **Group Constants** storage. It turns in-memory `ProjectData` / `GroupData` models into human-readable files that diff cleanly in Git and review tools.
 
@@ -18,20 +18,21 @@ The package is a compile-time dependency embedded in **`Autex Toolkit.dll`** (vi
 Package reference in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
 
 | Package | Version |
-| --- | --- |
-| Tomlyn | 0.20.0 |
+| ------- | ------- |
+| Tomlyn  | 0.20.0  |
 
 **Test projects** also reference Tomlyn for host-free snapshot codec checks:
 
-| Project | Version |
-| --- | --- |
-| `RuleFormatter.Tests` | 0.19.0 |
-| `RuleFormatter.MutationTarget` | 0.19.0 |
+| Project                        | Version |
+| ------------------------------ | ------- |
+| `RuleFormatter.Tests`          | 0.19.0  |
+| `RuleFormatter.MutationTarget` | 0.19.0  |
 
 Maintainers restore and build the plugin with **`Build.ps1`**. Run `dotnet test` on `RuleFormatter.Tests` for TOML codec coverage without DriveWorks Administrator.
 
 <Info>
-Do not run `dotnet build` on the plugin `.csproj` directly. Use **`Build.ps1`** or **`Build-Release.ps1`**.
+  Do not run `dotnet build` on the plugin `.csproj` directly. Use
+  **`Build.ps1`** or **`Build-Release.ps1`**.
 </Info>
 
 ## Official links
@@ -49,13 +50,13 @@ Tomlyn usage lives under `Autex Toolkit/DWPlugin/Core/`. Search `DWPlugin` for `
 
 ### Snapshot export and import
 
-| Type | Role |
-| --- | --- |
-| `SnapshotTomlSerializer` | `ProjectData` / `GroupData` → TOML; projected sub-tables, omitted defaults, sorted export |
-| `SnapshotTomlDeserializer` | TOML → models; restores projected collections and specification flow |
-| `SnapshotTomlDeltaExportHelper` | Baseline capture and companion `*.delta.toml` on incremental export |
-| `SnapshotTomlSectionCodecs` | Section-level encode/decode helpers shared by serializer and tests |
-| `SpecificationFlowTomlMapper` | Nested TOML for specification flow definitions |
+| Type                            | Role                                                                                      |
+| ------------------------------- | ----------------------------------------------------------------------------------------- |
+| `SnapshotTomlSerializer`        | `ProjectData` / `GroupData` → TOML; projected sub-tables, omitted defaults, sorted export |
+| `SnapshotTomlDeserializer`      | TOML → models; restores projected collections and specification flow                      |
+| `SnapshotTomlDeltaExportHelper` | Baseline capture and companion `*.delta.toml` on incremental export                       |
+| `SnapshotTomlSectionCodecs`     | Section-level encode/decode helpers shared by serializer and tests                        |
+| `SpecificationFlowTomlMapper`   | Nested TOML for specification flow definitions                                            |
 
 Release scripts **`ExportGroupProjectToml`** and Version Control **`ExportToGitFolderToml`** write snapshot TOML to disk; delta mode uses `SnapshotTomlDeltaExportHelper`.
 
@@ -63,7 +64,7 @@ Release scripts **`ExportGroupProjectToml`** and Version Control **`ExportToGitF
 
 Comparison sources resolve **TOML files** and **TOML at a Git ref** (`TomlAtGitRefSource`). `VcTomlReportArtifactManifest` persists VC report metadata as TOML. Compare workflows consume the same snapshot shape as export.
 
-Internal notes: `Documentation/Packages/README.md` (Tomlyn listed with other plugin NuGet deps); architecture [Core services](/driveworks/plugins/toolkit/architecture/core-services) snapshot section; [Architecture map](/driveworks/plugins/toolkit/architecture) section 6 (Snapshot and TOML serialization).
+Internal package notes are maintained alongside the Toolkit repo; see [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy).
 
 ## Why we picked it
 

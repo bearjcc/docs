@@ -1,0 +1,281 @@
+---
+title: AutexCustom — Table by column name
+sidebarTitle: Table by column
+description: Custom functions that read DriveWorks table columns by name for Rules and Specification Flow.
+type: reference
+audience: operator
+---
+
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
+import { CustomFunctionDoc } from "/snippets/autex/CustomFunctionDoc.jsx";
+
+## Autex Custom Functions (Table By Column Name)
+
+Same semantics as the native table functions they wrap; column arguments are **header text on row 1** (1-based “first data row is row 2” in the descriptions in code). Category in Rule Builder: **Autex Custom Functions (Table By Column Name)**.
+
+<CustomFunctionDoc
+  name="AutexListAllByColumnName"
+  availability="Function"
+  inputs="`table` (Table); `columnName` (String); optional `sortAscending` (Boolean)"
+  output="Table (ListAll family)"
+  example='AutexListAllByColumnName(DWLookupParts,"PartNumber",TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexListAllDistinctByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexListAllDistinctByColumnName(DWLookupParts,"Category")'
+/>
+
+<CustomFunctionDoc
+  name="AutexListAllConditionalByColumnName"
+  availability="Function"
+  inputs="`table`; `valueColumnName`; `conditionColumnName`; `condition`"
+  output="Table"
+  example='AutexListAllConditionalByColumnName(DWLookupParts,"PartNumber","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexListAllConditionalDistinctByColumnName"
+  availability="Function"
+  inputs="same as conditional list-all"
+  output="Table"
+  example='AutexListAllConditionalDistinctByColumnName(DWLookupParts,"PartNumber","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSortByListByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `list`; optional `hasHeaders` (Boolean); optional `caseInsensitive` (Boolean); optional `sortAscending` (Boolean)"
+  output="Table"
+  example='AutexTableSortByListByColumnName(DWLookupParts,"PartNumber","A|B|C",TRUE,TRUE,TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByListByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `filterList` (String); `include` (Boolean)"
+  output="Table"
+  example='AutexTableFilterByListByColumnName(DWLookupParts,"Category","Panel|Trim",TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSortByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `hasHeaders`; optional `sortAscending`"
+  output="Table"
+  example='AutexTableSortByColumnName(DWLookupParts,"PartNumber",TRUE,TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSortByDateByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `hasHeaders`; optional `sortAscending`; optional `culture` (String)"
+  output="Table"
+  example='AutexTableSortByDateByColumnName(DWLookupOrders,"OrderDate",TRUE,TRUE,"en-NZ")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableDistinctByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexTableDistinctByColumnName(DWLookupParts,"Category")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhiteSpace` (Boolean)"
+  output="Table"
+  example='AutexTableFilterByColumnName(DWLookupParts,"Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByTwoColumnNames"
+  availability="Function"
+  inputs="`table`; `columnName1`; `condition1`; `columnName2`; `condition2`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexTableFilterByTwoColumnNames(DWLookupParts,"Category","Panel","Status","Active")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByThreeColumnNames"
+  availability="Function"
+  inputs="`table`; three column/condition pairs; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexTableFilterByThreeColumnNames(DWLookupParts,"Category","Panel","Status","Active","Region","NZ")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFormatByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `format` (String)"
+  output="Table"
+  example='AutexTableFormatByColumnName(DWLookupParts,"Price","0.00")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableWithSequenceByColumnName"
+  availability="Function"
+  inputs="`table`; `insertAtColumnName`; optional `newColumnText` (String)"
+  output="Table"
+  example='AutexTableWithSequenceByColumnName(DWLookupParts,"LineNo","Seq")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMinByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexTableMinByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMaxByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexTableMaxByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMinValueByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexTableMinValueByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMaxValueByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `defaultValue` (Number)"
+  output="Number"
+  example='AutexTableMaxValueByColumnName(DWLookupParts,"Price",0)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSumByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexTableSumByColumnName(DWLookupParts,"Qty")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableAverageByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexTableAverageByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableDistinctCountByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `ignoreCase`; optional `includeHeaderRow`; optional `sortAscending`"
+  output="Table"
+  example='AutexTableDistinctCountByColumnName(DWLookupParts,"Category")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableDistinctSumByColumnName"
+  availability="Function"
+  inputs="`table`; `groupColumnName`; `sumColumnName`; optional `ignoreCase`, `includeHeaderRow`, `sortAscending`"
+  output="Table"
+  example='AutexTableDistinctSumByColumnName(DWLookupParts,"Category","Qty")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableBreakByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; `top` (Boolean); `includeBreakRow` (Boolean); optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexTableBreakByColumnName(DWLookupParts,"Category","Panel",TRUE,TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSubstituteByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `oldText`; `newText`; optional `instanceNumber` (Number); optional `caseInsensitive` (Boolean)"
+  output="Table"
+  example='AutexTableSubstituteByColumnName(DWLookupParts,"Description","old","new")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDCountByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexDCountByColumnName(DWLookupParts,"Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDMaxByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexDMaxByColumnName(DWLookupParts,"Price","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDMinByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexDMinByColumnName(DWLookupParts,"Price","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexGetTableValueByColumnName"
+  availability="Function"
+  inputs="`table`; `rowIndex` (Number); `columnName`"
+  output="Table cell value (native type)"
+  example='AutexGetTableValueByColumnName(DWLookupParts,2,"PartNumber")'
+/>
+
+<CustomFunctionDoc
+  name="AutexSumTableColumnByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexSumTableColumnByColumnName(DWLookupParts,"Qty")'
+/>
+
+<CustomFunctionDoc
+  name="AutexVLookupByColumnName"
+  availability="Function"
+  inputs="`lookupValue`; `table`; `resultColumnName`; optional `closestMatch` (Boolean)"
+  output="same as native VLookup"
+  example='AutexVLookupByColumnName("P-100",DWLookupParts,"Description")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDWVLookupByColumnName"
+  availability="Function"
+  inputs="`lookupValue`; `table`; `lookupColumnName`; `resultColumnName`; optional `closestMatch`"
+  output="same as native DWVLookup"
+  example='AutexDWVLookupByColumnName("P-100",DWLookupParts,"PartNumber","Description")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableJoinByColumnName"
+  availability="Function"
+  inputs="`left` (Table); `leftColumnName`; `right` (Table); `rightColumnName`; optional `joinType` (String); optional `dataRowsOnly` (Boolean); optional `includeHeaders` (Boolean)"
+  output="Table"
+  example='AutexTableJoinByColumnName(DWLookupOrders,"OrderId",DWLookupLines,"OrderId")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSelectColumnsByColumnName"
+  availability="Function"
+  inputs="`table`; `columnNamesPipeDelimited` (String, `|` between header names)"
+  output="Table"
+  example='AutexTableSelectColumnsByColumnName(DWLookupParts,"PartNumber|Category|Qty")'
+/>
+## Related
+
+- [AutexCustom hub](/driveworks/plugins/autexcustom)

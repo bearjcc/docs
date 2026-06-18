@@ -1,0 +1,36 @@
+---
+title: Rules evaluation and dependencies
+sidebarTitle: Rule evaluation
+description: When DriveWorks recalculates Rules and how dependency on external data differs from in-Project references.
+type: explanation
+audience: operator
+---
+
+DriveWorks recalculates a **Rule** when a value it **depends on** changes. Dependencies are usually other **Variables**, **Constants**, form control values, and Specification properties referenced in the formula.
+
+## In-Project dependencies
+
+If `DWVariableTotal` references `DWVariablePrice` and `DWVariableQty`, changing either input triggers recalculation of `DWVariableTotal`. The engine tracks these links automatically.
+
+## External data without a dependency
+
+Functions that read **outside** the Project — SQL, PDM, filesystem paths, Group security, Autopilot logs — often have **no** automatic link to that source. Results can stay stale during a running **Specification** until something in the Project changes.
+
+The fix is a **recalculation trigger**: a **Constant** (or control) you change on purpose so the function runs again. See [Recalculation triggers](/driveworks/concepts/recalculation-triggers) and [Force a data refresh](/driveworks/how-to/force-data-refresh).
+
+## Formula vs evaluated value
+
+| Need             | API / surface                                              |
+| ---------------- | ---------------------------------------------------------- |
+| Rule text        | `IHasRule.Rule` or `ProjectVariable.Rule`                  |
+| Evaluated result | `project.EvaluateRule(formula)` or display-string helpers  |
+| Constant value   | `ProjectConstant.Value` (data only, not Rule Builder text) |
+
+## Model Rules vs project Rules
+
+**Model Rules** drive captured SOLIDWORKS parameters (dimensions, features, custom properties). They are a separate collection from Variables and document Rules searched by `CreateRuleSearchProcess`. Toolkit **List data** and compare tools treat both where configured.
+
+## Related
+
+- [Rules search, rename, and replace](/driveworks/concepts/rules-search-and-replace)
+- [Constants, Variables, and tables](/driveworks/concepts/constants-variables-and-tables)

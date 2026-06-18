@@ -1,25 +1,52 @@
 ---
 title: Autopilot
-sidebarTitle: Stop and Start Autopilot
-description: DriveWorks Autopilot operation and restart procedures.
+description: Stop, start, and restart DriveWorks Autopilot when the model generation queue stalls.
+type: how-to
+audience: operator
 ---
 
+When the model generation queue stalls or the SOLIDWORKS integration blocks, restart Autopilot — first the agent, then the host machine if that does not clear it.
 
-## Stop and Start Autopilot
+## Stop and start Autopilot
 
-Use when model generation queue stalls or SOLIDWORKS integration is blocked.
+Use this first when the queue stalls but Autopilot is still responsive.
 
-1. Click `Stop` and wait for stopped state in logs.
-2. Click `Start` and confirm the model queue resumes.
-3. If needed, restart SOLIDWORKS on the Autopilot host.
+<Steps>
+## Stop the agent
 
-## Restart Autopilot Host
+Click the **Stop** button and wait for the stopped state to appear in the log.
 
-Use when Autopilot controls are unavailable or all queues are stalled.
+## Start the agent
 
-1. Remote desktop to `azdwapp01.autexnz.local`.
-2. Restart Windows.
-3. Log in again and open DriveWorks Autopilot.
-4. Start `AutexGLOBAL`.
-5. Open a second Autopilot session and start `DEVAutexGLOBAL`.
-6. Confirm queues continue from prior state.
+Click the **Start** button and confirm the model queue resumes.
+
+## Restart SOLIDWORKS if needed
+
+If generation is still blocked, restart SOLIDWORKS on the Autopilot host, then start the agent again.
+</Steps>
+
+## Restart the Autopilot host
+
+Use when Autopilot controls are unavailable or every queue is stalled.
+
+<Steps>
+## Connect to the host
+
+Remote desktop to `azdwapp01.autexnz.local` and restart Windows.
+
+## Reopen Autopilot
+
+Log in again and open **DriveWorks Autopilot**.
+
+## Start both agents
+
+Start `AutexGLOBAL`. Open a second Autopilot session and start `DEVAutexGLOBAL`.
+
+<Check>Both queues resume from their prior state.</Check>
+</Steps>
+
+## Related
+
+- [Force a data refresh](/driveworks/how-to/force-data-refresh) — Autopilot log and Shared Group functions
+- [Licensing](/driveworks/how-to/licensing) — restart the license service
+- [Troubleshooting](/driveworks/troubleshooting) — model generation and queue issues

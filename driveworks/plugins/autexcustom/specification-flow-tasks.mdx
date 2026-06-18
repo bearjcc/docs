@@ -1,0 +1,94 @@
+---
+title: AutexCustom — Specification Flow tasks
+sidebarTitle: Specification Flow tasks
+description: Task-only AutexCustom operations for Specification Flow (slab packing, form control type changes).
+type: reference
+audience: operator
+---
+
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
+import { CustomFunctionDoc } from "/snippets/autex/CustomFunctionDoc.jsx";
+
+## Specification Flow tasks (task only)
+
+### Autex Slab Packing
+
+- **Availability:** Task
+- **Inputs:** Parts Table (table/array per `PartsTable_Description` in `SlabPacking.cs`: Shape, Length, optional Width, Side, Qty, Rotation, Bevel, BevelOffset, **CornerRadius**); Slab Width; Slab Length; **Allow Rotation** (Boolean, default **true** on the task); Optimize Order (Boolean, optional sort-by-length descending before greedy pack); optional **Settings Table** (two-column property/value table; see **Nest settings table** below)
+- **Outputs:** Nested table (packed layout array, includes **CornerRadius** when set on input rows); Total sheets; Unique sheets; Diagnostic (empty on success; otherwise failure reason or brief settings warnings when invalid settings values were ignored)
+- **Allow Rotation:** When **true**, the packer may try extra orientations (for example a 90° footprint swap on rectangles). When **false**, only each row’s **Rotation** value (0, 90, 180, or 270) is used. Bind your form **Can Rotate** checkbox to this task input (not a column on the Parts Table; per-row **CanRotate** is ignored). Leaving **Allow Rotation** unbound defaults to **true**.
+- **Length / Width on the nest drawing:** **Length** is the vertical extent and **Width** the horizontal extent in nest coordinates (Y downward). A 1000×250 rectangle at **PartRotation** 0 appears tall (250 mm wide, 1000 mm long on the layout); that is not an extra packer rotation when **Allow Rotation** is false.
+- **On-sheet cuts:** Every placed part’s cut footprint must lie inside the slab margins (standard runout: 10 mm horizontal, 20 mm vertical per side). If a part cannot fit, the packer adds another slab rather than emitting coordinates outside the sheet.
+- **CornerRadius:** Optional mm per part row. Export-only: rounded corners in nest **SVG** and **DXF** for **Rectangle** and **Triangle** shapes. Does not change packing clearance (clearance uses the sharp outline).
+- **Bevel:** Optional (`False`, truthy, `Length`, or `Width`). On rectangles, `Length`/`Width` affect packing clearance on those edges only; other shapes use `True`/`False` only. Nest **SVG** draws dashed hyperlink-blue lines (`#0060DF`, 6/4 mm dash) inset 5 mm on straight edges parallel to the chosen legs (stops short at **CornerRadius** arcs). Packing uses clearance between beveled edges (see **BevelOffset**).
+
+#### Nest settings table
+
+Optional two-column table: column 1 = property name, column 2 = value. Header row optional (`Property` / `Value`). Names match ignoring case, spaces, and punctuation.
+
+Scaffold with defaults in DriveWorks Administrator: Autex Toolkit release script **Table from slab packing settings** (project Simple table).
+
+| Property              | Default   | Effect                                                                                                                |
+| --------------------- | --------- | --------------------------------------------------------------------------------------------------------------------- |
+| SlabVerticalPadding   | 20 mm     | Y runout (packing margin); affects usable slab length and nested X/Y                                                  |
+| SlabHorizontalPadding | 10 mm     | X runout (packing margin)                                                                                             |
+| LabelFont             | Tahoma    | SVG/DXF part and slab title font                                                                                      |
+| SlabColour            | `#ffffff` | Slab fill (SVG) / SHEET layer (DXF)                                                                                   |
+| PartColour            | `#f5f5f5` | Part fill (SVG) / cut layers (DXF)                                                                                    |
+| BevelColour           | `#0060DF` | SVG bevel indicator stroke                                                                                            |
+| BevelLineWeight       | 1 mm      | SVG bevel stroke width                                                                                                |
+| BevelOffset           | 5 mm      | Minimum clearance (mm) between beveled edges when packing; collapses to one offset between two adjacent beveled parts |
+| BevelDisplayInset     | 5 mm      | Visual gap (mm) between part outline and dashed bevel indicator in SVG                                                |
+| BevelDashLength       | 6 mm      | SVG bevel dash length                                                                                                 |
+| BevelDashGap          | 4 mm      | SVG bevel dash gap                                                                                                    |
+| SlabStrokeColour      | `#333333` | Slab outline stroke (SVG)                                                                                             |
+| SlabStrokeWeight      | 2 mm      | Slab outline stroke width                                                                                             |
+| PartStrokeColour      | `#222222` | Part outline stroke (SVG)                                                                                             |
+| PartStrokeWeight      | 1 mm      | Part outline stroke width                                                                                             |
+| LabelColour           | `#111111` | Part label fill (SVG)                                                                                                 |
+| TitleColour           | `#333132` | Slab title fill (SVG)                                                                                                 |
+| TitleFontSizePt       | 7 pt      | Slab title font size                                                                                                  |
+| PartLabelFontSizePt   | 24 pt     | Part ID label font size                                                                                               |
+
+Task: invalid known values fall back to defaults (warning in Diagnostic). UDF / DXF document: invalid values return `#VALUE!` / `#ERROR!` or block export with a report message.
+
+<CustomFunctionDoc
+  name="Autex Copy Form Control"
+  availability="Task"
+  inputs="Form Control to copy; Form Name (optional); Top; Left; Name (optional new control name)"
+  output="New Control Name; Diagnostic (Debug builds only)"
+/>
+
+<CustomFunctionDoc
+  name="Autex Batch Copy Form Controls"
+  availability="Task"
+  inputs="Form Control to copy (pipe-separated multi); Form Name; Count; Top spacing; Left"
+  output="Last Control Name; Diagnostic (Debug builds only)"
+/>
+
+<CustomFunctionDoc
+  name="Autex Drive Form Control From Table"
+  availability="Task"
+  inputs="Form control name; Properties table (wide layout); Data row index (1-based)"
+  output="Result (summary string); Diagnostic (Debug builds only)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    Scaffold the table with Toolkit{" "}
+    <strong>Table from form control type</strong>, fill values, then run in a
+    Specification Macro. See{" "}
+    <a href="/driveworks/how-to/table-driven-form-control-properties">
+      Table-driven form control properties
+    </a>
+    .
+  </p>
+</CustomFunctionDoc>
+
+<CustomFunctionDoc
+  name="Autex Change Form Control Type"
+  availability="Task"
+  inputs="Form Control Name; Target Control Type (default `NumericTextBox`)"
+  output="none (success/fail on task state only)"
+/>
+## Related
+
+- [AutexCustom hub](/driveworks/plugins/autexcustom)

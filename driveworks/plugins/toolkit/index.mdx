@@ -2,28 +2,31 @@
 title: Autex Toolkit
 sidebarTitle: Autex Toolkit
 description: End-user hub for Autex Toolkit in DriveWorks Administrator.
+type: reference
+audience: operator
 ---
-
-
 
 **Autex Toolkit** is the main Autex plugin for DriveWorks Administrator. It adds the **Autex Toolkit** / **DW Tools** command group, **Autex Tools** scripts, a **Group Constants** sidebar under **Group Setup**, Rule Builder helpers, Form Designer tools, and Project comparison workflows.
 
 Use this hub if you operate or implement DriveWorks Projects with Toolkit installed. Programmer and build details are kept behind the advanced page.
 
 <Tip>
-  For an interactive map of DriveWorks Administrator chrome (diagrams plus highlight props), see the [Administrator UI region map](/driveworks/plugins/toolkit/injection/administrator-ui-map).
+  For an interactive map of DriveWorks Administrator chrome (diagrams plus
+  highlight props), see the [Administrator UI region
+  map](/driveworks/plugins/toolkit/injection/administrator-ui-map).
 </Tip>
 
 ## Start here
 
-| Page                                                                           | Use it for                                                              |
-| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| [Getting started](/driveworks/plugins/toolkit/getting-started)                 | Find Toolkit in DriveWorks Administrator and choose the right workflow. |
-| [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)   | See where Toolkit appears: command group, Rule Builder, Form Designer.  |
-| [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)           | Understand script inputs, results, preview, apply, and Group mode.      |
-| [Scripts](/driveworks/plugins/toolkit/scripts)                                 | Learn how to run scripts safely.                                        |
-| [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) | See every Release script, purpose, inputs, and danger level.            |
-| [Release script pages](/driveworks/plugins/toolkit/scripts-release)            | Short guides for selected Release scripts (see index for list).         |
+| Page                                                                                 | Use it for                                                              |
+| ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| [Getting started](/driveworks/plugins/toolkit/getting-started)                       | Find Toolkit in DriveWorks Administrator and choose the right workflow. |
+| [First Toolkit script (tutorial)](/driveworks/plugins/toolkit/first-script-tutorial) | Guaranteed read-only **List data** run on a dev Project.                |
+| [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)         | See where Toolkit appears: command group, Rule Builder, Form Designer.  |
+| [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)                 | Understand script inputs, results, preview, apply, and Group mode.      |
+| [Scripts](/driveworks/plugins/toolkit/scripts)                                       | Learn how to run scripts safely.                                        |
+| [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)       | See every Release script, purpose, inputs, and danger level.            |
+| [Release script pages](/driveworks/plugins/toolkit/scripts-release)                  | Short guides for selected Release scripts (see index for list).         |
 
 ## Feature guides
 
@@ -43,12 +46,14 @@ Use this hub if you operate or implement DriveWorks Projects with Toolkit instal
 - Remember that **Constants**, **Group Constants**, **Simple Tables**, and **Group Tables** store literal data, not Rule Builder formulas.
 - Verify user-facing forms, Rules, and generated outputs after changes.
 
-## Advanced
+## Maintain (developers)
 
+For extending, debugging, or shipping the plugin — see the **Maintain** section in the sidebar.
+
+- [Architecture map](/driveworks/plugins/toolkit/architecture) — how the Toolkit code layers fit together (generated from Understand-Anything).
+- [Administrator injection guides](/driveworks/plugins/toolkit/injection) — how Toolkit extends the DriveWorks Administrator UI.
 - [Tech stack](/driveworks/plugins/toolkit/tech-stack) — Serilog, Scriban, WebView2, and other NuGet dependencies.
-- [Architecture map](/driveworks/plugins/toolkit/architecture) explains Toolkit code layers (generated from Understand-Anything).
-- [Administrator injection guides](/driveworks/plugins/toolkit/injection) — how Toolkit extends DriveWorks Administrator UI (maintainers).
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy) is for IT or maintainers installing the DLL.
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy) — installing the DLL for IT or maintainers.
 
 ## Related plugins
 

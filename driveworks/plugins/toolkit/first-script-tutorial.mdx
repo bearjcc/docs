@@ -1,0 +1,52 @@
+---
+title: Run your first Toolkit script safely
+sidebarTitle: First Toolkit script
+description: Tutorial — open Autex Tools, run a read-only Release script, and read the results panel without changing Project data.
+type: tutorial
+audience: operator
+---
+
+In this tutorial you will open **Autex Tools**, run the read-only **List data** Release script on a development Project, and confirm the results table — without writing any Project data.
+
+<Prerequisite>
+  Autex Toolkit installed in **DriveWorks Administrator**, a **development
+  Group** open (for example **AUTEX DEV**), and one test **Project** open.
+</Prerequisite>
+
+<Steps>
+## Open Autex Tools
+
+In **DriveWorks Administrator**, connect to your development **Group** and open a test **Project**.
+
+Select **Autex Toolkit** (or **DW Tools**) on the command bar to open the **Autex Tools** window.
+
+## Pick a read-only script
+
+In the script browser, choose **Release** category, then **List data**.
+
+<Check>The inputs panel shows **Data type** and filter fields.</Check>
+
+## Run without filters
+
+Leave filters empty. Set **Data type** to **Constants**.
+
+Select **Run**.
+
+<Check>A results table lists Project Constants. No save prompt appears.</Check>
+
+## Read the session log
+
+Scroll the session log at the bottom of **Autex Tools**. Note the row count and any warnings.
+
+<Check>You can re-run with **Variables** or **Form Controls** to see different column sets.</Check>
+</Steps>
+
+## What you learned
+
+You opened **Autex Tools**, ran a **Read-only** Release script, and used the results grid plus session log. Mutating scripts add preview and **Apply selected** steps — see [Scripts](/driveworks/plugins/toolkit/scripts) and the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) before running those.
+
+## Next steps
+
+- [Getting started](/driveworks/plugins/toolkit/getting-started) — where Toolkit appears in Administrator
+- [List data reference](/driveworks/plugins/toolkit/scripts-release/list-data) — full inputs and outputs
+- [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window) — preview, apply, and Group mode

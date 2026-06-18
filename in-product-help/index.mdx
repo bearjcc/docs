@@ -1,15 +1,36 @@
 ---
 title: In-Product Help
 sidebarTitle: In-Product Help
-description: Planned in-app help surfaced from DriveWorks and Toolkit; Wiki.js API integration is future work.
+description: Linking DriveWorks Administrator and Toolkit UI to the Autex Knowledge Base (Mintlify).
+type: explanation
+audience: internal
 ---
 
-In-product help will surface contextual documentation inside DriveWorks Administrator and related Autex tools. That work depends on a future Wiki.js API integration.
+Contextual help should deep-link into this **Mintlify** site from Toolkit script descriptions, error strings, and Administrator surfaces. Search (**Ctrl+K** / **Cmd+K**) is the primary entry when no dedicated link exists.
 
-## Interim docs
+## Interim (today)
 
-Use these sections until in-product help ships:
+| Need                | Link                                                                           |
+| ------------------- | ------------------------------------------------------------------------------ |
+| Operate DriveWorks  | [DriveWorks hub](/driveworks)                                                  |
+| Run Toolkit scripts | [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) |
+| Custom functions    | [AutexCustom hub](/driveworks/plugins/autexcustom)                             |
+| Maintainer docs     | [Plugin development](/driveworks/plugins/maintain)                             |
 
-- [DriveWorks](/driveworks) — operations, how-to guides, and plugin reference
-- [Autex Toolkit](/driveworks/plugins/toolkit) — plugin architecture, scripts, and injection guides
-- [Wiki home](/wiki-home) — hub for migrated wiki content areas
+## Wiki.js cutover
+
+**Wiki.js** is the legacy site. New and updated docs belong in `mintlify/` only. When Mintlify is the team default:
+
+1. Freeze Wiki.js edits except redirects.
+2. Point bookmarks and `/home` to the Mintlify home page.
+3. Add Toolkit UI links to stable Mintlify paths (not repo-relative paths).
+
+## Future work
+
+- Deep links from Autex Tools script **Description** fields to catalog reference pages.
+- Optional Mintlify assistant / MCP for in-IDE search (see [Reference hub](/reference)).
+
+## Related
+
+- [Authoring conventions](/reference/authoring-conventions)
+- [First Toolkit script tutorial](/driveworks/plugins/toolkit/first-script-tutorial)

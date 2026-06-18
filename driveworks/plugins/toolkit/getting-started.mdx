@@ -1,49 +1,41 @@
 ---
 title: Autex Toolkit — Getting started
 sidebarTitle: Getting started
-description: Start using Autex Toolkit in DriveWorks Administrator.
+description: Find Autex Toolkit in DriveWorks Administrator and open the Autex Tools window.
+type: how-to
+audience: operator
 ---
 
+Open the **Autex Toolkit** command group in **DriveWorks Administrator** and launch **Autex Tools** — the window for running scripts and most Toolkit features. Toolkit ships as a DLL that IT installs for your environment; you work entirely from Administrator, not from the code repository.
 
-## Getting started
+<Steps>
+## Open your Group
 
-**Autex Toolkit** runs inside DriveWorks Administrator. It adds tools for scripts, Group Constants, Rule Builder help, Form Designer styling, and project comparison.
+In **DriveWorks Administrator**, connect to the correct **Group**. Open a **Project** as well if your work is Project-scoped.
 
-IT installs the Toolkit DLL for your DriveWorks environment. Operators and implementers normally start from Administrator, not from the code repository.
+## Find the command group
 
-## First check
+Look for the **Autex Toolkit** / **DW Tools** command group on the command bar, or the Autex icon on the title-bar QuickBar.
 
-1. Open **DriveWorks Administrator**.
-2. Connect to the correct **Group**.
-3. Open a **Project** if you are running Project-scoped work.
-4. Look for the **Autex Toolkit** / **DW Tools** command group.
-5. Open **Autex Toolkit** to launch **Autex Tools**.
+## Launch Autex Tools
 
-If the command group is missing, confirm the installed DLL and DriveWorks plugin registration with IT.
+Select **Autex Toolkit** to open the **Autex Tools** window.
 
-## Common tasks
+<Check>The Autex Tools window opens with the script browser and session log.</Check>
+</Steps>
 
-| Task | Start here |
-|------|------------|
-| Run bulk checks or maintenance | [Scripts](/driveworks/plugins/toolkit/scripts) |
-| Review shipped scripts | [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) |
-| Manage shared literal values | [Group Constants](/driveworks/plugins/toolkit/group-constants) |
-| Check spelling or PascalCase | [Spell checker](/driveworks/plugins/toolkit/spell-checker) |
-| Create or reuse form styling tokens | [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass) |
-| Convert controls or inspect form HTML/CSS | [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools) |
-| Compare Project versions | [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots) |
+<Note>
+No command group? Confirm the installed DLL and DriveWorks plugin registration with IT. See [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy) for how the plugin loads.
+</Note>
 
-## Before changing data
+## Where to next
 
-- Prefer a development copy of the Group or Project.
-- Make a **Pack and Go** or approved backup before bulk changes.
-- Read the script or feature page before applying changes.
-- Treat **Writes on Run** scripts as high-risk.
-- Re-test affected Rules, User Forms, and outputs after applying changes.
+The [Toolkit hub](/driveworks/plugins/toolkit) lists every feature and links each guide. The most common starting points:
 
-## Related
+- [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window) — how inputs, results, preview, and apply work.
+- [Scripts](/driveworks/plugins/toolkit/scripts) — run scripts safely, including the danger levels.
+- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces) — every place Toolkit appears in Administrator.
 
-- [Toolkit hub](/driveworks/plugins/toolkit/index)
-- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)
-- [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)
-- [Advanced: build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
+<Warning>
+Toolkit scripts can change Group and Project data. Before any bulk or **Writes on Run** script, work on a development copy and make a **Pack and Go** backup. Full guidance: [Scripts](/driveworks/plugins/toolkit/scripts).
+</Warning>

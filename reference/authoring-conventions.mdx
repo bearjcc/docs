@@ -2,6 +2,8 @@
 title: Authoring conventions
 sidebarTitle: Conventions
 description: Page structure, navigation, links, DriveWorks terminology, and custom function documentation for Mintlify MDX in this repo.
+type: reference
+audience: internal
 ---
 
 Conventions for consistent pages across the Autex Knowledge Base. Component syntax examples live in [MDX tips](/reference/mdx-tips).
@@ -14,6 +16,8 @@ Every page starts with YAML frontmatter:
 ---
 title: Page title shown in browser and search
 description: One sentence summary for SEO and social previews
+type: how-to # tutorial | how-to | reference | explanation
+audience: operator # operator | maintainer | internal
 ---
 ```
 
@@ -23,6 +27,19 @@ Common optional fields:
 - `icon` — Lucide icon name (site uses `"library": "lucide"` in `docs.json`)
 
 Body content begins at `##` (H2). Do not repeat the page title as `#` in the body.
+
+## Page type (Diátaxis)
+
+Each page serves **one** reader need. Pick a `type` before writing and keep the page in that lane; push secondary material to the right page and link to it. Mixing types is the main cause of confusing docs.
+
+| `type`          | Reader is…            | Answers               | Keep it…                                             |
+| --------------- | --------------------- | --------------------- | ---------------------------------------------------- |
+| **tutorial**    | learning by doing     | "teach me, hand-held" | one guaranteed path, minimal theory                  |
+| **how-to**      | working toward a goal | "how do I do X?"      | assume competence, sequence by the reader's workflow |
+| **reference**   | looking up a fact     | "what exactly is X?"  | definition → signature → params → example, factual   |
+| **explanation** | understanding         | "why is it this way?" | trade-offs and rationale; judgment allowed here only |
+
+`audience` marks the lane in navigation: **operator** (uses DriveWorks), **maintainer** (extends/debugs a plugin), **internal** (Autex itself). Keep operator and maintainer content on separate pages.
 
 ## Navigation and routing
 
@@ -75,6 +92,10 @@ Every **custom function** documented for **Rule Builder** should include a copy-
 - Format calls compactly for Rules (no spaces after commas), e.g. `AutexSlabPackingImage(DwLookupNested,1,DWLookupSlabPackingSettings,TRUE)`.
 - Do not add UDF example blocks for **Specification Flow** tasks, **Project document** types, or task-only sections.
 
+## Source knowledge (private corpora)
+
+SDK extracts, decompiled assemblies, and repo-local notes under `Documentation/DriveWorks-Docs/`, `Documentation/Toolkit/`, and plugin `docs/` folders are **authoring inputs only**. Read them when writing a page; **never** bulk-import, mirror, or link to those paths from published MDX. Distill facts into one Diátaxis-typed page with copy-pasteable examples. If depth exists only in private sources, an author or agent writes the public page locally first.
+
 ## Snippets and generated content
 
 - Reusable React lives in `snippets/`; import from MDX with absolute paths: `/snippets/...`.
@@ -82,7 +103,8 @@ Every **custom function** documented for **Rule Builder** should include a copy-
 
 ## Preview and quality
 
-- Local preview: run `mintlify dev` from the repo root.
+- Local preview: run `mintlify dev` from the `mintlify/` folder.
+- Repo-path guard: `.\scripts\Check-MintlifyRepoPaths.ps1` from `mintlify/` (blocks private corpus links in published MDX).
 - Match existing pages in the same section for tone and component choice.
 - Keep destructive Toolkit scripts clearly marked; link to the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) for danger levels.
 

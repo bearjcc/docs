@@ -2,6 +2,8 @@
 title: Reference
 sidebarTitle: Reference
 description: Authoring standards for Mintlify MDX pages, components, and navigation in the Autex Knowledge Base.
+type: reference
+audience: internal
 ---
 
 Standards for writing and maintaining this Mintlify site.
@@ -13,16 +15,26 @@ Standards for writing and maintaining this Mintlify site.
 
 ## Repo layout
 
-| Path                | Purpose                                     |
-| ------------------- | ------------------------------------------- |
-| `docs.json`         | Site config, theme, tabs, navigation        |
-| `**/*.mdx`          | Documentation pages                         |
-| `snippets/`         | Reusable React components imported into MDX |
-| `scripts/`          | Generators (e.g. architecture layer tables) |
-| `images/wiki/`      | Static assets (migrated Wiki media, drawio) |
+| Path           | Purpose                                     |
+| -------------- | ------------------------------------------- |
+| `docs.json`    | Site config, theme, tabs, navigation        |
+| `**/*.mdx`     | Documentation pages                         |
+| `snippets/`    | Reusable React components imported into MDX |
+| `scripts/`     | Generators (e.g. architecture layer tables) |
+| `images/wiki/` | Static assets (migrated Wiki media, drawio) |
 
-## Cursor and MCP
+## Cursor rules
 
-Project rule: `.cursor/rules/mintlify-mdx.mdc` (applies when editing MDX, snippets, or `docs.json` in this repo).
+These rules auto-attach when editing `.mdx` in this repo (`.cursor/rules/`):
+
+| Rule                          | Covers                                                               |
+| ----------------------------- | -------------------------------------------------------------------- |
+| `mintlify-mdx`                | Components, snippets, navigation, MDX syntax                         |
+| `Docs-Mintlify-Diataxis`      | One page type per page (tutorial / how-to / reference / explanation) |
+| `Docs-Mintlify-Writing-Style` | Inverted pyramid, concise "why", active voice, banned filler words   |
+| `Docs-Mintlify-Interlinking`  | Link once with intent; single source of truth                        |
+| `Docs-Mintlify-IA-Adoption`   | Use / Maintain / Internal lanes, task-based entry, maintenance       |
+
+## MCP
 
 Mintlify publishes a [Cursor writing guide](https://www.mintlify.com/docs/guides/cursor) and hosts a search MCP at `https://mintlify.com/docs/mcp` for component reference while authoring.

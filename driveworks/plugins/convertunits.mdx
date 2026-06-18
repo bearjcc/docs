@@ -2,11 +2,11 @@
 title: ConvertUnits (AutexConvertUnits)
 sidebarTitle: ConvertUnits
 description: Custom functions for length, area, time, and mass unit conversion inside DriveWorks Rules, with optional rounding and common shortcuts (mm/in, kg/lb).
+type: reference
+audience: operator
 ---
 
-import { DriveWorksRule } from '/snippets/DriveWorksRule.jsx';
-
-
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
 
 ## ConvertUnits
 
@@ -20,7 +20,7 @@ In **DriveWorks Administrator** (or another module hosting **Rule Builder**), op
 
 ### Deploy and registration
 
-Output assembly: **`AutexConvertUnits.dll`**. Extender type: **`Autex.Units.AutexUnitsExtender`** (**Shared Project Extender**). Build with **`ConvertUnits\Build.ps1`** (local Debug) or **`ConvertUnits\Build-Release.ps1`** (production plugin shares). Register the extender in your **Project** per **`ConvertUnits/README.md`**.
+Output assembly: **`AutexConvertUnits.dll`**. Extender type: **`Autex.Units.AutexUnitsExtender`** (**Shared Project Extender**). See [ConvertUnits build and deploy](/driveworks/plugins/convertunits/build-and-deploy).
 
 ### Behavior
 
@@ -31,17 +31,17 @@ Output assembly: **`AutexConvertUnits.dll`**. Extender type: **`Autex.Units.Aute
 
 ### Functions at a glance
 
-| Function | Purpose |
-|----------|---------|
-| [AutexConvertUnitsLength](#autexconvertunitslength) | Length: arbitrary units + optional rounding |
-| [AutexConvertMMToInch](#autexconvertmmtoinch) | Length: millimeters to inches |
-| [AutexConvertInchToMM](#autexconvertinchtomm) | Length: inches to millimeters |
-| [AutexConvertUnitsArea](#autexconvertunitsarea) | Area: arbitrary units + optional rounding |
-| [AutexConvertUnitsTime](#autexconvertunitstime) | Time: arbitrary units + optional rounding |
-| [AutexConvertTimeFormatted](#autexconverttimeformatted) | Time in seconds to a human-readable string |
-| [AutexConvertWeight](#autexconvertweight) | Mass: arbitrary units + optional rounding |
-| [AutexConvertMass](#autexconvertmass) | Same behavior as **AutexConvertWeight** (alternate registration) |
-| [AutexConvertKgToLb](#autexconvertkgtolb) | Mass: kilograms to pounds |
+| Function                                                | Purpose                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------- |
+| [AutexConvertUnitsLength](#autexconvertunitslength)     | Length: arbitrary units + optional rounding                      |
+| [AutexConvertMMToInch](#autexconvertmmtoinch)           | Length: millimeters to inches                                    |
+| [AutexConvertInchToMM](#autexconvertinchtomm)           | Length: inches to millimeters                                    |
+| [AutexConvertUnitsArea](#autexconvertunitsarea)         | Area: arbitrary units + optional rounding                        |
+| [AutexConvertUnitsTime](#autexconvertunitstime)         | Time: arbitrary units + optional rounding                        |
+| [AutexConvertTimeFormatted](#autexconverttimeformatted) | Time in seconds to a human-readable string                       |
+| [AutexConvertWeight](#autexconvertweight)               | Mass: arbitrary units + optional rounding                        |
+| [AutexConvertMass](#autexconvertmass)                   | Same behavior as **AutexConvertWeight** (alternate registration) |
+| [AutexConvertKgToLb](#autexconvertkgtolb)               | Mass: kilograms to pounds                                        |
 
 ### AutexConvertUnitsLength
 
@@ -85,9 +85,7 @@ AutexConvertMMToInch(Length)
 
 **Example:**
 
-<DriveWorksRule>
-AutexConvertMMToInch(254)
-</DriveWorksRule>
+<DriveWorksRule>AutexConvertMMToInch(254)</DriveWorksRule>
 
 ### AutexConvertInchToMM
 
@@ -105,9 +103,7 @@ AutexConvertInchToMM(Length)
 
 **Example:**
 
-<DriveWorksRule>
-AutexConvertInchToMM(10)
-</DriveWorksRule>
+<DriveWorksRule>AutexConvertInchToMM(10)</DriveWorksRule>
 
 ### AutexConvertUnitsArea
 
@@ -174,9 +170,7 @@ AutexConvertTimeFormatted(timeInSeconds)
 
 **Example:**
 
-<DriveWorksRule>
-AutexConvertTimeFormatted(3665)
-</DriveWorksRule>
+<DriveWorksRule>AutexConvertTimeFormatted(3665)</DriveWorksRule>
 
 ### AutexConvertWeight
 
@@ -217,9 +211,7 @@ AutexConvertMass(Mass, fromUnit, toUnit, roundTo)
 
 **Example:**
 
-<DriveWorksRule>
-AutexConvertMass(5, "kg", "lb")
-</DriveWorksRule>
+<DriveWorksRule>AutexConvertMass(5, "kg", "lb")</DriveWorksRule>
 
 ### AutexConvertKgToLb
 
@@ -237,9 +229,7 @@ AutexConvertKgToLb(Mass)
 
 **Example:**
 
-<DriveWorksRule>
-AutexConvertKgToLb(5)
-</DriveWorksRule>
+<DriveWorksRule>AutexConvertKgToLb(5)</DriveWorksRule>
 
 ## Related
 

@@ -1,0 +1,40 @@
+---
+title: AutexPdfExport — Build and deploy
+sidebarTitle: Build and deploy
+description: Build and deploy the WebView2 PDF Project document plugin alongside AutexCustom.
+type: how-to
+audience: maintainer
+---
+
+**AutexPdfExport** implements `Autex.Custom.Documents.PdfDocument`. **AutexCustom** type-forwards that type; production hosts need **both** assemblies and WebView2 Evergreen runtime.
+
+<Steps>
+## Debug build
+
+```powershell
+.\AutexPdfExport\Build.ps1
+```
+
+Building **AutexCustom** also copies PdfExport outputs into AutexCustom `bin` for integrated deploy.
+
+## Release deploy
+
+```powershell
+.\AutexPdfExport\Build-Release.ps1
+```
+
+Archives the prior share DLL, deploys Release build, and copies WebView2 satellites when missing beside the plugin.
+
+## Host requirements
+
+- .NET Framework 4.8
+- DriveWorks 22.x (match `DriveWorksInstallPath` in the csproj)
+- WebView2 Evergreen runtime on generation hosts (Administrator, Autopilot, Live)
+
+<Check>Generate a test PDF from a Project document with a valid **PdfSource** path on the host.</Check>
+</Steps>
+
+## Related
+
+- [AutexPdfExport operator reference](/driveworks/plugins/autexpdfexport)
+- [AutexCustom build](/driveworks/plugins/autexcustom/build-and-deploy)

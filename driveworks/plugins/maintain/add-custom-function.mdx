@@ -1,0 +1,46 @@
+---
+title: Add a custom function or Specification Flow task
+sidebarTitle: Add custom function
+description: How Autex registers Rule Builder functions and Specification Flow tasks in AutexCustom-style extenders.
+type: how-to
+audience: maintainer
+---
+
+Add new Rule Builder or Specification Flow surface area in **AutexCustom** (or a new extender assembly) using `SharedProjectExtender` and DriveWorks `FunctionInfo` metadata.
+
+<Steps>
+## Choose availability
+
+| Surface              | Attribute pattern                                                      |
+| -------------------- | ---------------------------------------------------------------------- |
+| Rule Builder only    | `[Udf(true)]` when the function does not touch Project/Group live data |
+| Rule Builder + tasks | `[Udf(false)]` when resolving users, tables, or Project state          |
+| Task only            | Specification Flow task class; no UDF                                  |
+
+Functions that read **Group** membership, **Project** tables, or other live SDK state must use `[Udf(false)]`.
+
+## Implement in a feature extender
+
+Add a class under `AutexCustom/Core/` (or sibling feature folder) inheriting `SharedProjectExtender`. Decorate methods with `[FunctionInfo("category", "description")]` and the correct `[Udf(...)]`.
+
+Keep region and user resolution on shared helpers so NZ/AU/US/UK behavior stays consistent.
+
+## Document for operators
+
+Add a `<CustomFunctionDoc>` block on the matching [AutexCustom reference page](/driveworks/plugins/autexcustom) with a compact Rule example (no spaces after commas).
+
+## Build and verify
+
+```powershell
+.\AutexCustom\Build.ps1
+```
+
+Restart **DriveWorks Administrator**, open Rule Builder **Functions**, and run the function in a test **Project**.
+
+<Check>Function appears under the expected category; task picker shows the display name when applicable.</Check>
+</Steps>
+
+## Related
+
+- [AutexCustom build and deploy](/driveworks/plugins/autexcustom/build-and-deploy)
+- [Authoring conventions — custom functions](/reference/authoring-conventions#custom-function-documentation)

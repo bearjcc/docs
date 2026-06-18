@@ -33,28 +33,21 @@
         ]
       },
       {
-        "tab": "Autex",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": ["autex/index"]
-          },
-          {
-            "group": "Articles",
-            "pages": [
-              "autex/manufacturing-process",
-              "autex/products",
-              "autex/terminology"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "DriveWorks",
         "groups": [
           {
-            "group": "Guides",
+            "group": "Start",
             "pages": [
+              "driveworks/index",
+              "driveworks/structure",
+              "driveworks/login-credentials",
+              "driveworks/training"
+            ]
+          },
+          {
+            "group": "How-to guides",
+            "pages": [
+              "driveworks/how-to/index",
               "driveworks/how-to/administrator",
               "driveworks/how-to/autopilot",
               "driveworks/how-to/data-management",
@@ -68,92 +61,203 @@
             ]
           },
           {
-            "group": "Overview",
+            "group": "Concepts",
             "pages": [
-              "driveworks/how-to/index",
-              "driveworks/index",
-              "driveworks/login-credentials",
-              "driveworks/structure",
-              "driveworks/training",
-              "driveworks/troubleshooting",
-              "driveworks/version-control"
+              "driveworks/concepts/index",
+              "driveworks/concepts/groups-projects-specifications",
+              "driveworks/concepts/rules-evaluation-and-dependencies",
+              "driveworks/concepts/recalculation-triggers",
+              "driveworks/concepts/constants-variables-and-tables",
+              "driveworks/concepts/rules-search-and-replace",
+              "driveworks/concepts/capture-to-generation",
+              "driveworks/concepts/administrator-ui-extension",
+              "driveworks/concepts/how-autex-hosts-driveworks",
+              "driveworks/concepts/navigate-decompiled-assemblies"
+            ]
+          },
+          {
+            "group": "Operations",
+            "pages": [
+              "driveworks/version-control",
+              "driveworks/troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Plugins",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["driveworks/plugins/index"]
+          },
+          {
+            "group": "Plugin development",
+            "pages": [
+              "driveworks/plugins/maintain/index",
+              "driveworks/plugins/maintain/plugin-architecture",
+              "driveworks/plugins/maintain/build-and-deploy",
+              "driveworks/plugins/maintain/add-custom-function",
+              "driveworks/plugins/maintain/debug-and-release"
+            ]
+          },
+          {
+            "group": "Autex Toolkit",
+            "pages": [
+              "driveworks/plugins/toolkit/index",
+              {
+                "group": "Use",
+                "pages": [
+                  "driveworks/plugins/toolkit/getting-started",
+                  "driveworks/plugins/toolkit/first-script-tutorial",
+                  "driveworks/plugins/toolkit/administrator-surfaces",
+                  "driveworks/plugins/toolkit/autex-tools-window",
+                  "driveworks/plugins/toolkit/scripts",
+                  "driveworks/plugins/toolkit/scripts-release-catalog",
+                  {
+                    "group": "Release scripts",
+                    "pages": [
+                      "driveworks/plugins/toolkit/scripts-release/index",
+                      "driveworks/plugins/toolkit/scripts-release/just-fix-it",
+                      "driveworks/plugins/toolkit/scripts-release/find-and-replace",
+                      "driveworks/plugins/toolkit/scripts-release/unreferenced-data",
+                      "driveworks/plugins/toolkit/scripts-release/list-data",
+                      "driveworks/plugins/toolkit/scripts-release/check-names",
+                      "driveworks/plugins/toolkit/scripts-release/compare-projects",
+                      "driveworks/plugins/toolkit/scripts-release/create-data",
+                      "driveworks/plugins/toolkit/scripts-release/drive-controls",
+                      "driveworks/plugins/toolkit/scripts-release/export-snapshots",
+                      "driveworks/plugins/toolkit/scripts-release/format-all-rules",
+                      "driveworks/plugins/toolkit/scripts-release/macro-triggers",
+                      "driveworks/plugins/toolkit/scripts-release/copy-selected-project-data",
+                      "driveworks/plugins/toolkit/scripts-release/delete-data",
+                      "driveworks/plugins/toolkit/scripts-release/sync-3d-environment-group"
+                    ]
+                  },
+                  "driveworks/plugins/toolkit/group-constants",
+                  "driveworks/plugins/toolkit/spell-checker",
+                  "driveworks/plugins/toolkit/form-styling-metaclass",
+                  "driveworks/plugins/toolkit/form-designer-tools",
+                  "driveworks/plugins/toolkit/project-compare-and-snapshots"
+                ]
+              },
+              {
+                "group": "Maintain",
+                "pages": [
+                  "driveworks/plugins/toolkit/build-and-deploy",
+                  {
+                    "group": "Architecture",
+                    "pages": [
+                      "driveworks/plugins/toolkit/architecture/index",
+                      "driveworks/plugins/toolkit/architecture/plugin-entry",
+                      "driveworks/plugins/toolkit/architecture/core-services",
+                      "driveworks/plugins/toolkit/architecture/data-models",
+                      "driveworks/plugins/toolkit/architecture/scripts",
+                      "driveworks/plugins/toolkit/architecture/rules-builder",
+                      "driveworks/plugins/toolkit/architecture/wpf-views",
+                      "driveworks/plugins/toolkit/architecture/webview-ui",
+                      "driveworks/plugins/toolkit/architecture/assets-and-services",
+                      "driveworks/plugins/toolkit/architecture/build-infra"
+                    ]
+                  },
+                  {
+                    "group": "Administrator injection",
+                    "pages": [
+                      "driveworks/plugins/toolkit/injection/index",
+                      "driveworks/plugins/toolkit/injection/administrator-ui-map",
+                      "driveworks/plugins/toolkit/injection/add-command-manager-button",
+                      "driveworks/plugins/toolkit/injection/add-quickbar-button",
+                      "driveworks/plugins/toolkit/injection/add-view-scoped-command-button",
+                      "driveworks/plugins/toolkit/injection/add-virtual-split-command-button",
+                      "driveworks/plugins/toolkit/injection/add-sidebar-menu-item",
+                      "driveworks/plugins/toolkit/injection/add-rules-builder-button",
+                      "driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item",
+                      "driveworks/plugins/toolkit/injection/add-form-control-properties",
+                      "driveworks/plugins/toolkit/injection/create-toolkit-window"
+                    ]
+                  },
+                  {
+                    "group": "Tech stack",
+                    "pages": [
+                      "driveworks/plugins/toolkit/tech-stack/index",
+                      "driveworks/plugins/toolkit/tech-stack/scriban",
+                      "driveworks/plugins/toolkit/tech-stack/webview2",
+                      "driveworks/plugins/toolkit/tech-stack/serilog",
+                      "driveworks/plugins/toolkit/tech-stack/hunspell",
+                      "driveworks/plugins/toolkit/tech-stack/newtonsoft-json",
+                      "driveworks/plugins/toolkit/tech-stack/tomlyn",
+                      "driveworks/plugins/toolkit/tech-stack/costura-fody"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
             "group": "AutexCustom",
             "pages": [
               "driveworks/plugins/autexcustom/index",
-              "driveworks/plugins/autexcustom/machine-movement-time",
-              "driveworks/plugins/autexcustom/now-local",
-              "driveworks/plugins/autexcustom/user-country-and-region"
+              {
+                "group": "Use",
+                "pages": [
+                  "driveworks/plugins/autexcustom/core-functions",
+                  "driveworks/plugins/autexcustom/user-country-and-region",
+                  "driveworks/plugins/autexcustom/now-local",
+                  "driveworks/plugins/autexcustom/machine-movement-time",
+                  "driveworks/plugins/autexcustom/colors",
+                  "driveworks/plugins/autexcustom/table-by-column",
+                  "driveworks/plugins/autexcustom/specification-flow-tasks",
+                  "driveworks/plugins/autexcustom/documents"
+                ]
+              },
+              {
+                "group": "Maintain",
+                "pages": ["driveworks/plugins/autexcustom/build-and-deploy"]
+              }
             ]
           },
           {
-            "group": "Plugins",
+            "group": "AutexPdfExport",
+            "pages": [
+              "driveworks/plugins/autexpdfexport",
+              "driveworks/plugins/autexpdfexport/build-and-deploy"
+            ]
+          },
+          {
+            "group": "Icons",
+            "pages": [
+              "driveworks/plugins/icons",
+              "driveworks/plugins/icons/build-and-deploy"
+            ]
+          },
+          {
+            "group": "ConvertUnits",
             "pages": [
               "driveworks/plugins/convertunits",
-              "driveworks/plugins/icons",
-              "driveworks/plugins/index"
-            ]
-          },
-          {
-            "group": "Autex Toolkit",
-            "pages": [
-              "driveworks/plugins/toolkit/administrator-surfaces",
-              "driveworks/plugins/toolkit/architecture/assets-and-services",
-              "driveworks/plugins/toolkit/architecture/build-infra",
-              "driveworks/plugins/toolkit/architecture/core-services",
-              "driveworks/plugins/toolkit/architecture/data-models",
-              "driveworks/plugins/toolkit/architecture/index",
-              "driveworks/plugins/toolkit/architecture/plugin-entry",
-              "driveworks/plugins/toolkit/architecture/rules-builder",
-              "driveworks/plugins/toolkit/architecture/scripts",
-              "driveworks/plugins/toolkit/architecture/webview-ui",
-              "driveworks/plugins/toolkit/architecture/wpf-views",
-              "driveworks/plugins/toolkit/autex-tools-window",
-              "driveworks/plugins/toolkit/build-and-deploy",
-              "driveworks/plugins/toolkit/form-designer-tools",
-              "driveworks/plugins/toolkit/form-styling-metaclass",
-              "driveworks/plugins/toolkit/getting-started",
-              "driveworks/plugins/toolkit/group-constants",
-              "driveworks/plugins/toolkit/index",
-              "driveworks/plugins/toolkit/injection/add-command-manager-button",
-              "driveworks/plugins/toolkit/injection/add-form-control-properties",
-              "driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item",
-              "driveworks/plugins/toolkit/injection/add-quickbar-button",
-              "driveworks/plugins/toolkit/injection/add-rules-builder-button",
-              "driveworks/plugins/toolkit/injection/add-sidebar-menu-item",
-              "driveworks/plugins/toolkit/injection/add-view-scoped-command-button",
-              "driveworks/plugins/toolkit/injection/add-virtual-split-command-button",
-              "driveworks/plugins/toolkit/injection/administrator-ui-map",
-              "driveworks/plugins/toolkit/injection/create-toolkit-window",
-              "driveworks/plugins/toolkit/injection/index",
-              "driveworks/plugins/toolkit/project-compare-and-snapshots",
-              "driveworks/plugins/toolkit/scripts",
-              "driveworks/plugins/toolkit/scripts-release/copy-selected-project-data",
-              "driveworks/plugins/toolkit/scripts-release/delete-data",
-              "driveworks/plugins/toolkit/scripts-release/index",
-              "driveworks/plugins/toolkit/scripts-release/sync-3d-environment-group",
-              "driveworks/plugins/toolkit/scripts-release-catalog",
-              "driveworks/plugins/toolkit/spell-checker",
-              "driveworks/plugins/toolkit/tech-stack/costura-fody",
-              "driveworks/plugins/toolkit/tech-stack/hunspell",
-              "driveworks/plugins/toolkit/tech-stack/index",
-              "driveworks/plugins/toolkit/tech-stack/newtonsoft-json",
-              "driveworks/plugins/toolkit/tech-stack/scriban",
-              "driveworks/plugins/toolkit/tech-stack/serilog",
-              "driveworks/plugins/toolkit/tech-stack/tomlyn",
-              "driveworks/plugins/toolkit/tech-stack/webview2"
+              "driveworks/plugins/convertunits/build-and-deploy"
             ]
           }
         ]
       },
       {
-        "tab": "Wiki",
+        "tab": "Internal",
         "groups": [
           {
-            "group": "Overview",
-            "pages": ["in-product-help/index", "wiki-home"]
+            "group": "Autex",
+            "pages": [
+              "autex/index",
+              "autex/products",
+              "autex/manufacturing-process",
+              "autex/terminology"
+            ]
+          },
+          {
+            "group": "Infrastructure",
+            "pages": ["software/index"]
+          },
+          {
+            "group": "Docs project",
+            "pages": ["in-product-help/index"]
           }
         ]
       },
@@ -166,20 +270,7 @@
           },
           {
             "group": "Articles",
-            "pages": ["reference/mdx-tips", "reference/authoring-conventions"]
-          }
-        ]
-      },
-      {
-        "tab": "Software",
-        "groups": [
-          {
-            "group": "Articles",
-            "pages": ["software/iis", "software/solidworks", "software/sql-server"]
-          },
-          {
-            "group": "Overview",
-            "pages": ["software/index"]
+            "pages": ["reference/authoring-conventions", "reference/mdx-tips"]
           }
         ]
       }
@@ -205,7 +296,12 @@
   "redirects": [
     {
       "source": "/home",
-      "destination": "/wiki-home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wiki-home",
+      "destination": "/",
       "permanent": true
     },
     {

@@ -1,0 +1,27 @@
+---
+title: AutexCustom — Document types
+sidebarTitle: Document types
+description: DXF nest and PDF Project document types registered by AutexCustom.
+type: reference
+audience: operator
+---
+
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
+import { CustomFunctionDoc } from "/snippets/autex/CustomFunctionDoc.jsx";
+
+## Document types
+
+### DXF Document (Nest)
+
+- **Picker name:** **DXF Document (Nest)** (`DxfDocumentDesigner`)
+- **Purpose:** On release, writes a nest DXF (slab outline, cut lines, labels) from the same nested table shape as **Autex Slab Packing** output.
+- **ProjectDocumentRule rows:** DocumentPath, DocumentName, nested table rule (column name matches Slab Packing constants), Slab Width, Slab Length, page number, optional settings table (`settingsTable`), plus hide-from-list flag in the document XML.
+
+### PDF Document
+
+- **Picker name:** **PDF Document** (`PdfDocumentDesigner`; generation in **AutexPdfExport** assembly)
+- **Purpose:** Renders a local `.html` / `.htm` / `.svg` through WebView2 and prints to PDF (A4 landscape, fixed print settings per designer HTML).
+- **ProjectDocumentRule rows:** DocumentPath, DocumentName, **PdfSource** (full or spec-relative path to the source file).
+## Related
+
+- [AutexCustom hub](/driveworks/plugins/autexcustom)

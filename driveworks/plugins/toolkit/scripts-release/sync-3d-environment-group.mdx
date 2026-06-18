@@ -2,14 +2,13 @@
 title: Autex Toolkit — Sync 3D environment (group)
 sidebarTitle: Autex Toolkit — Sync 3D environment
 description: Copy 3D document environment settings from a template Project to selected 3D documents across the DriveWorks Group using Autex Tools.
+type: how-to
+audience: operator
 ---
-
 
 ## Sync 3D environment (group)
 
 This Release script reads environment-related values from a template **3D document** inside a designated **Toolkit** **Project**, then applies them to **3D documents** you select in other **Projects** in the same **Group**. Use it when many **Projects** should share matching **3D document** environment configuration.
-
-Implementation reference: `Autex Toolkit/DWPlugin/Scripts/Release/SyncThreeDEnvironmentScript.cs`.
 
 ## How to open and run
 
@@ -31,9 +30,11 @@ Implementation reference: `Autex Toolkit/DWPlugin/Scripts/Release/SyncThreeDEnvi
 
 Danger level from the shipped catalog applies: **preview then apply across Group**. Mutations occur only after you tick targets and choose **Apply environment settings** (`MutationsOnlyInApplySelected`). Each destination **Project** is opened, updated, saved, and closed during apply.
 
-<Danger>
-Applying overwrites targeted **3D document** environment fields with values from the template. Confirm the toolkit **Project** and template **3D document** before apply.
-</Danger>
+<Warning>
+  Applying overwrites targeted **3D document** environment fields with values
+  from the template. Confirm the toolkit **Project** and template **3D
+  document** before apply.
+</Warning>
 
 ## Verify labels in build
 

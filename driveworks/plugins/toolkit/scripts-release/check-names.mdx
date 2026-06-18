@@ -1,0 +1,41 @@
+---
+title: Check names (PascalCase and spelling)
+sidebarTitle: Check names
+description: Validate PascalCase naming and dictionary spelling for DriveWorks item names, then apply selected renames.
+type: reference
+audience: operator
+---
+
+**Check names** runs PascalCase structure checks and Hunspell segment spelling in one pass, then lets you apply renames to selected rows.
+
+**Danger level:** Preview then apply rename.
+
+## Requirements
+
+| Requirement  | Value                                                             |
+| ------------ | ----------------------------------------------------------------- |
+| Mode         | Project or Group                                                  |
+| Open Project | Not required for Group-level types                                |
+| Group mode   | Loops Projects when Data type is **All** or a Project-scoped type |
+
+## Inputs
+
+| Input                        | Default | Description                                                         |
+| ---------------------------- | ------- | ------------------------------------------------------------------- |
+| Data type                    | All     | Same scope as legacy Pascal check (includes **Forms**)              |
+| Check PascalCase convention  | On      | Structural and capitalization checks                                |
+| Check spelling (dictionary)  | On      | Segment spelling; skipped for types outside the spelling list       |
+| Write diagnostic log and CSV | On      | `CheckNames.log` and `CheckNames_results.csv` beside the plugin DLL |
+
+**Suggested Name** is editable before **Apply renames**. Invalid names for the **Section** are rejected at apply time.
+
+## Output
+
+Table columns: **Name**, **Suggested Name**, **Invalid segments**, **Suggestion**, **Issue kinds** (`PascalCase`, `Spelling`, or both), **Section**, **Location**.
+
+## Related
+
+- [List data](/driveworks/plugins/toolkit/scripts-release/list-data)
+- [Find and replace](/driveworks/plugins/toolkit/scripts-release/find-and-replace)
+- [Spell checker](/driveworks/plugins/toolkit/spell-checker)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

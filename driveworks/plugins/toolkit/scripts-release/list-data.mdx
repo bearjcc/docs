@@ -1,0 +1,39 @@
+---
+title: List data
+sidebarTitle: List data
+description: List DriveWorks data by type with optional name, Rule, and value filters.
+type: reference
+audience: operator
+---
+
+**List data** inspects what exists in the Group or Project: Constants, Variables, Forms, form controls, tables, documents, and more.
+
+**Danger level:** Read-only.
+
+## Requirements
+
+| Requirement  | Value                                                 |
+| ------------ | ----------------------------------------------------- |
+| Mode         | Project or Group                                      |
+| Open Project | Not required for Group-level types                    |
+| Group mode   | Shows Group-level data or prompts for Project context |
+
+## Inputs
+
+| Input        | Default    | Description                                                 |
+| ------------ | ---------- | ----------------------------------------------------------- |
+| Data type    | (required) | Constants, Variables, Forms, Form Controls, etc.            |
+| Control type | All        | Filter by form control type when Data type is Form Controls |
+| Name filter  | (empty)    | Exact or contains                                           |
+| Rule filter  | (empty)    | Filter by Rule content                                      |
+| Value filter | (empty)    | Filter by value or output                                   |
+
+## Output
+
+Table of items matching the selected type and filters. Column set depends on data type.
+
+## Related
+
+- [Check names](/driveworks/plugins/toolkit/scripts-release/check-names)
+- [Unreferenced data](/driveworks/plugins/toolkit/scripts-release/unreferenced-data)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

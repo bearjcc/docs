@@ -1,0 +1,38 @@
+---
+title: Recalculation triggers
+sidebarTitle: Recalculation triggers
+description: Why external-data Rules go stale and how recalculation trigger Constants fix it.
+type: explanation
+audience: operator
+---
+
+PowerPacks and connectors expose a **trigger** or **refresh** argument so Rules re-run when external data changes. When no trigger exists, Autex standard practice uses a dedicated **Project Constant** flipped by a **Specification Macro**.
+
+## Pattern
+
+1. Add **Project Constant** `Refresh…` (`DWConstantRefresh…`).
+2. Pass it into the function (last argument) or embed it in SQL/path text.
+3. **Specification Macro** with **Drive Constant Value** toggles the Constant after external data changes.
+4. Optionally **Update Form UI** after the macro on long flows.
+
+Example macro Rule for SQL-backed refresh:
+
+```text
+If(DWConstantRefreshLineItem = "", " ", "")
+```
+
+## When to use which flip
+
+| Situation                              | Flip style                                  |
+| -------------------------------------- | ------------------------------------------- |
+| Constant concatenated into SQL or path | Text: `If(DWConstantRefresh = "", " ", "")` |
+| Dedicated trigger argument only        | Numeric/boolean toggle or counter `+ 1`     |
+| No refresh parameter on function       | `Indirect()` wrapper or macro-only refresh  |
+
+## Procedure
+
+Full steps and examples: [Force a data refresh](/driveworks/how-to/force-data-refresh).
+
+## Related
+
+- [Rules evaluation and dependencies](/driveworks/concepts/rules-evaluation-and-dependencies)

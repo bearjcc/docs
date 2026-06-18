@@ -1,0 +1,37 @@
+---
+title: Plugin development at Autex
+sidebarTitle: Plugin development
+description: Maintainer hub for extending, building, and shipping Autex DriveWorks plugins.
+type: reference
+audience: maintainer
+---
+
+Guides for developers extending Autex DriveWorks plugins. Operator docs (how to use features in Administrator) live under each plugin's **Use** section in the sidebar.
+
+## Start here
+
+| Page                                                                               | Use it for                                                          |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [Plugin architecture at Autex](/driveworks/plugins/maintain/plugin-architecture)   | Administrator plugin vs Shared Project Extender vs Project document |
+| [Build and deploy any Autex plugin](/driveworks/plugins/maintain/build-and-deploy) | `Build.ps1`, `Build-Release.ps1`, Debug vs Release                  |
+| [Add a custom function or task](/driveworks/plugins/maintain/add-custom-function)  | UDF and Specification Flow task registration patterns               |
+| [Debug vs Release behavior](/driveworks/plugins/maintain/debug-and-release)        | Compile-time gates, script categories, production deploy            |
+
+## Per-plugin maintain
+
+| Plugin         | Page                                                                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Autex Toolkit  | [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy), [Architecture](/driveworks/plugins/toolkit/architecture), [Injection](/driveworks/plugins/toolkit/injection) |
+| AutexCustom    | [Build and deploy](/driveworks/plugins/autexcustom/build-and-deploy)                                                                                                           |
+| AutexPdfExport | [Build and deploy](/driveworks/plugins/autexpdfexport/build-and-deploy)                                                                                                        |
+| Icons          | [Build and deploy](/driveworks/plugins/icons/build-and-deploy)                                                                                                                 |
+| ConvertUnits   | [Build and deploy](/driveworks/plugins/convertunits/build-and-deploy)                                                                                                          |
+
+## Quality gates
+
+Run **AutexScan** after substantive C# or WebAssets edits. Maintainer experiments use **Debug** builds from `Build.ps1`; production shares use **Build-Release.ps1** from `main`.
+
+## Related
+
+- [DriveWorks concepts](/driveworks/concepts) — distilled platform reference for authors
+- [Toolkit injection guides](/driveworks/plugins/toolkit/injection) — UI extension how-tos

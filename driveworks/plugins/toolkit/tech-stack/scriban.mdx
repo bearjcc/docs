@@ -1,9 +1,9 @@
 ---
 title: Scriban
-sidebarTitle: What it is
 description: .NET templating engine used by Autex Toolkit to compose WebView2 HTML from embedded templates and partials.
+type: reference
+audience: maintainer
 ---
-
 
 **Scriban** is the .NET templating engine behind Toolkit 3.0 WebView UI. C# page builders pass models into `*.scriban.html` templates; the rendered HTML ships inside **`Autex Toolkit.dll`** as embedded resources, not loose files beside the plugin.
 
@@ -18,8 +18,8 @@ The NuGet package is a compile-time dependency only. End users receive it embedd
 Package reference in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
 
 | Package | Version |
-| --- | --- |
-| Scriban | 7.2.0 |
+| ------- | ------- |
+| Scriban | 7.2.0   |
 
 **WebAssets** under `DWPlugin\WebAssets\` are **`EmbeddedResource`** items in the same csproj (`WebAssets\**\*` with excludes for `node_modules`, npm lockfiles, and ESLint config). Production hosts load templates from the assembly via **`WebViewAssetLoader`** and `https://toolkit.webassets/…`, not from a folder next to the DLL.
 
@@ -29,7 +29,8 @@ Package reference in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
 - **csproj**: `ValidateWebAssetsScriban` runs the same validator before `CoreCompile` unless `SkipScribanWebAssetsValidation=true` (Build.ps1 sets this during MSBuild so validation does not run twice in one pass).
 
 <Info>
-Do not run `dotnet build` on the plugin `.csproj` directly. Use **`Build.ps1`** or **`Build-Release.ps1`**.
+  Do not run `dotnet build` on the plugin `.csproj` directly. Use
+  **`Build.ps1`** or **`Build-Release.ps1`**.
 </Info>
 
 ## Official links
@@ -49,10 +50,10 @@ Do not run `dotnet build` on the plugin `.csproj` directly. Use **`Build.ps1`** 
 
 ### C# rendering pipeline
 
-| Type | Role |
-| --- | --- |
-| `ScribanUiRenderer` | Parses and renders template text; loads includes from embedded WebAssets. |
-| `WebViewPageRenderer` | Wraps `ScribanUiRenderer`; inlines CSS/JS and renders the document shell. |
+| Type                     | Role                                                                                           |
+| ------------------------ | ---------------------------------------------------------------------------------------------- |
+| `ScribanUiRenderer`      | Parses and renders template text; loads includes from embedded WebAssets.                      |
+| `WebViewPageRenderer`    | Wraps `ScribanUiRenderer`; inlines CSS/JS and renders the document shell.                      |
 | `*WebViewPageBuilder.cs` | Builds `WebViewPageModel`, loads assets via `WebViewAssetLoader`, calls `WebViewPageRenderer`. |
 
 Page builders live under `Autex Toolkit/DWPlugin/WebView/`, including `ScriptToolsWebViewPageBuilder`, `ProjectComparisonWebViewPageBuilder`, and `VersionControlWebViewPageBuilder`.
@@ -73,7 +74,8 @@ Templates are **embedded resources**, not loose `WebAssets` beside the DLL at ru
 ```
 
 <Info>
-Do not concatenate HTML with `+` from `include` output. Use `capture` blocks (see `Documentation/Toolkit/webview2-conventions.md`).
+  Do not concatenate HTML with `+` from `include` output. Use `capture` blocks
+  in Scriban templates.
 </Info>
 
 ## Why we picked it
@@ -81,7 +83,7 @@ Do not concatenate HTML with `+` from `include` output. Use `capture` blocks (se
 - **Separation of concerns:** HTML layout and copy live in Scriban templates; C# owns data, bridge actions, and navigation. Page builders stay thin.
 - **Composable UI3:** Wireframes and Figma-style atoms map to partials (`_shared/partials`, feature `partials/`) instead of duplicated markup in one body file.
 - **Build-time safety:** `ScribanWebAssetsValidator` parses every `*.scriban.html` and smoke-renders each `*.body.scriban.html` before ship, catching broken includes early.
-- **Governance:** Layout and density rules are documented in `Documentation/Toolkit/ui3-design-spec.md` and `Documentation/Toolkit/webview2-conventions.md` (WebView composition, token picker shells, session strip).
+- **Governance:** Layout and density rules live in Toolkit WebView page builders and shared Scriban partials under the WebView UI architecture layer.
 
 Razor and server-side ASP.NET templates were a poor fit: Toolkit runs inside **DriveWorks Administrator** on .NET Framework 4.8 with no web host. Scriban renders strings in-process with a small dependency surface.
 

@@ -1,0 +1,79 @@
+---
+title: AutexCustom — Color catalog lookups
+sidebarTitle: Color lookups
+description: Pantone and RAL custom functions that return hex color values for Rules.
+type: reference
+audience: operator
+---
+
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
+import { CustomFunctionDoc } from "/snippets/autex/CustomFunctionDoc.jsx";
+
+## Color catalog lookups (Pantone and RAL)
+
+Embedded catalogs ship in **AutexCustom** (no Group table required). Rule Builder category: **Autex Custom Functions**. Successful lookups return hex as `#RRGGBB` (e.g. `#FF0000`). Lookup failures return Excel-style error strings (`#INVALIDINPUT!`, `#KEY!`, `#VALUE!`); near-miss Pantone/RAL codes may include a **did you mean** suggestion on `#KEY!`.
+
+<CustomFunctionDoc
+  name="AutexGetPantoneHex"
+  availability="Function"
+  inputs="`pantone` (String). PMS number or catalog name (e.g. `186`, `Cool Gray 5`, `Process Yellow`). Optional leading `Pantone ` prefix (case-insensitive)."
+  output="String, hex `#RRGGBB` for the match, or an error string"
+  example="AutexGetPantoneHex(186)"
+/>
+
+<CustomFunctionDoc
+  name="AutexPantoneCodesAsList"
+  availability="Function"
+  inputs="none"
+  output="String, pipe-delimited list of all Pantone PMS codes and names in the embedded catalog"
+  example="AutexPantoneCodesAsList()"
+/>
+
+<CustomFunctionDoc
+  name="AutexPantoneAsTable"
+  availability="Function"
+  inputs="none"
+  output="Table with header row `Code` | `Hex` and one data row per catalog entry"
+  example="AutexPantoneAsTable()"
+/>
+
+<CustomFunctionDoc
+  name="AutexGetRalHex"
+  availability="Function"
+  inputs="`ral` (String). RAL Classic number (e.g. `9010`, `3020`). Optional `RAL` prefix with flexible spacing or punctuation (e.g. `RAL 9010`, `RAL-9010`)."
+  output="String, hex `#RRGGBB` for the match, or an error string"
+  example='AutexGetRalHex("RAL 9010")'
+/>
+
+<CustomFunctionDoc
+  name="AutexRalCodesAsList"
+  availability="Function"
+  inputs="none"
+  output="String, pipe-delimited list of all RAL Classic codes in the embedded catalog"
+  example="AutexRalCodesAsList()"
+/>
+
+<CustomFunctionDoc
+  name="AutexRalAsTable"
+  availability="Function"
+  inputs="none"
+  output="Table with header row `Code` | `Hex` and one data row per catalog entry"
+  example="AutexRalAsTable()"
+/>
+
+<CustomFunctionDoc
+  name="AutexGetProjectTables"
+  availability="Function (overload with optional filter)"
+  inputs="optional `filter` (String). Pipe-delimited tokens, case-insensitive. Omit or use `all` for every project table kind."
+  output="String, pipe-delimited rule reference names (e.g. `DWLookupCustomers|DWCalcOrderDetails`). Uses SDK `GetTableReferenceName`. Not group tables; use Specification PowerPack `SppGetGroupTables` for those."
+  example='AutexGetProjectTables("simple|calc")'
+>
+  <p className="text-sm text-gray-700 dark:text-gray-300">
+    <strong>Filter tokens:</strong> `all`, `lookup` / `datatable` / `define`,
+    `simple`, `excel` / `imported`, `odbc`, `sql` / `sqlserver`, `rollup`,
+    `calc` / `calculation` / `calctable`.
+  </p>
+</CustomFunctionDoc>
+## Related
+
+- [AutexCustom hub](/driveworks/plugins/autexcustom)

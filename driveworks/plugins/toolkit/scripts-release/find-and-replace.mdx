@@ -1,0 +1,44 @@
+---
+title: Find and replace
+sidebarTitle: Find and replace
+description: Preview substring matches across Rules and static values, then apply replacements for selected rows only.
+type: reference
+audience: operator
+---
+
+**Find and replace** searches Rules (including 3D and environment), Project Constants, and non-rule form control values for a substring, previews matches, then applies replacements only for checked rows.
+
+**Danger level:** Preview then apply.
+
+## Requirements
+
+| Requirement  | Value                                                      |
+| ------------ | ---------------------------------------------------------- |
+| Mode         | Project or Group                                           |
+| Open Project | Required in Project mode; Group mode previews each Project |
+| Group mode   | Merged table includes a **Project** column                 |
+
+## Inputs
+
+| Input                     | Default    | Description                                                           |
+| ------------------------- | ---------- | --------------------------------------------------------------------- |
+| Text to find              | (required) | Substring to search for                                               |
+| Replacement text          | (empty)    | Text to insert in place                                               |
+| Rules                     | checked    | Variables, Model Rules, rule-driven form controls, 3D and environment |
+| Constants and form values | checked    | Project Constants and non-rule form control property values           |
+| Case sensitive            | checked    | Match case exactly                                                    |
+
+Unlike Rules Builder **Replace in All Rules** (token matching), this script matches substrings so `AutexUserAUState` matches inside `AutexUserAUState()`.
+
+## Output
+
+**Run:** Preview table with Status, Reason, Name, Section, Location, rule/value before and after. Rows that would apply show **Would replace**; validation failures show **Skipped**. **Rule after** and **Value after** are editable per row.
+
+**Replace selected:** Applies checked rows (using edited after columns when changed), then saves.
+
+## Related
+
+- [Unreferenced data](/driveworks/plugins/toolkit/scripts-release/unreferenced-data)
+- [List data](/driveworks/plugins/toolkit/scripts-release/list-data)
+- [Format all rules](/driveworks/plugins/toolkit/scripts-release/format-all-rules)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)

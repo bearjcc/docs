@@ -1,0 +1,38 @@
+---
+title: How Autex hosts DriveWorks
+sidebarTitle: Autex hosting
+description: Azure servers, shared Group editing, and GLOBAL vs DEV Groups for the Autex DriveWorks team.
+type: explanation
+audience: internal
+---
+
+Autex runs DriveWorks on Azure-hosted Windows servers with RTP access for administrators. Production and development **Groups** are separate; editing strategy affects latency and save conflicts.
+
+## Servers (summary)
+
+| Role       | Host         | Notes                                                                            |
+| ---------- | ------------ | -------------------------------------------------------------------------------- |
+| Data / SQL | `AZDWAPP01`  | Group data, SQL `SQLEXPRESS` instance                                            |
+| Live       | `AZDWLIVE01` | [driveworks.autex.co.nz](https://driveworks.autex.co.nz/), development Live site |
+
+Access procedures: [Login credentials](/driveworks/login-credentials) (passwords in team password manager only).
+
+## Groups
+
+| Group            | Use                        |
+| ---------------- | -------------------------- |
+| **AUTEX GLOBAL** | Production                 |
+| **AUTEX DEV**    | Implementation and testing |
+
+Project area map: [Autex environment map](/driveworks/structure).
+
+## Shared Group editing
+
+The team historically edits **AUTEX DEV** through **shared Group** functionality over the network (Administrator on local machines, Group on Azure). That can add latency on open, save, and model generation compared with local Individual Groups.
+
+When performance matters for heavy iteration, prefer a local Individual Group copy and merge through your [version control](/driveworks/version-control) workflow.
+
+## Related
+
+- [Licensing and floating licenses](/driveworks/how-to/licensing)
+- [Data Management](/driveworks/how-to/data-management)

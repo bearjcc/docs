@@ -2,6 +2,8 @@
 title: DriveWorks Administrator UI region map
 sidebarTitle: DriveWorks Administrator UI region map
 description: Visual map of DriveWorks Administrator chrome and major view regions with decompiled WPF names and Autex Toolkit injection targets.
+type: reference
+audience: maintainer
 ---
 
 import { AdministratorShellDiagram } from "/snippets/diagrams/AdministratorShellDiagram.jsx";
@@ -186,12 +188,7 @@ Rendered diagrams are JSX components in `/snippets/diagrams/`. Edit the `.drawio
 
 ## Internal references
 
-Decompiled sources (workspace, not official DriveWorks documentation):
-
-- `Documentation/DriveWorks-Docs/decompiled/23.1.0.630/DriveWorks.Applications.Implementation.decompiled.cs` — `SolidWorksWindow`, `ViewTreeViewModel`, `ApplicationViewManager`
-- `Documentation/DriveWorks-Docs/decompiled/23.1.0.630/DriveWorks.Applications.decompiled.cs` — `AdministratorViewNames`, `ICommandBarManager`, `IQuickBarManager`, `IViewManager`
-- `Documentation/DriveWorks-Docs/decompiled/23.1.0.630/DriveWorks.Applications.AdministratorViews.decompiled.cs` — `FormDesignerView`
-- `Documentation/DriveWorks-Docs/decompiled/23.1.0.630/DriveWorksAdministratorCore.decompiled.cs` — `RulesBuilderFormWpf`
+For maintainer investigation of Administrator shell types, use [Navigate decompiled assemblies](/driveworks/concepts/navigate-decompiled-assemblies). Do not publish decompile file paths in operator docs.
 
 ## Related
 

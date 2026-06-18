@@ -1,9 +1,9 @@
 ---
 title: Serilog
-sidebarTitle: What it is
 description: Structured logging library for the Autex Toolkit plugin; powers ToolkitLog for machine-readable diagnostics and triage.
+type: reference
+audience: maintainer
 ---
-
 
 **Serilog** is the structured logging stack for .NET used by Autex Toolkit. It gives maintainers compact, searchable log files and consistent exception detail when debugging inside **DriveWorks Administrator** and related hosts.
 
@@ -17,18 +17,19 @@ Toolkit wraps Serilog behind **`ToolkitLog`** so feature code logs through one p
 
 Packages are declared in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
 
-| Package | Version |
-| --- | --- |
-| Serilog | 4.3.1 |
-| Serilog.Exceptions | 8.4.0 |
-| Serilog.Formatting.Compact | 3.0.0 |
-| Serilog.Sinks.Debug | 3.0.0 |
-| Serilog.Sinks.File | 7.0.0 |
+| Package                    | Version |
+| -------------------------- | ------- |
+| Serilog                    | 4.3.1   |
+| Serilog.Exceptions         | 8.4.0   |
+| Serilog.Formatting.Compact | 3.0.0   |
+| Serilog.Sinks.Debug        | 3.0.0   |
+| Serilog.Sinks.File         | 7.0.0   |
 
 Maintainers restore and build with **`Build.ps1`** (or **`Build-Release.ps1`** for production). End users do not install NuGet packages; they receive the embedded dependency inside **`Autex Toolkit.dll`** (via Costura.Fody).
 
 <Info>
-Do not run `dotnet restore` or `dotnet build` on the plugin `.csproj` directly. Use the project build scripts.
+  Do not run `dotnet restore` or `dotnet build` on the plugin `.csproj`
+  directly. Use the project build scripts.
 </Info>
 
 ## Official links
@@ -65,7 +66,8 @@ ToolkitLog.Error("WebView", ex, "Navigation failed for {Url}", url);
 ```
 
 <Info>
-Feature code should call **`ToolkitLog`**, not Serilog types directly. See `Documentation/Toolkit/best-practices.md` (logging and exception boundaries).
+  Feature code should call **`ToolkitLog`**, not Serilog types directly. Log at
+  boundaries and errors per team plugin directives.
 </Info>
 
 Runtime exception hooks (unhandled, dispatcher, unobserved task, optional first-chance) also log through `ToolkitLog` under areas such as `Runtime`.
@@ -73,7 +75,7 @@ Runtime exception hooks (unhandled, dispatcher, unobserved task, optional first-
 ## Why we picked it
 
 - **Workspace policy:** `.cursor/rules/Directives.mdc` requires Serilog for code traceability; log meaningful events at boundaries and errors, avoid hot-path spam.
-- **Rejected alternative:** [Microsoft.Extensions.Logging](https://www.nuget.org/packages/Microsoft.Extensions.Logging/) is deferred/not recommended (`Documentation/Packages/deferred-not-recommended.md`) — DriveWorks hosts have no ASP.NET-style composition root, and **`ToolkitLog`** already centralizes Serilog.
+- **Rejected alternative:** Microsoft.Extensions.Logging is deferred — DriveWorks hosts have no ASP.NET-style composition root, and **`ToolkitLog`** already centralizes Serilog.
 - **Host-free structured logs:** JSONL files and property enrichment support triage and test-script diagnostics without depending on a specific logging host or UI.
 
 ## Related

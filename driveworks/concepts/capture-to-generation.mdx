@@ -1,0 +1,45 @@
+---
+title: SOLIDWORKS capture to generation
+sidebarTitle: Capture to generation
+description: End-to-end flow from Capture Assistant through Group storage, Model Rules, Specification release, and model generation.
+type: explanation
+audience: operator
+---
+
+A SOLIDWORKS model in DriveWorks moves through capture, Project modeling, Specification release, and generation on Autopilot or interactive hosts.
+
+## Type ladder
+
+| Stage                 | Part           | Assembly           | Drawing                                        |
+| --------------------- | -------------- | ------------------ | ---------------------------------------------- |
+| Factory               | `PartFactory`  | `AssemblyFactory`  | `DrawingFactory`                               |
+| Group captured        | `CapturedPart` | `CapturedAssembly` | `CapturedDrawing`                              |
+| Project component set | `ProjectPart`  | `ProjectAssembly`  | `ProjectDrawing`                               |
+| Released              | `ReleasedPart` | `ReleasedAssembly` | `ReleasedDrawing` (often derived from a model) |
+
+## Operator phases
+
+1. **Capture** — Open saved model in SOLIDWORKS, open **Group**, use Capture Assistant, save captured component to the **Group**.
+2. **Project** — Add captured model to a **Project** component set; configure **Model Rules** and **Generation Tasks**.
+3. **Specify** — **Specification Flow** runs; release tasks queue or generate models.
+4. **Generate** — Autopilot or SOLIDWORKS host drives the release queue to produce files.
+
+Drawings are usually **derived** from a released model rather than captured standalone for generation.
+
+## Where Rules live
+
+**Model Rules** bind captured parameters (dimensions, features, custom properties). They are not **Variables**; use Model Rules UI and Toolkit list/compare tools when auditing capture behavior.
+
+## Troubleshooting seams
+
+| Symptom            | Check                                   |
+| ------------------ | --------------------------------------- |
+| Model not in queue | Release task ran; component set status  |
+| Wrong geometry     | Model Rule evaluation; capture refresh  |
+| Autopilot idle     | Queue, SOLIDWORKS license, machine task |
+
+## Related
+
+- [Training](/driveworks/training)
+- [Troubleshooting](/driveworks/troubleshooting)
+- [Compare projects](/driveworks/plugins/toolkit/scripts-release/compare-projects)
