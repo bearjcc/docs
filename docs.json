@@ -4,16 +4,26 @@
   "name": "Autex Knowledge Base",
   "description": "DriveWorks operations, Autex plugins, internal wiki, and reference docs for Autex staff.",
   "colors": {
-    "primary": "#166E3F",
-    "light": "#26BD6C",
-    "dark": "#0F5230"
+    "primary": "#333132",
+    "light": "#f4f3f0",
+    "dark": "#252324"
+  },
+  "appearance": {
+    "default": "light"
+  },
+  "background": {
+    "color": {
+      "light": "#fffcf5",
+      "dark": "#252324"
+    }
   },
   "favicon": "/favicon.ico",
   "icons": {
     "library": "lucide"
   },
   "styling": {
-    "latex": true
+    "latex": true,
+    "eyebrows": "breadcrumbs"
   },
   "metadata": {
     "timestamp": true
@@ -278,7 +288,8 @@
   },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/dark.svg",
+    "href": "/"
   },
   "navbar": {
     "links": [],
