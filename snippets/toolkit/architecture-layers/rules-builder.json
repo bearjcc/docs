@@ -1,0 +1,218 @@
+[
+  {
+    "name": "AutexFormDesignerApplicationResolver.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormDesignerApplicationResolver.cs",
+    "summary": "Resolves the DriveWorks application instance for form designer integration. Provides the IApplication reference needed by form designer extensions."
+  },
+  {
+    "name": "AutexFormDesignerDebugLog.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormDesignerDebugLog.cs",
+    "summary": "Debug logging helper for form designer integration. Writes diagnostic output during form designer extension development."
+  },
+  {
+    "name": "AutexFormMetadataDynamicPropertyRegistration.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormMetadataDynamicPropertyRegistration.cs",
+    "summary": "Registers Autex metadata as dynamic properties on form controls in the form designer. Enables the Metadata property to appear in the property grid."
+  },
+  {
+    "name": "AutexFormMetadataPropertyDescriptor.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormMetadataPropertyDescriptor.cs",
+    "summary": "Custom TypeDescriptor for the Autex Metadata property on form controls. Provides property grid integration with get/set operations."
+  },
+  {
+    "name": "AutexFormMetadataPropertyEditor.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormMetadataPropertyEditor.cs",
+    "summary": "Property editor for the Autex Metadata property in the form designer property grid."
+  },
+  {
+    "name": "AutexGridDriveWorksPropertyUiResources.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/GridDriveWorksPropertyUiResources.cs",
+    "summary": "UI resources for the Autex grid DriveWorks property editor. Provides localized strings and icons for the property grid."
+  },
+  {
+    "name": "AutexGridPropertyValueUiInjection.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/GridPropertyValueUiInjection.cs",
+    "summary": "Injects custom value UI into the form designer property grid for Autex-extended properties."
+  },
+  {
+    "name": "AutexGridRulesBuilderInterop.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/GridRulesBuilderInterop.cs",
+    "summary": "Interop bridge between the form designer property grid and the Autex Rules Builder for rule editing on form control properties."
+  },
+  {
+    "name": "AutexGridUIProviderTypeDescriptor.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/GridUIProviderTypeDescriptor.cs",
+    "summary": "Custom TypeDescriptor for the form designer grid UI provider. Intercepts property descriptors to inject Autex custom editors."
+  },
+  {
+    "name": "AutexIconCatalogProvider.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/AutexIconCatalogProvider.cs",
+    "summary": "Provides the icon catalog for the Autex icon picker in the Rules Builder. Loads icon packs and items via reflection against the AutexCustom extender assembly, with data-URI and SVG preview caching."
+  },
+  {
+    "name": "AutexIconPickerWindow.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/AutexIconPickerWindow.cs",
+    "summary": "WPF dialog window for the legacy Autex icon picker in the Rules Builder. Displays icon packs in a grid with search, colour filtering, and selection."
+  },
+  {
+    "name": "AutexLabelWebTechControlAdapter.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/AutexLabelWebTechControlAdapter.cs",
+    "summary": "Adapter for Label controls in the WebTech form designer. Customizes rendering and property handling for Autex-styled labels."
+  },
+  {
+    "name": "AutexLayoutGridDynamicPropertyRegistration.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/LayoutGridDynamicPropertyRegistration.cs",
+    "summary": "Registers Row and Column as dynamic properties on form controls for the Autex layout grid system in the form designer."
+  },
+  {
+    "name": "AutexLayoutGridMetadataContract.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/LayoutGridMetadataContract.cs",
+    "summary": "Contract definitions for Autex layout grid metadata. Defines Row/Column property names and metadata keys used across the layout grid system."
+  },
+  {
+    "name": "ChangeFormControlTypeAction.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/ChangeFormControlTypeAction.cs",
+    "summary": "Converts a form control to another type within supported groups. Handles property capture, control deletion, creation, and property re-application. Used by form designer context menu."
+  },
+  {
+    "name": "CreateMetaclassWindow.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/CreateMetaclassWindow.cs",
+    "summary": "WebView2-based dialog for creating CSS metaclass tokens from form control properties. Parses ProjectStyles.css, shows existing tokens, and generates new metaclass entries."
+  },
+  {
+    "name": "FormDesignerGridPropertyInjection.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormDesignerGridPropertyInjection.cs",
+    "summary": "Injects custom property descriptors into the form designer property grid. Adds Autex-specific properties like Metadata and layout grid Row/Column."
+  },
+  {
+    "name": "FormDesignerInspectCdpLog.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormDesignerInspectCdpLog.cs",
+    "summary": "Debug utility for inspecting Chrome DevTools Protocol (CDP) log messages from the form designer WebView2."
+  },
+  {
+    "name": "FormDesignerWebLayoutBridgeInjection.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormDesigner/FormDesignerWebLayoutBridgeInjection.cs",
+    "summary": "Injects layout grid CSS and JS bridge into the Form Designer WebView2. Handles adorner geometry, theme bootstrap, and postMessage communication for layout grid integration."
+  },
+  {
+    "name": "GroupConstantRuleFormula.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/GroupConstantRuleFormula.cs",
+    "summary": "Helper for building DriveWorks rule formulas that reference Group Constants. Provides token formatting for constant insertion in rules."
+  },
+  {
+    "name": "GroupConstantWebPickerWindow.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/GroupConstantWebPickerWindow.cs",
+    "summary": "WebView2-based picker window for inserting Group Constant references into DriveWorks rules. Replaces legacy WPF picker with a web-based UI."
+  },
+  {
+    "name": "MetaclassWebPickerWindow.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/MetaclassWebPickerWindow.cs",
+    "summary": "WebView2-based picker window for inserting CSS metaclass tokens into DriveWorks form control properties via the Rules Builder."
+  },
+  {
+    "name": "ProjectStylesMetaclassExtractor.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/ProjectStylesMetaclassExtractor.cs",
+    "summary": "Extracts metaclass records from ProjectStyles.css selectors (data-metadata attributes). Supports grouping via #region directives, parameterized metaclasses, and file caching for performance."
+  },
+  {
+    "name": "RulesBuilderAutexIconEntryPoint.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderAutexIconEntryPoint.cs",
+    "summary": "Entry point that registers the Autex icon picker button in the DriveWorks Rules Builder toolbar."
+  },
+  {
+    "name": "RulesBuilderButtonInjection.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderButtonInjection.cs",
+    "summary": "Injects custom buttons into the DriveWorks Rules Builder command bar via WPF class handler and reflection. Manages button registration and lifecycle across Rules Builder windows."
+  },
+  {
+    "name": "RulesBuilderEditorAccess.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderEditorAccess.cs",
+    "summary": "Provides reflection-based access to the DriveWorks Rules Builder editor internals for reading/writing rule text and cursor position."
+  },
+  {
+    "name": "RulesBuilderFormatterEntryPoint.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderFormatterEntryPoint.cs",
+    "summary": "Entry point that registers the rule formatter button in the DriveWorks Rules Builder toolbar."
+  },
+  {
+    "name": "RulesBuilderGroupConstantPickerEntryPoint.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderGroupConstantPickerEntryPoint.cs",
+    "summary": "Entry point that registers the Group Constant picker button in the DriveWorks Rules Builder toolbar."
+  },
+  {
+    "name": "RulesBuilderInspectEntryPoint.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderInspectEntryPoint.cs",
+    "summary": "Entry point that registers the rule inspection button in the DriveWorks Rules Builder toolbar."
+  },
+  {
+    "name": "RulesBuilderMetaclassEntryPoint.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderMetaclassEntryPoint.cs",
+    "summary": "Entry point that registers the metaclass picker button in the DriveWorks Rules Builder toolbar. Detects picture context to show relevant metaclass options."
+  },
+  {
+    "name": "RulesBuilderPictureContextDetector.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderPictureContextDetector.cs",
+    "summary": "Detects whether the current Rules Builder context is editing a picture/image control property, used to conditionally show metaclass options."
+  },
+  {
+    "name": "RulesBuilderRuleAnalysisEntryPoint.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderRuleAnalysisEntryPoint.cs",
+    "summary": "Entry point that registers the rule analysis button in the DriveWorks Rules Builder toolbar for error detection and diagnostics."
+  },
+  {
+    "name": "RulesBuilderSpellCheckEntryPoint.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderSpellCheckEntryPoint.cs",
+    "summary": "Entry point that registers the spell check button in the DriveWorks Rules Builder toolbar."
+  },
+  {
+    "name": "RulesBuilderSpellingContextMenu.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderSpellingContextMenu.cs",
+    "summary": "Provides the context menu for spell-check suggestions in the Rules Builder editor. Shows replacement suggestions and ignore options."
+  },
+  {
+    "name": "RulesBuilderSpellingTaggerRegistration.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderSpellingTaggerRegistration.cs",
+    "summary": "Registers the WPF spell-check tagger (squiggly underline adorner) for the Rules Builder editor using WPF text rendering hooks."
+  },
+  {
+    "name": "TargetControlTypeDropdownEditor.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/FormSpecification/TargetControlTypeDropdownEditor.cs",
+    "summary": "Dropdown editor for target control type selection in specification macro property editing."
+  }
+]

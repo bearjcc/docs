@@ -1,0 +1,94 @@
+---
+title: Authoring conventions
+sidebarTitle: Conventions
+description: Page structure, navigation, links, DriveWorks terminology, and custom function documentation for Mintlify MDX in this repo.
+---
+
+Conventions for consistent pages across the Autex Knowledge Base. Component syntax examples live in [MDX tips](/reference/mdx-tips).
+
+## Page metadata
+
+Every page starts with YAML frontmatter:
+
+```yaml
+---
+title: Page title shown in browser and search
+description: One sentence summary for SEO and social previews
+---
+```
+
+Common optional fields:
+
+- `sidebarTitle` — shorter label in the left nav
+- `icon` — Lucide icon name (site uses `"library": "lucide"` in `docs.json`)
+
+Body content begins at `##` (H2). Do not repeat the page title as `#` in the body.
+
+## Navigation and routing
+
+Mintlify routes from `docs.json`, not from sibling markdown files.
+
+1. Add the page path (without extension) to the correct tab and group in `docs.json`.
+2. Use folder-style paths in the repo, e.g. `driveworks/how-to/sql.mdx` → nav entry `driveworks/how-to/sql`.
+3. Add or update folder index pages (e.g. `driveworks/how-to/index.mdx`) and link them from the same group.
+
+After renaming or moving a file, update `docs.json` and every inbound internal link.
+
+## Links and paths
+
+- Internal: absolute paths, no file extension — `/driveworks/how-to/sql`, `/reference/mdx-tips`.
+- External: full URL with descriptive link text (not "click here").
+- Assets: `/images/wiki/...` from the site root (`images/wiki/` in the repo; migrated Wiki.js media and drawio sources).
+
+## Headings
+
+- One topic per page; split long content rather than deep nesting.
+- Prefer `##` and `###`; avoid skipping levels.
+- Use keyword-rich headings for navigation and search.
+
+## DriveWorks terminology
+
+Use product terms as in DriveWorks help:
+
+| Term                         | Meaning                                             |
+| ---------------------------- | --------------------------------------------------- |
+| **Group**                    | DriveWorks database (not a generic collection)      |
+| **Project**                  | `.driveprojx` container in a Group                  |
+| **Specification**            | One run of a Project                                |
+| **Rule**                     | Formula driving a value                             |
+| **Constant**                 | Static literal (data only, not rule text)           |
+| **Variable**                 | Value determined by a Rule                          |
+| **custom function**          | AutexCustom UDF (name the deployable when relevant) |
+| **Specification Macro**      | Macro invoked from Specification Flow               |
+| **Project document**         | Document plugin output type                         |
+| **DriveWorks Administrator** | Design-time module (not "admin UI" alone)           |
+
+**Project Constants**, **Group Constants**, **Simple Tables**, and **Group Tables** hold values only — rule text lives on **Variables**, form controls, Specification Flow, etc.
+
+## Custom function documentation
+
+Every **custom function** documented for **Rule Builder** should include a copy-pasteable example.
+
+- Place the example after parameter and output description. On [AutexCustom](/driveworks/plugins/autexcustom) pages, use `### Example` under each function `##` heading, or `<CustomFunctionDoc example="...">`.
+- One primary call per section; add a second example only when overloads differ meaningfully.
+- Prefer realistic DriveWorks references (`DWLookup…`, `DWVariable…`, `DWConstant…`); use literals when clearer.
+- Format calls compactly for Rules (no spaces after commas), e.g. `AutexSlabPackingImage(DwLookupNested,1,DWLookupSlabPackingSettings,TRUE)`.
+- Do not add UDF example blocks for **Specification Flow** tasks, **Project document** types, or task-only sections.
+
+## Snippets and generated content
+
+- Reusable React lives in `snippets/`; import from MDX with absolute paths: `/snippets/...`.
+- Generated tables (architecture layers) come from `scripts/` — regenerate JSON/JS when source code changes, do not hand-edit generated node lists.
+
+## Preview and quality
+
+- Local preview: run `mintlify dev` from the repo root.
+- Match existing pages in the same section for tone and component choice.
+- Keep destructive Toolkit scripts clearly marked; link to the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) for danger levels.
+
+## External references
+
+- [Mintlify documentation](https://mintlify.com/docs)
+- [Mintlify components](https://mintlify.com/docs/components)
+- [Write documentation with Cursor](https://www.mintlify.com/docs/guides/cursor)
+- [DriveWorks Pro documentation](https://docs.driveworkspro.com/)

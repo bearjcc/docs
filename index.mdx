@@ -1,56 +1,56 @@
 ---
-title: "Autex Knowledge Base — Onboarding, Policies, and IT Help"
-description: "Your central reference for onboarding, HR policies, IT help, and department runbooks. Everything you need to work confidently at Autex."
+title: "Autex Knowledge Base"
+description: "DriveWorks engineering, Autex plugins, and operational how-tos — migrated from the Autex wiki into one searchable reference."
 mode: custom
 ---
 
 <div className="mx-auto flex w-full max-w-[720px] flex-col gap-12 px-4 py-10 lg:gap-14 lg:py-16">
   <div className="flex flex-col items-center gap-6">
-    <div className="flex max-w-[480px] flex-col gap-2 text-center">
+    <div className="flex max-w-[520px] flex-col gap-2 text-center">
       <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">
-        Your journey begins here
+        Autex Knowledge Base
       </h1>
       <p className="text-balance text-base text-gray-600 dark:text-gray-400">
-        This is your go-to reference for how things work at Autex. Use the tabs above to navigate to different sections, or press <kbd>⌘</kbd> <kbd>K</kbd> to search.
+        DriveWorks engineering, Autex Toolkit and AutexCustom plugins, and day-to-day operational how-tos. Use the tabs above to browse, or press <kbd>⌘</kbd> <kbd>K</kbd> to search.
       </p>
     </div>
   </div>
 
   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
     <a
-      href="/onboarding/first-day"
+      href="/driveworks/how-to/force-data-refresh"
       className="group flex flex-col outline-none"
     >
       <div
         className="kb-feature-card relative flex h-[170px] items-center justify-center overflow-hidden rounded-2xl ring-1 ring-gray-100 transition group-hover:ring-gray-200 dark:ring-white/[0.08] dark:group-hover:ring-white/15 saturate-50 group-hover:saturate-100"
       >
         <div className="relative flex items-center justify-center">
-          <Icon icon="calendar-1" size={36} className="!bg-white" />
+          <Icon icon="refresh-cw" size={36} className="!bg-white" />
         </div>
       </div>
       <div className="flex flex-col gap-1 pt-4">
-        <span className="text-base font-medium text-gray-900 dark:text-gray-50">Your first day</span>
+        <span className="text-base font-medium text-gray-900 dark:text-gray-50">Force a data refresh</span>
         <span className="text-sm leading-5 text-gray-600 dark:text-gray-400">
-          Accounts to activate, tools to install, and the people to meet before end of day one.
+          Recalculation triggers when Rules read external data that does not naturally invalidate.
         </span>
       </div>
     </a>
 
     <a
-      href="/onboarding/tools/account-access"
+      href="/driveworks/plugins/toolkit"
       className="group flex flex-col outline-none"
     >
       <div
         className="kb-feature-card relative flex h-[170px] items-center justify-center overflow-hidden rounded-2xl ring-1 ring-gray-100 transition group-hover:ring-gray-200 dark:ring-white/[0.08] dark:group-hover:ring-white/15 saturate-50 group-hover:saturate-100"
       >
         <div className="relative flex items-center justify-center">
-          <Icon icon="key-round" size={36} className="!bg-white" />
+          <Icon icon="wrench" size={36} className="!bg-white" />
         </div>
       </div>
       <div className="flex flex-col gap-1 pt-4">
-        <span className="text-base font-medium text-gray-900 dark:text-gray-50">Account access</span>
+        <span className="text-base font-medium text-gray-900 dark:text-gray-50">Autex Toolkit</span>
         <span className="text-sm leading-5 text-gray-600 dark:text-gray-400">
-          Which accounts you&apos;ll need, how to claim them, and what to do if anything is missing.
+          Scripts, Group Constants, injection guides, and Administrator surfaces for DriveWorks.
         </span>
       </div>
     </a>
@@ -60,20 +60,20 @@ mode: custom
     <h2 className="text-lg font-medium tracking-tight text-gray-900 dark:text-gray-50">Resources</h2>
 
     <Columns cols={2}>
-      <Card title="HR & People" icon="users" iconType="light" href="/hr-people/index">
-        Benefits, time off, performance reviews, and compensation.
+      <Card title="DriveWorks" icon="layers" iconType="light" href="/driveworks">
+        Structure, training, troubleshooting, and plugin overview.
       </Card>
-      <Card title="IT & Security" icon="shield-check" iconType="light" href="/it-security/index">
-        Access requests, device policy, and security training.
+      <Card title="Autex Toolkit" icon="wrench" iconType="light" href="/driveworks/plugins/toolkit">
+        Architecture, scripts, injection, and build guides.
       </Card>
     </Columns>
 
     <Columns cols={2}>
-      <Card title="Policies" icon="scroll" iconType="light" href="/policies/index">
-        Code of conduct, expense reimbursement, travel, and remote work.
+      <Card title="AutexCustom" icon="puzzle" iconType="light" href="/driveworks/plugins/autexcustom">
+        Custom functions, specification macro tasks, and UDF reference.
       </Card>
-      <Card title="Engineering" icon="code-xml" iconType="light" href="/engineering/index">
-        Dev setup, deployment, incident response, and architecture.
+      <Card title="How-to guides" icon="book-open" iconType="light" href="/driveworks/how-to">
+        Task-oriented DriveWorks workflows for Administrator, Live, SQL, and more.
       </Card>
     </Columns>
   </div>

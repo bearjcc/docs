@@ -1,0 +1,74 @@
+[
+  {
+    "name": "AutexCustomGeometryUdfTests.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/AutexCustomGeometryUdfTests.cs",
+    "summary": "Test script for AutexCustom geometry user-defined functions, validating geometric calculations and edge cases."
+  },
+  {
+    "name": "AutexCustomUtilityUdfTests.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/AutexCustomUtilityUdfTests.cs",
+    "summary": "Test script for AutexCustom utility user-defined functions, validating string, math, and helper UDFs."
+  },
+  {
+    "name": "Build-Release.ps1",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/Build-Release.ps1",
+    "summary": "Production release build script. Increments releaseBuild in version.json, patches AssemblyInfo, runs MSBuild Release, then deploys the DLL and dependencies to production plugin shares with archiving and rollback on failure."
+  },
+  {
+    "name": "Build.ps1",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/Build.ps1",
+    "summary": "Development build script. Increments devBuild in version.json, patches AssemblyInfo, closes DriveWorks host processes gracefully via WM_CLOSE, runs MSBuild, then optionally runs C# quality checks and WebAssets ESLint before reopening the host."
+  },
+  {
+    "name": "CustomFunctionRuleEvalTests.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/CustomFunctionRuleEvalTests.cs",
+    "summary": "Test script validating Autex custom function rule evaluation via ProjectOpen.EvaluateRuleToDisplayString, with numeric tolerance and Titan UDF exception handling."
+  },
+  {
+    "name": "DWTools.slnx",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/DWTools.slnx",
+    "summary": "Visual Studio solution filter file for the DWTools plugin project."
+  },
+  {
+    "name": "full-viewport-layers.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/full-viewport-layers.html",
+    "summary": "Minimal HTML demo showing a full-viewport image layer with an SVG gradient overlay, used for CSS layer/viewport testing."
+  },
+  {
+    "name": "GroupConnectionIndexTests.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/RuleFormatter.Tests/GroupConnectionIndexTests.cs",
+    "summary": "NUnit test class for GroupConnectionIndex. Tests cross-project connection edge detection and macro reference scanning."
+  },
+  {
+    "name": "IconsUdfTests.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/IconsUdfTests.cs",
+    "summary": "Test suite for Icons user-defined functions. Runs validation tests for icon loading and semantic icon resolution."
+  },
+  {
+    "name": "RuleFormatter.Tests.csproj",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/RuleFormatter.Tests/RuleFormatter.Tests.csproj",
+    "summary": "MSBuild project file for the RuleFormatter.Tests NUnit test assembly. Targets .NET with NUnit3TestAdapter."
+  },
+  {
+    "name": "RuleFormatterTests.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/RuleFormatter.Tests/RuleFormatterTests.cs",
+    "summary": "NUnit test class for RuleFormatter. Tests rule formatting, normalization, operator handling (not-equal, less-or-equal, greater-or-equal), and nested function formatting."
+  },
+  {
+    "name": "scripts/scripts/Debug-ToolkitProjectLoad.ps1",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/scripts/scripts/Debug-ToolkitProjectLoad.ps1",
+    "summary": "Debugging helper that builds the Toolkit, launches DriveWorks Administrator with a .driveprojx file, then monitors for Project Extender load failure dialogs or successful project load via window title heuristics."
+  }
+]

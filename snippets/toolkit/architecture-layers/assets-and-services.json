@@ -1,0 +1,56 @@
+[
+  {
+    "name": "CsvExportService.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Services/CsvExportService.cs",
+    "summary": "Static service for building CSV filenames and writing DataTables to CSV files in RFC 4180 format with UTF-8 BOM encoding."
+  },
+  {
+    "name": "en_GB.aff",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Resources/en_GB.aff",
+    "summary": "Hunspell affix file for British English spelling dictionary. Defines affix rules, flag types, and compound patterns used by the spell checker."
+  },
+  {
+    "name": "en_GB.dic",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Resources/en_GB.dic",
+    "summary": "British English dictionary file used by the spelling checker. Contains 87k+ word entries for spell-check and suggestion lookups."
+  },
+  {
+    "name": "process_disabled_icons.py",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Assets/Icons/process_disabled_icons.py",
+    "summary": "Python script that converts white pixels to transparency in icon PNGs, producing disabled-state icon variants for the toolbar."
+  },
+  {
+    "name": "RuleService.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Services/RuleService.cs",
+    "summary": "Service for DriveWorks rule operations including formatting, parsing, and validation."
+  },
+  {
+    "name": "ToolkitIconLoader.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Assets/ToolkitIconLoader.cs",
+    "summary": "Static utility class that loads toolbar and script icons from embedded PNG/SVG resources, with semantic key resolution via ToolkitSemanticIconMap and data URI generation for WebView surfaces."
+  },
+  {
+    "name": "ToolkitIconLoader.Wpf.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Assets/ToolkitIconLoader.Wpf.cs",
+    "summary": "WPF-specific icon loading methods providing BitmapImage and BitmapSource conversions from the shared ToolkitIconLoader resource system."
+  },
+  {
+    "name": "ToolkitSemanticIconMap.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Assets/ToolkitSemanticIconMap.cs",
+    "summary": "Semantic icon resolution engine that maps abstract icon keys (e.g. 'play', 'source-branch') to ordered candidate resource stems loaded from SemanticIconMap.json, with validation and candidate inspection."
+  },
+  {
+    "name": "ToolkitTheme.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Assets/ToolkitTheme.xaml",
+    "summary": "WPF resource dictionary defining the Autex Toolkit theme with colors, brushes, fonts, and control styles aligned with the UI 3.0 design token system."
+  }
+]

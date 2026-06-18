@@ -4,6 +4,9 @@ sidebarTitle: Plugin Entry
 description: Plugin bootstrap, presenter, and DriveWorks SDK interface. The entry point for the Autex Toolkit plugin loaded by DriveWorks Administrator.
 ---
 
+import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
+
+
 
 
 Plugin bootstrap, presenter, and DriveWorks SDK interface. The entry point for the Autex Toolkit plugin loaded by DriveWorks Administrator. This page lists 19 indexed components from the Understand-Anything graph for that layer.
@@ -18,28 +21,7 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
-| Name | Type | Source path | Summary |
-| --- | --- | --- | --- |
-| ToolkitPlugin.cs | file | `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.cs` | Main DriveWorks Administrator plugin entry point (AutexToolkitPlugin) implementing IApplicationPlugin. Registers the Autex Tools command group, context menu injection, and script tool window lifecycle. |
-| ToolkitPlugin.*.cs (partials) | files | `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.*.cs` | Partial classes of AutexToolkitPlugin separating concerns like Initialization, WebViewResolve, CommandRegistration, ContextMenu, FormDesignerAddMetaclassMenu, ViewLifecycle, and RulesBuilderIntegration. |
-| AutexToolsPresenter.cs | file | `Autex Toolkit/DWPlugin/AutexToolsPresenter.cs` | Presenter wiring the script registry to the Autex Tools UI. Handles Run/Abort/Undo/Save Report/Export CSV/Refresh Cache lifecycle, with group-mode project looping and merged result tables. |
-| DriveWorksInterface.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.cs` | Central singleton for DriveWorks SDK interaction. Manages application lifecycle, mode detection (None/GroupOnly/ProjectOpen), event subscriptions, and the Helpers instance. |
-| DriveWorksInterface.Cache.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.Cache.cs` | Partial class of DriveWorksInterface handling cache operations. Manages project data caching with timestamp-based invalidation. |
-| DriveWorksInterface.FormFont.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.FormFont.cs` | Partial class of DriveWorksInterface handling form font discovery and resolution. Maps DriveWorks font values to WPF font families. |
-| ScriptHelpers.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.cs` | Base partial implementation of `DriveWorksScriptHelpers` (implementing `IAutexScriptHelpers` and `IGroupDataProvider`). Serves as the primary SDK boundary for script execution. |
-| ScriptHelpers.RoleComposition.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.RoleComposition.cs` | Coordinates the split implementation of script helpers by composing specialized role classes and forwarding API calls to them. |
-| ProjectSession.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ProjectSession.cs` | Specialized implementation class for project session management and context validation (`IProjectSessionHelpers`). |
-| RuleAnalysis.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/RuleAnalysis.cs` | Specialized implementation class for parsing, checking, and evaluating DriveWorks rules (`IRuleAnalysisHelpers`). |
-| Spelling.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/Spelling.cs` | Dedicated helper class wrapping spell checking and dictionary interactions (`ISpellingHelpers`). |
-| Report.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/Report.cs` | Dedicated helper class for formatting and saving markdown diagnostic reports (`IReportHelpers`). |
-| ProjectTransaction.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ProjectTransaction.cs` | Dedicated helper class creating ProjectTransactionFactory instances (`IProjectTransactionHelpers`). |
-| Cache.cs | file | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/Cache.cs` | Dedicated helper class managing cache invalidation scopes (`ICacheHelpers`). |
-| ScriptHelpers.*.cs (partials) | files | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.*.cs` | Legacy partial classes of `DriveWorksScriptHelpers` continuing to handle specific domain areas like Crud, Forms, GroupLevelData, DocumentsFilesAnd3D, and SpecificationMacro prior to full class-split extraction. |
-| FormControlTypeConversion.cs | file | `Autex Toolkit/DWPlugin/FormControlTypeConversion.cs` | Defines form control type conversion rules and mappings. Specifies which control types can be converted to which other types. |
-| AssemblyInfo.cs | file | `Autex Toolkit/DWPlugin/Properties/AssemblyInfo.cs` | Assembly metadata for the Autex Toolkit DriveWorks plugin including version, company, and product information. |
-| AutexToolkitPlugin | class | `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.cs` | DriveWorks Administrator plugin class that adds the Autex Tools command bar, WebView2 integration, context menu injection, and the script tools window lifecycle. |
-| AutexToolsPresenter | class | `Autex Toolkit/DWPlugin/AutexToolsPresenter.cs` | Presenter class managing the Autex Tools script execution lifecycle including run, abort, undo, save report, export CSV, and cache refresh operations. |
-| DriveWorksInterface | class | `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.cs` | Static partial class serving as the single point of interaction with the DriveWorks SDK. Manages application state, mode, events, and helper instantiation. |
+<ArchitectureLayerTable layer="plugin-entry" />
 
 ## Key relationships
 

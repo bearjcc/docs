@@ -1,0 +1,896 @@
+[
+  {
+    "name": "body-shell.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/body-shell.scriban.html",
+    "summary": "Scriban partial providing the WebView body shell wrapper with main landmark element and {{ content }} injection point."
+  },
+  {
+    "name": "bridge.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/bridge.js",
+    "summary": "WebView2 bridge module providing postMessage-based communication helpers. Wraps chrome.webview.postMessage with action-based envelope formatting."
+  },
+  {
+    "name": "bridge.v1.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/bridge.v1.js",
+    "summary": "WebView2 bridge library (v1) providing postMessage-based communication between web UI and C# host. Supports action-based messaging with request/reply patterns."
+  },
+  {
+    "name": "button.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/button.css",
+    "summary": "Styles for .button, .button-primary, .icon-button with accent color, disabled states, hover/active transitions."
+  },
+  {
+    "name": "button.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/button.js",
+    "summary": "Shared button component for WebView UI. Provides styled button creation with icon support and click handling."
+  },
+  {
+    "name": "button.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/button.scriban.html",
+    "summary": "Scriban partial for a button element supporting variant (primary/danger/success), icon, disabled state, and extra attributes."
+  },
+  {
+    "name": "cache-explorer.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/cache-explorer.css",
+    "summary": "Styles for the group data cache explorer tree with grid-based cache nodes, copy actions, and mini buttons."
+  },
+  {
+    "name": "cmp-count-badges.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/partials/cmp-count-badges.scriban.html",
+    "summary": "Scriban partial rendering a total change count badge and a stacked bar showing added/removed/modified/moved/renamed proportions using flex-based segments."
+  },
+  {
+    "name": "cmp-detail.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/partials/cmp-detail.scriban.html",
+    "summary": "Scriban partial rendering the comparison detail pane with type-specific layouts for variables, settings, renames, form control moves, and side-only entries. Displays before/after values and known limitation notes."
+  },
+  {
+    "name": "cmp-filter-types.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/partials/cmp-filter-types.scriban.html",
+    "summary": "Scriban partial rendering a checkbox list of change type filters for the comparison view, allowing users to show/hide specific data types."
+  },
+  {
+    "name": "cmp-tree-node.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/partials/cmp-tree-node.scriban.html",
+    "summary": "Recursive Scriban partial rendering a tree node with expand/collapse twisty, label, count badges, and nested children. Used for the hierarchical change tree in the comparison view."
+  },
+  {
+    "name": "cmp-unified-shell.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/partials/cmp-unified-shell.scriban.html",
+    "summary": "Main Scriban shell template for the unified project comparison view. Composes header with revision labels, search/filter bar with navigation, tree/detail workspace, and status bar. Handles error states and server-side rendering of initial tree and detail."
+  },
+  {
+    "name": "components.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/components.css",
+    "summary": "Shared UI component styles covering buttons (primary, danger, success), icons, inputs, selects, textareas, labels, and notices using CSS custom property design tokens."
+  },
+  {
+    "name": "context-header-strip.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/context-header-strip.scriban.html",
+    "summary": "Scriban partial rendering a feature context header strip with configurable CSS class and inner HTML content."
+  },
+  {
+    "name": "context-strip.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/context-strip.css",
+    "summary": "Styles for feature header/context strips used across Version Control (vc3), Rule Analysis (ra3), and Spelling (scm3) sections."
+  },
+  {
+    "name": "create-metaclass.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/CreateMetaclass/create-metaclass.app.js",
+    "summary": "WebView application for creating new CSS metaclass tokens. Provides a form for defining metaclass name, selector, compatible controls, and group assignment."
+  },
+  {
+    "name": "create-metaclass.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/CreateMetaclass/create-metaclass.body.scriban.html",
+    "summary": "Scriban HTML template for the Create Metaclass WebView body. Contains the form layout for metaclass definition."
+  },
+  {
+    "name": "create-metaclass.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/CreateMetaclass/create-metaclass.css",
+    "summary": "Stylesheet for the Create Metaclass WebView page. Styles the metaclass creation form with design token variables."
+  },
+  {
+    "name": "CreateMetaclassWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/CreateMetaclassWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Create Metaclass feature. Loads assets, builds the HTML page, and handles bridge messages for metaclass creation."
+  },
+  {
+    "name": "dialogue-footer.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/dialogue-footer.css",
+    "summary": "Minimal styles for dialogue footer panels used in modal-like WebView interactions."
+  },
+  {
+    "name": "document.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/templates/document.scriban.html",
+    "summary": "Scriban HTML template for rendering a full document page wrapper shared across WebView features."
+  },
+  {
+    "name": "dom.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/dom.js",
+    "summary": "DOM utility helpers for WebView UI. Provides element creation, class manipulation, and event binding utilities."
+  },
+  {
+    "name": "empty-state.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/empty-state.scriban.html",
+    "summary": "Scriban partial for an empty state display with title, message, and optional primary action button."
+  },
+  {
+    "name": "eslint.config.cjs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/eslint.config.cjs",
+    "summary": "ESLint configuration for the WebAssets JavaScript codebase. Configures linting rules for WebView UI scripts."
+  },
+  {
+    "name": "events.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/events.js",
+    "summary": "Event system for WebView UI components. Provides publish/subscribe event bus for decoupled component communication."
+  },
+  {
+    "name": "expansion-caret.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/expansion-caret.scriban.html",
+    "summary": "Scriban partial rendering a chevron-right caret icon used for expandable sections and tree toggles."
+  },
+  {
+    "name": "explorer-block.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/explorer-block.scriban.html",
+    "summary": "Scriban partial for a titled sidebar explorer block with optional collapsible header toggle, tools area, and body content."
+  },
+  {
+    "name": "explorer-section-header.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/explorer-section-header.scriban.html",
+    "summary": "Scriban partial for an explorer section header row with title and optional tools area."
+  },
+  {
+    "name": "file-path-field-template.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/file-path-field-template.scriban.html",
+    "summary": "Scriban partial for a file path input field template used in export and configuration forms."
+  },
+  {
+    "name": "form-field-checkbox-help.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/form-field-checkbox-help.scriban.html",
+    "summary": "Scriban partial for a checkbox form field with help text segments and inline code examples."
+  },
+  {
+    "name": "form-field-input.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/form-field-input.scriban.html",
+    "summary": "Scriban partial for a labeled text input form field with optional validation error display."
+  },
+  {
+    "name": "form-field-textarea.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/form-field-textarea.scriban.html",
+    "summary": "Scriban partial for a labeled textarea form field with configurable rows and spellcheck option."
+  },
+  {
+    "name": "foundation.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/foundation.css",
+    "summary": "CSS reset and foundation styles establishing box-sizing, typography defaults, focus-visible outlines, and visually-hidden utility classes."
+  },
+  {
+    "name": "group-constant-picker-group.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstantPicker/partials/group-constant-picker-group.scriban.html",
+    "summary": "Scriban partial template rendering a collapsible group of group constants with a summary showing count and description, iterating items via the token partial."
+  },
+  {
+    "name": "group-constant-picker-right-panel.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstantPicker/partials/group-constant-picker-right-panel.scriban.html",
+    "summary": "Scriban partial template for the right detail panel showing selected constant name, value, category, comment, and inserted formula preview."
+  },
+  {
+    "name": "group-constant-picker-token.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstantPicker/partials/group-constant-picker-token.scriban.html",
+    "summary": "Scriban partial template for an individual group constant token row with favorite toggle, name, and value preview. Carries data attributes for selection and insertion."
+  },
+  {
+    "name": "group-constant-picker.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstantPicker/group-constant-picker.app.js",
+    "summary": "WebView application for the Group Constant picker used in the Rules Builder. Provides search, category filtering, and constant selection for rule insertion."
+  },
+  {
+    "name": "group-constant-picker.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstantPicker/group-constant-picker.body.scriban.html",
+    "summary": "Scriban HTML template for the Group Constant Picker WebView body."
+  },
+  {
+    "name": "group-constant-picker.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstantPicker/group-constant-picker.css",
+    "summary": "Stylesheet for the Group Constant Picker WebView page."
+  },
+  {
+    "name": "group-constants-left-panel.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstants/partials/group-constants-left-panel.scriban.html",
+    "summary": "Scriban partial template for the Group Constants left sidebar panel showing category navigation."
+  },
+  {
+    "name": "group-constants.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstants/group-constants.app.js",
+    "summary": "WebView application for the Group Constants management page. Provides full CRUD interface with category management, search, import/export, and inline editing."
+  },
+  {
+    "name": "group-constants.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstants/group-constants.body.scriban.html",
+    "summary": "Scriban HTML template for the Group Constants management WebView body. Contains the table layout, edit panels, and action buttons."
+  },
+  {
+    "name": "group-constants.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/GroupConstants/group-constants.css",
+    "summary": "Stylesheet for the Group Constants management WebView page. Styles the CRUD table, edit panels, and category sidebar."
+  },
+  {
+    "name": "GroupConstantPickerWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/GroupConstantPickerWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Group Constant picker used in the Rules Builder. Loads assets and builds the HTML page with bridge actions for constant selection."
+  },
+  {
+    "name": "GroupConstantsPrefsBootstrap.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/GroupConstantsPrefsBootstrap.cs",
+    "summary": "Bootstrap helper that serializes user preferences (favorites, recents) for the Group Constants WebView page initialization."
+  },
+  {
+    "name": "GroupConstantsReadOnlyWebViewState.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/GroupConstantsReadOnlyWebViewState.cs",
+    "summary": "Read-only state model for the Group Constants WebView. Provides serialized constant data, categories, and UI preferences for the web UI."
+  },
+  {
+    "name": "GroupConstantsWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/GroupConstantsWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Group Constants management window. Builds the full HTML page with Scriban templates, CSS, JS, and bridge actions for CRUD operations."
+  },
+  {
+    "name": "header-meta-pair.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/header-meta-pair.scriban.html",
+    "summary": "Scriban partial for a compact label/value metadata pair used in feature header bars."
+  },
+  {
+    "name": "icon-button.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/icon-button.scriban.html",
+    "summary": "Scriban partial for an icon-only button with configurable icon stem, title, and optional cache scope data attribute."
+  },
+  {
+    "name": "icon-picker-pack-group.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/IconPicker/partials/icon-picker-pack-group.scriban.html",
+    "summary": "Scriban partial template for rendering a group of icon packs in the picker."
+  },
+  {
+    "name": "icon-picker-tile.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/IconPicker/partials/icon-picker-tile.scriban.html",
+    "summary": "Scriban partial template for rendering a single icon tile in the picker grid."
+  },
+  {
+    "name": "icon-picker.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/IconPicker/icon-picker.app.js",
+    "summary": "WebView application for the icon picker. Provides icon grid display with pack filtering, search, colour selection, favorites, and SVG preview."
+  },
+  {
+    "name": "icon-picker.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/IconPicker/icon-picker.body.scriban.html",
+    "summary": "Scriban HTML template for the Icon Picker WebView body. Contains the icon grid, pack tabs, and colour picker."
+  },
+  {
+    "name": "icon-picker.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/IconPicker/icon-picker.css",
+    "summary": "Stylesheet for the Icon Picker WebView page. Styles the icon grid, pack tabs, colour picker, and favorites."
+  },
+  {
+    "name": "IconPickerPrefsBootstrap.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/IconPickerPrefsBootstrap.cs",
+    "summary": "Bootstrap helper that serializes icon picker user preferences (favorites, recents, colour) for WebView initialization."
+  },
+  {
+    "name": "IconPickerWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/IconPickerWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Icon Picker. Loads assets and builds the HTML page with icon pack data and bridge actions."
+  },
+  {
+    "name": "index.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/UiPrototype/index.html",
+    "summary": "Standalone HTML prototype page for UI design exploration. Used for developing and testing WebView UI components outside DriveWorks."
+  },
+  {
+    "name": "layout.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/layout.css",
+    "summary": "Page layout grid styles defining the shell, sidebar, content, and workspace areas with collapsible tree panel support and reduced-motion media queries."
+  },
+  {
+    "name": "mc-picker-header.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/mc-picker-header.scriban.html",
+    "summary": "Scriban partial for the metaclass picker header component used in form styling metaclass selection."
+  },
+  {
+    "name": "metaclass-picker-group.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/MetaclassPicker/partials/metaclass-picker-group.scriban.html",
+    "summary": "Scriban partial template rendering a collapsible group of metaclass tokens with optional subgroup headers and descriptions, iterating items via the token partial."
+  },
+  {
+    "name": "metaclass-picker-right-panel.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/MetaclassPicker/partials/metaclass-picker-right-panel.scriban.html",
+    "summary": "Scriban partial template for the right detail panel showing selected metaclass display name, parameter input, inserted value, group/subgroup info, description, and compatible controls."
+  },
+  {
+    "name": "metaclass-picker-token.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/MetaclassPicker/partials/metaclass-picker-token.scriban.html",
+    "summary": "Scriban partial template for an individual metaclass token row with favorite toggle, name, description, and rich data attributes for group/subgroup/controls/parameter metadata."
+  },
+  {
+    "name": "metaclass-picker.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/MetaclassPicker/metaclass-picker.app.js",
+    "summary": "WebView application for the metaclass picker. Displays metaclass tokens grouped by category with parameterized metaclass support."
+  },
+  {
+    "name": "metaclass-picker.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/MetaclassPicker/metaclass-picker.body.scriban.html",
+    "summary": "Scriban HTML template for the Metaclass Picker WebView body."
+  },
+  {
+    "name": "metaclass-picker.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/MetaclassPicker/metaclass-picker.css",
+    "summary": "Stylesheet for the Metaclass Picker WebView page."
+  },
+  {
+    "name": "MetaclassPickerPrefsBootstrap.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/MetaclassPickerPrefsBootstrap.cs",
+    "summary": "Bootstrap helper that serializes metaclass picker user preferences for WebView initialization."
+  },
+  {
+    "name": "MetaclassPickerWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/MetaclassPickerWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Metaclass Picker. Loads assets and builds the HTML page with metaclass data and bridge actions."
+  },
+  {
+    "name": "migration-placeholder.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/migration-placeholder.html",
+    "summary": "Minimal placeholder HTML reserved for the Script Tools WebView migration. Not loaded by the application."
+  },
+  {
+    "name": "mini-button.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/mini-button.scriban.html",
+    "summary": "Scriban partial for a compact mini button with text, optional type, id, disabled state, and data action attribute."
+  },
+  {
+    "name": "package.json",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/package.json",
+    "summary": "NPM package configuration for the WebAssets directory. Defines ESLint as a dev dependency for JavaScript linting."
+  },
+  {
+    "name": "preview-data-table.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/preview-data-table.js",
+    "summary": "Data table component with cell preview functionality for WebView UI. Renders tables with clickable cells that show expanded content in a preview pane."
+  },
+  {
+    "name": "preview-overlay.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/preview-overlay.css",
+    "summary": "Styles for the preview/mutate review table, status chips, and overlay panels used in Script Tools review and VC wireframe parity."
+  },
+  {
+    "name": "project-comparison.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/project-comparison.app.js",
+    "summary": "WebView application for the project comparison report. Renders side-by-side diff with tree navigation, change filtering, and detail panels."
+  },
+  {
+    "name": "project-comparison.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/project-comparison.body.scriban.html",
+    "summary": "Scriban HTML template for the Project Comparison WebView body."
+  },
+  {
+    "name": "project-comparison.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/project-comparison.css",
+    "summary": "Stylesheet for the Project Comparison WebView page. Styles the diff tree, inline diffs, and change detail panels with colour-coded change kinds."
+  },
+  {
+    "name": "ProjectComparisonWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ProjectComparisonWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Project Comparison report. Builds the HTML page with change tree data, inline diffs, and export capabilities."
+  },
+  {
+    "name": "prototype.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/UiPrototype/prototype.css",
+    "summary": "Stylesheet for the UI prototype page."
+  },
+  {
+    "name": "prototype.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/UiPrototype/prototype.js",
+    "summary": "JavaScript for the UI prototype page. Provides mock data and interaction handlers for standalone UI testing."
+  },
+  {
+    "name": "result-surface-host.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/result-surface-host.css",
+    "summary": "Styles for the result surface host container that wraps script output displays."
+  },
+  {
+    "name": "result-surface-mount.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/result-surface-mount.js",
+    "summary": "Result surface mounting component for WebView UI. Manages the lifecycle of embedded HTML result surfaces in the script tools interface."
+  },
+  {
+    "name": "review-filter.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/review-filter.css",
+    "summary": "Styles for the review filter grid with search, status, and scope dropdown filters used in comparison and review views."
+  },
+  {
+    "name": "rule-analysis.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/RuleAnalysis/rule-analysis.app.js",
+    "summary": "WebView application for the rule analysis results page. Displays rule errors, diagnostics, and root cause chains in an interactive table."
+  },
+  {
+    "name": "rule-analysis.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/RuleAnalysis/rule-analysis.body.scriban.html",
+    "summary": "Scriban HTML template for the Rule Analysis WebView body. Contains the diagnostic results table layout."
+  },
+  {
+    "name": "rule-analysis.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/RuleAnalysis/rule-analysis.css",
+    "summary": "Stylesheet for the Rule Analysis WebView page."
+  },
+  {
+    "name": "RuleDiagnosticsWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/RuleDiagnosticsWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Rule Diagnostics page. Builds the HTML page with rule error data, root cause chains, and diagnostic details."
+  },
+  {
+    "name": "run-progress-overlay.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/run-progress-overlay.js",
+    "summary": "Progress overlay component for script execution. Shows animated progress with status messages during script runs."
+  },
+  {
+    "name": "running-progress-overlay.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/running-progress-overlay.scriban.html",
+    "summary": "Scriban partial for a running progress overlay with title, step metadata, progress bar, status text, and cancel button."
+  },
+  {
+    "name": "script-tools-content-header.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/partials/script-tools-content-header.scriban.html",
+    "summary": "Scriban partial for the script content header showing a collapsible title with icon, description, breadcrumb navigation, and a favorite toggle button."
+  },
+  {
+    "name": "script-tools-footer-configure.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/partials/script-tools-footer-configure.scriban.html",
+    "summary": "Scriban partial for the configure-stage footer with a Test script button, group/project execution context toggle, and Run button."
+  },
+  {
+    "name": "script-tools-footer-review-results.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/partials/script-tools-footer-review-results.scriban.html",
+    "summary": "Scriban partial for the review and results stage footers. Review footer has Apply selected with a selection blocker; results footer has Export, Undo, Clear, and Start new run buttons."
+  },
+  {
+    "name": "script-tools-left-panel.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/partials/script-tools-left-panel.scriban.html",
+    "summary": "Scriban partial for the left sidebar containing a script explorer tree with search, collapse toggle, and a collapsible group data cache tree with refresh and options buttons."
+  },
+  {
+    "name": "script-tools.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/script-tools.app.js",
+    "summary": "Main WebView application for the Script Tools UI3 interface. Implements the full script browser, configure, review, and results workflow with 2500+ lines of UI logic."
+  },
+  {
+    "name": "script-tools.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/script-tools.body.scriban.html",
+    "summary": "Main Scriban body template for the Script Tools UI. Composes a left panel, workflow strip, three-stage content area (configure/review/results), cell preview strip, rule detail overlay, session output strip, and status bar."
+  },
+  {
+    "name": "script-tools.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/ScriptTools/script-tools.css",
+    "summary": "Comprehensive CSS stylesheet (817 lines) for the Script Tools WebView UI. Defines grid layout, stage-based footer visibility, script content header with collapsible description, data grid styling, cell preview strip, and responsive panel sizing using CSS custom properties."
+  },
+  {
+    "name": "script-tree-sidebar.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/script-tree-sidebar.css",
+    "summary": "Styles for the script/cache tree sidebar with collapsible group headings, script rows, and category icons."
+  },
+  {
+    "name": "script-workflow.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/script-workflow.css",
+    "summary": "Styles for the Script Tools workflow strip with tab-underline stages (Configure/Review/Results), phase tools, and step navigation."
+  },
+  {
+    "name": "ScriptToolsBridgeActions.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ScriptToolsBridgeActions.cs",
+    "summary": "Defines bridge action strings for the Script Tools WebView. Maps action names between the C# host and JavaScript client for script execution, input handling, and result display."
+  },
+  {
+    "name": "ScriptToolsWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ScriptToolsWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Script Tools UI3 interface. Builds the HTML page with script catalog, input schema, and execution state."
+  },
+  {
+    "name": "search-field.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/search-field.css",
+    "summary": "Styles for the shared search field component with icon, input, and clear button used across tree sidebars and filter bars."
+  },
+  {
+    "name": "search-field.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/search-field.js",
+    "summary": "Search field component for WebView UI. Provides debounced search input with clear button and result filtering."
+  },
+  {
+    "name": "search-field.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/search-field.scriban.html",
+    "summary": "Scriban partial for a search field component with icon, placeholder, and configurable CSS classes."
+  },
+  {
+    "name": "section-title.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/section-title.css",
+    "summary": "Styles for section title headings used across WebView panels."
+  },
+  {
+    "name": "session-output-strip.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/session-output-strip.css",
+    "summary": "Styles for the session output strip showing log messages with expandable panel and summary line."
+  },
+  {
+    "name": "session-output-strip.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/session-output-strip.js",
+    "summary": "Session output strip component showing script run log lines. Displays timestamped output messages in a scrollable strip."
+  },
+  {
+    "name": "session-output-strip.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/session-output-strip.scriban.html",
+    "summary": "Scriban partial for a collapsible session log strip with summary text and expandable log panel."
+  },
+  {
+    "name": "sidebar-view-panes.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/sidebar-view-panes.css",
+    "summary": "Styles for VS Code-style stacked view panes in the Script Tools left column with collapsible explorer blocks and sash dividers."
+  },
+  {
+    "name": "sidebar-view-panes.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/sidebar-view-panes.js",
+    "summary": "Sidebar view pane management component. Handles collapsible sidebar sections with view switching for the script tools interface."
+  },
+  {
+    "name": "spell-check.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/SpellCheck/spell-check.app.js",
+    "summary": "WebView application for the spell check results page. Displays misspelled words with suggestions and batch correction actions."
+  },
+  {
+    "name": "spell-check.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/SpellCheck/spell-check.body.scriban.html",
+    "summary": "Scriban HTML template for the Spell Check WebView body."
+  },
+  {
+    "name": "spell-check.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/SpellCheck/spell-check.css",
+    "summary": "Stylesheet for the Spell Check WebView page."
+  },
+  {
+    "name": "statusbar.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/statusbar.css",
+    "summary": "Styles for the shared status bar component with left/centre/right sections used at the bottom of WebView windows."
+  },
+  {
+    "name": "statusbar.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/statusbar.scriban.html",
+    "summary": "Scriban partial for a footer status bar with left, centre, and right text sections."
+  },
+  {
+    "name": "string-rows-table.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/string-rows-table.scriban.html",
+    "summary": "Scriban partial rendering a data table with configurable columns and row cells, supporting row selection attributes and custom CSS classes."
+  },
+  {
+    "name": "token-picker-shell.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/token-picker-shell.js",
+    "summary": "Token picker shell component for metaclass and group constant selection. Provides a searchable dropdown with token insertion."
+  },
+  {
+    "name": "ToolkitDispatcherPump.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ToolkitDispatcherPump.cs",
+    "summary": "Utility for pumping actions onto the WPF dispatcher thread from background WebView callbacks. Ensures thread-safe UI updates."
+  },
+  {
+    "name": "ToolkitScriptResultHtmlHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ToolkitScriptResultHtmlHelper.cs",
+    "summary": "Helper for generating HTML representations of script results. Converts DataTables, prose, markdown, and surfaces into embedded HTML for the WebView."
+  },
+  {
+    "name": "ToolkitWebBridgeActions.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ToolkitWebBridgeActions.cs",
+    "summary": "Central registry of WebView bridge action strings shared across all features. Generates the JavaScript bootstrap that exposes action names to the web UI."
+  },
+  {
+    "name": "ToolkitWebViewHostControl.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ToolkitWebViewHostControl.cs",
+    "summary": "WPF control that hosts a WebView2 instance with bridge message handling, asset loading, and lifecycle management. Core hosting component for all WebView features."
+  },
+  {
+    "name": "ToolkitWpfWebView2Helper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ToolkitWpfWebView2Helper.cs",
+    "summary": "Helper for WebView2 initialization and configuration in WPF. Handles WebView2 runtime discovery, virtual host mapping, and dev tools configuration."
+  },
+  {
+    "name": "tree-collapsed-tag.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/tree-collapsed-tag.scriban.html",
+    "summary": "Scriban partial rendering the collapsed sidebar tag showing an icon when the tree panel is minimized."
+  },
+  {
+    "name": "tree-item.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/tree-item.scriban.html",
+    "summary": "Scriban partial for a semantic tree item (li role=treeitem) with label, optional expansion state, and extra classes."
+  },
+  {
+    "name": "tree-sidebar-chrome.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/tree-sidebar-chrome.css",
+    "summary": "Styles for tree sidebar chrome elements including toolbar, toggle button, and collapsed tag icon shown when the tree panel is collapsed."
+  },
+  {
+    "name": "tree-toggle.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/tree-toggle.scriban.html",
+    "summary": "Scriban partial for a tree panel toggle button with optional custom content or default expansion caret."
+  },
+  {
+    "name": "tree-toolbar.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/tree-toolbar.scriban.html",
+    "summary": "Scriban partial for a tree sidebar toolbar area accepting content HTML for search fields and toggle buttons."
+  },
+  {
+    "name": "tree.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/tree.css",
+    "summary": "Styles for the generic tree component with expandable items, indentation, and selection states."
+  },
+  {
+    "name": "tree.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/tree.js",
+    "summary": "Tree view component for hierarchical data display. Supports expand/collapse, selection, and change-kind icons for comparison results."
+  },
+  {
+    "name": "tree.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/tree.scriban.html",
+    "summary": "Scriban partial for a tree container (nav role=tree) with configurable ID, CSS class, and aria-labelledby."
+  },
+  {
+    "name": "vc-changed-files-list.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/vc-changed-files-list.scriban.html",
+    "summary": "Scriban partial rendering the Version Control changed files table body with status pills, file paths, and filterable data attributes."
+  },
+  {
+    "name": "vc-command-states.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/partials/vc-command-states.scriban.html",
+    "summary": "Scriban partial that renders a list of Git command states (available/blocked) with status and detail text for each command."
+  },
+  {
+    "name": "vc-stage-strip.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/partials/vc-stage-strip.scriban.html",
+    "summary": "Scriban partial rendering the three-tab stage strip (Changes, Branches, History) for the Version Control WebView navigation."
+  },
+  {
+    "name": "vc-tab-branches.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/partials/vc-tab-branches.scriban.html",
+    "summary": "Scriban partial for the Branches tab showing branch inventory cards with sync status, plus Git operations (pull, push, merge, checkout)."
+  },
+  {
+    "name": "vc-tab-changes.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/partials/vc-tab-changes.scriban.html",
+    "summary": "Scriban partial for the Changes tab displaying a filterable table of changed files with status pills, index/worktree indicators, and a detail panel for diff viewing."
+  },
+  {
+    "name": "vc-tab-history.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/partials/vc-tab-history.scriban.html",
+    "summary": "Scriban partial for the History tab showing a filterable list of recent commits with a detail card for commit metadata (subject, hash, author, date)."
+  },
+  {
+    "name": "version-control.app.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/version-control.app.js",
+    "summary": "WebView application for the Version Control UI3 interface. Provides git status, branch management, staging, committing, and change visualization."
+  },
+  {
+    "name": "version-control.body.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/version-control.body.html",
+    "summary": "Static HTML wireframe for the Version Control WebView showing the commit workflow layout with TOML report gate, changed files list, commit draft area, and tabbed detail panels."
+  },
+  {
+    "name": "version-control.body.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/version-control.body.scriban.html",
+    "summary": "Scriban-powered dynamic template for the Version Control WebView that renders the full commit workflow with TOML report gate, changed files, commit draft, and tabbed panels (Changes/Branches/History) based on live state."
+  },
+  {
+    "name": "version-control.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/VersionControl/version-control.css",
+    "summary": "Comprehensive stylesheet (1100+ lines) for the Version Control WebView covering layout, header bar, sync pills, branch cards, commit area, changed files table, diff viewer, history list, and responsive design tokens."
+  },
+  {
+    "name": "VersionControlWebViewPageBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/VersionControlWebViewPageBuilder.cs",
+    "summary": "WebView page builder for the Version Control UI3 interface. Builds the HTML page with git state, branch data, and change lists."
+  },
+  {
+    "name": "VersionControlWebViewState.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/VersionControlWebViewState.cs",
+    "summary": "State model for the Version Control WebView. Tracks repository status, branches, changed files, recent commits, and TOML report gate."
+  },
+  {
+    "name": "webview-client-errors.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/webview-client-errors.js",
+    "summary": "Client-side error reporting for WebView UI. Captures unhandled errors and reports them to the C# host via the bridge."
+  },
+  {
+    "name": "WebView2BridgeV1.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebView2BridgeV1.cs",
+    "summary": "C# side of the WebView2 bridge v1 protocol. Handles message deserialization, action dispatching, and reply serialization."
+  },
+  {
+    "name": "WebViewAssetLoader.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewAssetLoader.cs",
+    "summary": "Asset loader for WebView pages. Loads CSS, JavaScript, and Scriban HTML templates from the WebAssets directory structure with error handling."
+  },
+  {
+    "name": "WebViewClientErrorBridge.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewClientErrorBridge.cs",
+    "summary": "Bridge for receiving client-side JavaScript errors from WebView. Logs errors to the toolkit diagnostics system."
+  },
+  {
+    "name": "WebViewDevToolsConsoleHook.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewDevToolsConsoleHook.cs",
+    "summary": "Hook for WebView2 dev tools console. Captures console messages for debug logging in development builds."
+  },
+  {
+    "name": "WebViewPageBuilderHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewPageBuilderHelper.cs",
+    "summary": "Shared helper for WebView page builders. Provides error page rendering and common HTML scaffolding."
+  },
+  {
+    "name": "WebViewProfilePaths.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewProfilePaths.cs",
+    "summary": "Manages WebView2 user profile paths. Configures separate profile directories for different WebView features to isolate state."
+  },
+  {
+    "name": "workflow-strip.css",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/css/workflow-strip.css",
+    "summary": "Minimal styles for the workflow strip container used as a base for stage navigation."
+  },
+  {
+    "name": "workflow-strip.js",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/js/workflow-strip.js",
+    "summary": "Workflow strip component showing the configure/review/results stage flow. Highlights the current stage in the script execution workflow."
+  },
+  {
+    "name": "workflow-strip.scriban.html",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebAssets/_shared/partials/workflow-strip.scriban.html",
+    "summary": "Scriban partial for the Script Tools workflow strip with three stages (Configure/Review/Results), help panel, and subtext toggle."
+  }
+]

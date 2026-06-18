@@ -1,0 +1,90 @@
+---
+description: Mintlify MDX authoring for Autex Knowledge Base — components, snippets, nav, and DriveWorks terminology.
+globs: "**/*.{mdx,md,jsx,js,json}"
+alwaysApply: false
+---
+
+# Mintlify MDX (Autex Knowledge Base)
+
+You write and edit Mintlify MDX in this repo. Follow [Mintlify docs](https://mintlify.com/docs) for components; this rule adds Autex conventions.
+
+## Writing
+
+- Second person, active voice, present tense for instructions.
+- Lead with outcome; put prerequisites before steps.
+- Body headings start at `##` (H2). Use `title` and `description` in frontmatter only for page metadata.
+- Use DriveWorks product terms: **Group**, **Project**, **Specification**, **Rule**, **custom function**, **Project document**, **Specification Macro**, **DriveWorks Administrator**.
+
+## Page frontmatter
+
+Every `.mdx` page needs at least:
+
+```yaml
+---
+title: Clear page title
+description: One sentence on purpose and audience
+---
+```
+
+Optional: `sidebarTitle`, `icon` (Lucide name), `mode` (`wide`, `center`, `frame`, `custom`).
+
+## Navigation
+
+- Register every new page in `docs.json` under the correct tab and group.
+- Internal links: absolute paths without extension, e.g. `/driveworks/how-to/sql`.
+- After moving or renaming pages, update `docs.json` and inbound links.
+
+## Component selection
+
+| Need                        | Use                                           |
+| --------------------------- | --------------------------------------------- |
+| Procedure                   | `<Steps>` with `##` step titles               |
+| Platform or variant         | `<Tabs>`                                      |
+| Prerequisite / context      | `<Info>`                                      |
+| Best practice               | `<Tip>`                                       |
+| Destructive or risky action | `<Warning>`                                   |
+| Supplementary detail        | `<Note>`                                      |
+| Success checkpoint          | `<Check>`                                     |
+| Hub / related links         | `<CardGroup>` + `<Card>` or `SectionCardGrid` |
+| Flow or structure           | Mermaid fenced block                          |
+| Optional depth              | `<Accordion>` / `<Expandable>`                |
+| Multi-language code         | `<CodeGroup>`                                 |
+
+Prefer Markdown lists and tables when a component adds no clarity.
+
+## Images and media
+
+- Host under project root (e.g. `/images/wiki/...`).
+- Wrap screenshots in `<Frame>` with descriptive alt text.
+
+## Custom React (`/snippets/`)
+
+- Named exports only; no default exports.
+- Hooks (`useState`, `useEffect`, `useMemo`, etc.) are pre-injected — do not import React hooks.
+- No npm packages, no cross-snippet imports, no `.json` imports. Use `.js` modules for data.
+- Import every dependency from the parent MDX: `import { Foo } from "/snippets/Foo.jsx"`.
+- Tailwind + `not-prose` on custom layout blocks.
+- Defer heavy components behind a button or `IntersectionObserver` (no `React.lazy`).
+
+Existing snippets: `DriveWorksRule`, `CustomFunctionDoc`, `SectionCardGrid`, `ArchitectureLayerTable`, diagram components under `snippets/diagrams/`.
+
+## Custom function documentation
+
+- Rule Builder examples: fenced `driveworks` block or `<DriveWorksRule>` / `<CustomFunctionDoc example="...">`.
+- One primary call per section; compact formatting (no spaces after commas).
+- Realistic symbols: `DWLookup…`, `DWVariable…`, `DWConstant…` where appropriate.
+- Do not add UDF example blocks for Specification Flow tasks or Project document types only.
+
+## Errors to avoid
+
+- Wiki.js patterns: `{.tabset}`, `{.is-info}`, sibling `folder.md` routing.
+- Forgetting `docs.json` entry for new pages.
+- H1 (`#`) in page body (use `##`).
+- Link text like "click here".
+- Secrets or real credentials in code samples.
+
+## Local workflow
+
+- Preview: `mintlify dev` from repo root.
+- Editor: [Mintlify MDX](https://marketplace.visualstudio.com/items?itemName=mintlify.mintlify-snippets) extension for component snippets.
+- Mintlify component reference: https://mintlify.com/docs/components

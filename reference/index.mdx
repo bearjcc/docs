@@ -1,14 +1,28 @@
 ---
 title: Reference
 sidebarTitle: Reference
-description: Landing page for writing standards and reusable Wiki.js markdown references.
+description: Authoring standards for Mintlify MDX pages, components, and navigation in the Autex Knowledge Base.
 ---
 
-
-
-Reference material for authoring and maintaining wiki content consistently.
+Standards for writing and maintaining this Mintlify site.
 
 ## Pages
 
-- [Markdown Tips](/reference/markdown-tips)
-- [Wiki Conventions](/reference/wiki-conventions)
+- [MDX components and patterns](/reference/mdx-tips) — callouts, steps, tabs, code, diagrams, images
+- [Authoring conventions](/reference/authoring-conventions) — frontmatter, links, navigation, DriveWorks terminology, custom function docs
+
+## Repo layout
+
+| Path                | Purpose                                     |
+| ------------------- | ------------------------------------------- |
+| `docs.json`         | Site config, theme, tabs, navigation        |
+| `**/*.mdx`          | Documentation pages                         |
+| `snippets/`         | Reusable React components imported into MDX |
+| `scripts/`          | Generators (e.g. architecture layer tables) |
+| `images/wiki/`      | Static assets (migrated Wiki media, drawio) |
+
+## Cursor and MCP
+
+Project rule: `.cursor/rules/mintlify-mdx.mdc` (applies when editing MDX, snippets, or `docs.json` in this repo).
+
+Mintlify publishes a [Cursor writing guide](https://www.mintlify.com/docs/guides/cursor) and hosts a search MCP at `https://mintlify.com/docs/mcp` for component reference while authoring.

@@ -1,0 +1,1274 @@
+[
+  {
+    "name": "AssemblyResolveModuleInit.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AssemblyResolveModuleInit.cs",
+    "summary": "Module initializer for assembly resolve event handling, ensuring dependent assemblies load correctly in the DriveWorks plugin host process."
+  },
+  {
+    "name": "AutexScript.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AutexScript.cs",
+    "summary": "Abstract base class for all Autex Toolkit scripts defining execution context (project/group/no-connection), icon, group-mode looping, input specs, and apply-selected handling."
+  },
+  {
+    "name": "AutexScriptContext.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AutexScriptContext.cs",
+    "summary": "Concrete implementation of IAutexScriptContext providing script execution context with DriveWorks SDK access, result display methods, cancellation, and mutation control."
+  },
+  {
+    "name": "AutexScriptContextMutationsExtensions.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AutexScriptContextMutationsExtensions.cs",
+    "summary": "Extension method EnsureMutationsAllowed that guards write operations by throwing when the script context does not permit mutations."
+  },
+  {
+    "name": "AutexScriptRegistry.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AutexScriptRegistry.cs",
+    "summary": "Static registry that discovers and instantiates all available AutexScript implementations via reflection, providing the script catalog to the presenter and browser."
+  },
+  {
+    "name": "AutexToolkitDuplicateAssemblyGuard.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/AutexToolkitDuplicateAssemblyGuard.cs",
+    "summary": "Guard that detects and logs duplicate Autex Toolkit assembly loads, preventing multiple plugin initializations from conflicting in the DriveWorks host process."
+  },
+  {
+    "name": "AutexToolkitExtenderAssemblyGate.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AutexToolkitExtenderAssemblyGate.cs",
+    "summary": "Assembly gate that manages the AutexCustom extender assembly load context, ensuring the correct version is loaded for project extender UDFs."
+  },
+  {
+    "name": "AutexToolkitProjectExtenderDiagnostics.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AutexToolkitProjectExtenderDiagnostics.cs",
+    "summary": "Diagnostics helper for the Autex Toolkit shared project extender, logging UDF registration status, function categories, and assembly resolution details."
+  },
+  {
+    "name": "AutexToolkitSharedProjectExtender.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/AutexToolkitSharedProjectExtender.cs",
+    "summary": "DriveWorks SharedProjectExtender registering all Autex Toolkit UDFs (group constants lookup, spelling check/suggest/if-error) with duplicate-instance tracking and project lifecycle management."
+  },
+  {
+    "name": "AutexToolsViewEventArgs.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/AutexToolsViewEventArgs.cs",
+    "summary": "Event argument classes for the Autex Tools view layer: RunRequested, SaveReportRequested, ExportCsvRequested, RefreshCacheRequested, and ContinueWithSelectedRequested."
+  },
+  {
+    "name": "BaseAutexScript.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/BaseAutexScript.cs",
+    "summary": "Abstract base providing Id, DisplayName, Description, RequiresOpenProject, GetInputSpecs, and GetToolbarSpecs for Autex scripts."
+  },
+  {
+    "name": "CacheEntry.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Cache/CacheEntry.cs",
+    "summary": "Value type recording a cached item's value, load timestamp, and load duration in milliseconds."
+  },
+  {
+    "name": "CacheKey.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Cache/CacheKey.cs",
+    "summary": "Cache key structure combining group path, project name, and optional scope tag for the group/project data cache."
+  },
+  {
+    "name": "CacheStore.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Cache/CacheStore.cs",
+    "summary": "Concurrent cache store providing TryGet/Set/Clear operations with group-scoped and project-scoped invalidation support."
+  },
+  {
+    "name": "CalcTableDiffSummarizer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DiffSummarizers/CalcTableDiffSummarizer.cs",
+    "summary": "Summarizes calc table diff pairs into human-readable change descriptions for the comparison report."
+  },
+  {
+    "name": "CancellableScriptContext.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/CancellableScriptContext.cs",
+    "summary": "Decorator wrapping IAutexScriptContext to inject cancellation checks and nested dispatcher pumping at host boundaries without requiring explicit Yield calls from scripts."
+  },
+  {
+    "name": "ChangeCounts.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ChangeCounts.cs",
+    "summary": "Value type tracking counts of added, removed, renamed, modified, and moved changes with aggregation support."
+  },
+  {
+    "name": "ChangeTreeBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ChangeTreeBuilder.cs",
+    "summary": "Builds a hierarchical ChangeTreeModel from ProjectComparisonResult, organizing settings, constants, variables, forms, form controls, documents, and other sections into a tree with change kind annotations."
+  },
+  {
+    "name": "ChangeTreeModel.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ChangeTreeModel.cs",
+    "summary": "Root model holding the change tree root node, totals summary, and flat detail list for the comparison report."
+  },
+  {
+    "name": "ChangeTreeNode.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ChangeTreeNode.cs",
+    "summary": "Tree node representing a comparison section or leaf with label, change kind, filter type, counts, and children."
+  },
+  {
+    "name": "CheckboxListSelectionInputs.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/CheckboxListSelectionInputs.cs",
+    "summary": "Helper for building checkbox-list input specifications with parse/encode/normalize operations for multi-select script inputs."
+  },
+  {
+    "name": "CompareRuleHighlighter.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/CompareRuleHighlighter.cs",
+    "summary": "Generates highlighted HTML for rule comparison with inline diff markers showing additions and deletions between two rule texts."
+  },
+  {
+    "name": "ComparisonReportModelBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ComparisonReportModelBuilder.cs",
+    "summary": "Projects ProjectComparisonResult into Scriban-friendly dictionaries for the UI3 comparison report, supporting single and combined modes with tree node limits and cell truncation."
+  },
+  {
+    "name": "ComparisonScope.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ComparisonScope.cs",
+    "summary": "Enum defining comparison scope levels (e.g. project vs group) for the comparison session."
+  },
+  {
+    "name": "ComparisonSession.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ComparisonSession.cs",
+    "summary": "Holds two comparison sides (newer/older), data sources, options, and lazily computed comparison result with caching."
+  },
+  {
+    "name": "ComparisonSessionBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ComparisonSessionBuilder.cs",
+    "summary": "Factory building ComparisonSession instances from the Compare Projects script parameters and revision descriptors."
+  },
+  {
+    "name": "ConnectionEdgeKind.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/CrossProject/ConnectionEdgeKind.cs",
+    "summary": "Enum defining kinds of cross-project connection edges (macro reference, rule reference, hosted project link)."
+  },
+  {
+    "name": "ConstantsTypedComparer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/TypedComparers/ConstantsTypedComparer.cs",
+    "summary": "Typed comparer for project constants, producing item diffs for added/removed/modified/renamed constants."
+  },
+  {
+    "name": "CrudApiTestConstants.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/CrudApiTestConstants.cs",
+    "summary": "Constants for CRUD API test scripts including name prefixes, form message codes, and document type identifiers."
+  },
+  {
+    "name": "CrudOp.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/CrudOp.cs",
+    "summary": "Enum defining CRUD operation types (Create, Read, Update, Delete) used in test and data management scripts."
+  },
+  {
+    "name": "CrudResult.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/CrudResult.cs",
+    "summary": "Value type representing a CRUD operation result with success status, item name, and error message."
+  },
+  {
+    "name": "CurrentView.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/CurrentView.cs",
+    "summary": "Unified view over the current project or group context, building list-data tables with filters from the DriveWorks SDK for script consumption."
+  },
+  {
+    "name": "CutEstimateProfileTableCatalog.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Catalogs/CutEstimateProfileTableCatalog.cs",
+    "summary": "Catalog for cut estimate profile tables providing header-based row lookup, profile table data building, and simple table construction."
+  },
+  {
+    "name": "DescriptionMarkdownToRtf.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/DescriptionMarkdownToRtf.cs",
+    "summary": "Converts description text from Markdown to RTF format for display in WPF RichTextBox controls."
+  },
+  {
+    "name": "DiagnosticResultTableHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Engines/DiagnosticResultTableHelper.cs",
+    "summary": "Helper for building diagnostic result DataTables with predefined column layouts for status, name, reason, section, location, and rule-based diagnostics."
+  },
+  {
+    "name": "DisplayTableColumnOrder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/DisplayTableColumnOrder.cs",
+    "summary": "Defines column ordering rules for display tables, applying custom sort order and removing category depth columns when present."
+  },
+  {
+    "name": "DocumentCreationSupport.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Documents/DocumentCreationSupport.cs",
+    "summary": "Document type metadata and resolution for creation, providing type options (simple, data, 3D), master file requirements, and 3D document initialization helpers."
+  },
+  {
+    "name": "DriveProjectLockFile.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Archive/DriveProjectLockFile.cs",
+    "summary": "Detects and reads DriveWorks project peer lock files, providing lock holder information for concurrent access management."
+  },
+  {
+    "name": "DriveProjxArchiveLayout.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Archive/DriveProjxArchiveLayout.cs",
+    "summary": "Defines the .driveprojx ZIP archive layout with well-known entry paths (designMaster.xml, project.xml) and entry listing helpers."
+  },
+  {
+    "name": "DriveProjXFileReader.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Archive/DriveProjXFileReader.cs",
+    "summary": "Builds ProjectData from a .driveprojx ZIP archive without opening the project in DriveWorks, reading designMaster.xml and project.xml to populate constants, variables, tables, documents, forms, and specification properties."
+  },
+  {
+    "name": "DriveProjXFormXmlParser.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Archive/DriveProjXFormXmlParser.cs",
+    "summary": "Parses form XML fragments from .driveprojx archives into FormControlData transfer objects with property capture."
+  },
+  {
+    "name": "DriveProjXProjectXmlParser.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Archive/DriveProjXProjectXmlParser.cs",
+    "summary": "Parses preprocessed driveProj/project.xml into structured lists (settings, constants, variables, tables, documents, macros) for ProjectData construction from archive sources."
+  },
+  {
+    "name": "DriveWorksAssemblyCompatibility.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DriveWorks/DriveWorksAssemblyCompatibility.cs",
+    "summary": "Assembly resolve handler that redirects DriveWorks and WebView2 DLL loads to the correct install directory, handling version mismatches between build-time references and the running host."
+  },
+  {
+    "name": "DriveWorksFontDiscovery.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DriveWorks/DriveWorksFontDiscovery.cs",
+    "summary": "Discovers available font families from the system and DriveWorks install, providing font family lists with style information for form control font property handling."
+  },
+  {
+    "name": "DriveWorksFontValue.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DriveWorks/DriveWorksFontValue.cs",
+    "summary": "Value type representing a DriveWorks font specification (family, size, bold, italic, underline, strikethrough) with parse and format methods."
+  },
+  {
+    "name": "DriveWorksRenameableNamePolicy.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DriveWorks/DriveWorksRenameableNamePolicy.cs",
+    "summary": "Policy for validating and formatting DriveWorks renameable names, handling Pascal case, interior spaces, dictionary hints, and rename validation."
+  },
+  {
+    "name": "DriveWorksRuleParsing.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/DriveWorksRuleParsing.cs",
+    "summary": "Helper for parsing DriveWorks rule text, detecting formula-like expressions and extracting rule structure."
+  },
+  {
+    "name": "FindReplaceReadOnlyPreview.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Engines/FindReplaceReadOnlyPreview.cs",
+    "summary": "Builds a read-only preview table for find-and-replace operations from ProjectData, showing proposed changes before apply."
+  },
+  {
+    "name": "FlowPropertyDataFactory.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FlowPropertyDataFactory.cs",
+    "summary": "Factory methods for creating static and dynamic FlowProperty data instances used in specification flow property mapping."
+  },
+  {
+    "name": "FlowPropertyFromArchiveXml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FlowPropertyFromArchiveXml.cs",
+    "summary": "Parses Specification Flow / macro Property XML from .driveprojx archives into SpecificationMacroTaskPropertyInfo using the same slot semantics as FlowRuledProperty."
+  },
+  {
+    "name": "FlowRuledProperty.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FlowRuledProperty.cs",
+    "summary": "Defines FlowPropertyMode (Static/Dynamic/Connected) and provides mapping from DriveWorks SDK FlowProperty to the Toolkit's ruled property model for specification flow tasks."
+  },
+  {
+    "name": "FormControlComparer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/FormControlComparer.cs",
+    "summary": "Compares form control properties between two project snapshots, producing filtered property diffs with known-limitation tagging."
+  },
+  {
+    "name": "FormControlConversionAnalysis.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlConversionAnalysis.cs",
+    "summary": "Analyzes form control property conversion compatibility between source and target control types, reporting supported and unsupported property mappings."
+  },
+  {
+    "name": "FormControlCreation.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlCreation.cs",
+    "summary": "Result type for form control creation operations carrying success status, message, and the created control reference."
+  },
+  {
+    "name": "FormControlDeepCopy.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlDeepCopy.cs",
+    "summary": "Deep copy model for form control properties, capturing property name, category, value, rule, and rule-driven status for clipboard and duplication operations."
+  },
+  {
+    "name": "FormControlListExtensions.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlListExtensions.cs",
+    "summary": "Extension method filtering form control lists by control type for list-data scripts."
+  },
+  {
+    "name": "FormControlMoveDetector.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/FormControlMoveDetector.cs",
+    "summary": "Detects form controls that have been moved (renamed or repositioned) between two project snapshots, applying move annotations to the diff result."
+  },
+  {
+    "name": "FormControlPairComparisonReport.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlPairComparisonReport.cs",
+    "summary": "Generates pair comparison reports for form control type conversions, producing HTML documents, DataTables, CSV exports, and property matrix views with semantic and partial property pairings."
+  },
+  {
+    "name": "FormControlPathHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/FormControlPathHelper.cs",
+    "summary": "Helper for parsing and formatting form control display paths (form > tab > control) in the comparison tree."
+  },
+  {
+    "name": "FormControlPropertyCapture.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlPropertyCapture.cs",
+    "summary": "Value type capturing a form control property's value, rule, comment, and rule-driven status for snapshot and comparison."
+  },
+  {
+    "name": "FormControlPropertyRuleSupport.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlPropertyRuleSupport.cs",
+    "summary": "Enum defining rule support levels for form control properties (None, Optional, Required) used in property transfer validation."
+  },
+  {
+    "name": "FormControlPropertyTransfer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlPropertyTransfer.cs",
+    "summary": "Handles property transfer between form controls, resolving alias mappings and validating target property acceptance for copy/apply operations."
+  },
+  {
+    "name": "FormControlPropertyValueKind.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlPropertyValueKind.cs",
+    "summary": "Enum defining the value kind of form control properties (Literal, Rule, Mixed) for display and comparison."
+  },
+  {
+    "name": "FormControlPropertyWrite.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlPropertyWrite.cs",
+    "summary": "Single entry point for writing a literal value to a form control DynamicProperty. Uses the correct DriveWorks transaction based on Static/Dynamic mode."
+  },
+  {
+    "name": "FormControlRef.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlRef.cs",
+    "summary": "Script-facing reference to a form control in the context of a project. Wraps ProjectOpen, Form, and ControlBase for capture/apply/copy operations."
+  },
+  {
+    "name": "FormControlRuledProperty.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlRuledProperty.cs",
+    "summary": "Read-only view of one DynamicProperty on one ControlBase, capturing Static/Dynamic mode, rule, value, and toggle state from the DriveWorks SDK."
+  },
+  {
+    "name": "FormControlTableBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlTableBuilder.cs",
+    "summary": "Builds column plans and creates Simple, Calc, or Group tables from form control property metadata. Central to the List Data scripts."
+  },
+  {
+    "name": "FormControlTypeResolver.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlTypeResolver.cs",
+    "summary": "Maps form control type names (e.g. TextBox, WebFrame) to DriveWorks.Forms ControlBase CLR types by searching loaded assemblies."
+  },
+  {
+    "name": "FormControlTypes.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlTypes.cs",
+    "summary": "Static API for form control type names and property metadata. Defines all known control types and their property descriptors for use in dropdowns and conversion logic."
+  },
+  {
+    "name": "FormControlTypeSelectionInputs.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/FormControlTypeSelectionInputs.cs",
+    "summary": "Configure-time multi-select input for form control types. Builds checkbox input specs and parses pipe-delimited selections."
+  },
+  {
+    "name": "FormsSectionMerger.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/FormsSectionMerger.cs",
+    "summary": "Merges form section diffs from multiple comparison results into a unified forms section for combined reports."
+  },
+  {
+    "name": "GenerationTaskDiffSummarizer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DiffSummarizers/GenerationTaskDiffSummarizer.cs",
+    "summary": "Produces human-readable summaries for generation task (component task) field differences used in project comparison reports."
+  },
+  {
+    "name": "GenerationTaskLocationDecoder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DiffSummarizers/GenerationTaskLocationDecoder.cs",
+    "summary": "Maps ComponentTaskSequenceLocation enum values to DriveWorks UI display names (e.g. Pre Copy Tasks, Post Drive Tasks)."
+  },
+  {
+    "name": "GitHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/VersionControl/GitHelper.cs",
+    "summary": "Thin wrapper around the git CLI for use by Toolkit version control scripts. Provides repo root detection, commit/ref queries, diff, stage, commit, push, and status operations."
+  },
+  {
+    "name": "GroupComparisonResult.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/GroupComparisonResult.cs",
+    "summary": "Result model for group-level comparison containing an error message and per-project comparison results."
+  },
+  {
+    "name": "GroupConnectionIndex.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/CrossProject/GroupConnectionIndex.cs",
+    "summary": "Immutable index of cross-project references for a group, supporting macro and rule cross-reference queries with conservative static resolution."
+  },
+  {
+    "name": "GroupConnectionScanner.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/GroupConstants/GroupConnectionScanner.cs",
+    "summary": "Extracts cross-project edges and heuristic text from an open SDK Project. Scans tasks, child specification definitions, and specification host controls for connection edges."
+  },
+  {
+    "name": "GroupConstantsStore.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/GroupConstants/GroupConstantsStore.cs",
+    "summary": "File-backed store for group-level constants per DriveWorks group. Uses TOML as primary format with JSON backward compatibility. Results are cached per file path with timestamp-based invalidation."
+  },
+  {
+    "name": "GroupConstantsTomlIO.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/GroupConstants/GroupConstantsTomlIO.cs",
+    "summary": "Serializes and deserializes GroupConstantsFile to/from TOML using Tomlyn. Aligned with snapshot TOML style for group constants."
+  },
+  {
+    "name": "GroupOnlyResultTablePolicy.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/GroupOnlyResultTablePolicy.cs",
+    "summary": "Policy that validates result tables in group-only mode. Ensures DataTable has a Project column and blocks SetResultTable calls missing it."
+  },
+  {
+    "name": "GroupSlotStore.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/GroupConstants/GroupSlotStore.cs",
+    "summary": "In-memory key-value store for group-level slot data. Supports set, get, identity listing, and clear operations."
+  },
+  {
+    "name": "GroupSnapshotDeltaBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/GroupSnapshotDeltaBuilder.cs",
+    "summary": "Builds sparse GroupData plus GroupTomlDeltaRemovals from two full group snapshots for incremental TOML export."
+  },
+  {
+    "name": "HtmlOutputFormatting.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/HtmlOutputFormatting.cs",
+    "summary": "Simple HTML formatting helper that inserts newlines between tags for readable output."
+  },
+  {
+    "name": "IAutexScript.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/IAutexScript.cs",
+    "summary": "Core interface for runnable scripts exposed in the Autex Tools script list. Defines Id, DisplayName, Description, input specs, toolbar specs, and Run method."
+  },
+  {
+    "name": "IAutexScriptContext.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/IAutexScriptContext.cs",
+    "summary": "Context interface passed to scripts providing current group/project views, mode, output methods, input values, cancellation, and result display options including SelectAndContinue."
+  },
+  {
+    "name": "IAutexScriptContextSupport.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/IAutexScriptContextSupport.cs",
+    "summary": "Marker interface for objects that provide IAutexScriptContext support."
+  },
+  {
+    "name": "IAutexScriptHelpers.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/IAutexScriptHelpers.cs",
+    "summary": "Plugin-provided helper interface for scripts covering project data, rule analysis, CRUD operations, document creation, form control manipulation, and spell checking. The primary API surface for script-to-SDK interaction."
+  },
+  {
+    "name": "IAutexToolsView.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/IAutexToolsView.cs",
+    "summary": "Abstraction of the Autex Tools UI used by the presenter. Defines events (Run, Abort, Undo) and setters for results, session output, and script list display."
+  },
+  {
+    "name": "IComparisonSource.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/IComparisonSource.cs",
+    "summary": "Interface for comparison data sources providing project data resolution for a revision descriptor."
+  },
+  {
+    "name": "ICurrentView.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/ICurrentView.cs",
+    "summary": "Interface for the current view abstraction providing mode, emptiness check, and DataTable conversion."
+  },
+  {
+    "name": "IDataTableInfo.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/IDataTableInfo.cs",
+    "summary": "Interface for DataTable info objects providing column metadata and row count."
+  },
+  {
+    "name": "IDebugOnlyScript.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/IDebugOnlyScript.cs",
+    "summary": "Marker interface for scripts that only appear in debug builds. Hidden from production script browsers."
+  },
+  {
+    "name": "IGroupDataProvider.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/IGroupDataProvider.cs",
+    "summary": "Data provider interface extending IAutexScriptHelpers with group/project CRUD, DriveControls setup, form control positioning, rule snapshot application, and team management."
+  },
+  {
+    "name": "IGroupView.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/IGroupView.cs",
+    "summary": "Interface for group-level view providing group data, project listing, constants access, and connection scanning."
+  },
+  {
+    "name": "IProjectDataSource.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/IProjectDataSource.cs",
+    "summary": "Abstraction for resolvable project data sources (open project, TOML file, pasted TOML, driveprojx, in-memory). Includes factory and source kind enum for comparison workflows."
+  },
+  {
+    "name": "IProjectDataTypedComparer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/TypedComparers/IProjectDataTypedComparer.cs",
+    "summary": "Interface for type-specific project data comparers that produce typed diffs within the comparison engine."
+  },
+  {
+    "name": "IProjectView.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/IProjectView.cs",
+    "summary": "Interface for project-level view providing project data, forms, constants, variables, and rule access."
+  },
+  {
+    "name": "KnownLimitationPolicy.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/KnownLimitationPolicy.cs",
+    "summary": "Tags comparison rows with known-limitation annotations during SDK vs .driveprojx compares, enforcing the two approved archive limitations from the parity contract."
+  },
+  {
+    "name": "ListDataFilterNames.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ListDataFilterNames.cs",
+    "summary": "Constants for list data filter input IDs and special filter values (All, SpecificationMacroOnly)."
+  },
+  {
+    "name": "ListDataScriptInputSpecs.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ListDataScriptInputSpecs.cs",
+    "summary": "Builds input specs for list data scripts including control type dropdown and name/rule/value filter inputs."
+  },
+  {
+    "name": "LookupTableDiffSummarizer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DiffSummarizers/LookupTableDiffSummarizer.cs",
+    "summary": "Produces human-readable summaries for lookup table differences in project comparison reports."
+  },
+  {
+    "name": "ModelRuleTypeDecoder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ModelRules/ModelRuleTypeDecoder.cs",
+    "summary": "Maps model rule type enum values to human-readable display names for reports and diagnostics."
+  },
+  {
+    "name": "ModuleInitializerAttribute.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ModuleInitializerAttribute.cs",
+    "summary": "Polyfill for System.Runtime.CompilerServices.ModuleInitializerAttribute for .NET Framework targets."
+  },
+  {
+    "name": "NameCheckCollector.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Engines/NameCheckCollector.cs",
+    "summary": "Shared PascalCase and spelling name checks for CheckNames and PrePushValidation. Validates naming conventions, detects spelling issues, and suggests corrections."
+  },
+  {
+    "name": "NamedReadOnlyList.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/NamedReadOnlyList.cs",
+    "summary": "Generic read-only list wrapper with a Name property. Used for typed collections of named items in the data model."
+  },
+  {
+    "name": "NameErrorDiagnosticResult.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Engines/NameErrorDiagnosticResult.cs",
+    "summary": "Result model for #NAME error diagnostics containing root cause keys and per-key reasons with span information."
+  },
+  {
+    "name": "OptionalPluginProbe.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/OptionalPluginProbe.cs",
+    "summary": "Reflection-based probe for optional plugin types and methods. Used to detect and invoke features from AutexCustom and other optional plugins at runtime."
+  },
+  {
+    "name": "PascalCaseCheckRegistry.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/PascalCaseCheckRegistry.cs",
+    "summary": "Registry of items to check for PascalCase naming compliance at project and group level. Builds check items from project data and group constants."
+  },
+  {
+    "name": "PascalCaseValidator.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/PascalCaseValidator.cs",
+    "summary": "Validates PascalCase naming conventions by splitting identifiers into segments and checking capitalization and spelling against the dictionary."
+  },
+  {
+    "name": "ProjectComparisonKeys.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ProjectComparisonKeys.cs",
+    "summary": "Static helper generating stable comparison keys for each project data type (constants, variables, forms, documents, rules, etc.) used to match items across two project snapshots."
+  },
+  {
+    "name": "ProjectComparisonPolicy.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ProjectComparisonPolicy.cs",
+    "summary": "Policy class determining comparison behavior flags: driveprojx mode, strict round-trip parity, subset normalization, and TOML shape normalization."
+  },
+  {
+    "name": "ProjectComparisonReport.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DiffSummarizers/ProjectComparisonReport.cs",
+    "summary": "Formats ProjectComparisonResult as Markdown, HTML (via Scriban WebView), or CSV. Supports single, unified, and combined comparison reports."
+  },
+  {
+    "name": "ProjectConnectionEdge.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/CrossProject/ProjectConnectionEdge.cs",
+    "summary": "Value type representing a directed cross-project connection edge with kind, source/target project, macro name, and notes."
+  },
+  {
+    "name": "ProjectDataComparer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/DiffSummarizers/ProjectDataComparer.cs",
+    "summary": "Top-level entry point for comparing two ProjectData instances. Delegates to ProjectDataComparisonEngine."
+  },
+  {
+    "name": "ProjectDataComparisonEngine.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ProjectDataComparisonEngine.cs",
+    "summary": "Core comparison engine that compares two ProjectData instances producing a structured diff across all data types (constants, variables, forms, documents, settings, specification flow, etc.) with typed comparer delegation."
+  },
+  {
+    "name": "ProjectFolderFileComparer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/ProjectFolderFileComparer.cs",
+    "summary": "Compares project folder file trees between two revisions, detecting added/removed/modified files with hash-based content comparison and text diff support."
+  },
+  {
+    "name": "ProjectRulesFromCollectionsBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/ProjectRulesFromCollectionsBuilder.cs",
+    "summary": "Builds project snapshot rules from DriveProjx collection-based data. Merges rule collections, deduplicates constants/variables, and appends table rules."
+  },
+  {
+    "name": "ProjectSnapshotDeltaBuilder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/ProjectSnapshotDeltaBuilder.cs",
+    "summary": "Builds sparse ProjectData plus ProjectTomlDeltaRemovals from two full snapshots for incremental TOML export."
+  },
+  {
+    "name": "RemoveMetaclassTokensTransform.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Metaclass/RemoveMetaclassTokensTransforms.cs",
+    "summary": "Transforms rule text by removing metaclass tokens. Computes after-text and formats apply payloads for metaclass removal."
+  },
+  {
+    "name": "ReplaceWithGroupConstantsMatching.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/GroupConstants/ReplaceWithGroupConstantsMatching.cs",
+    "summary": "Value/name matching and rule text transforms for replacing local values with group constant references. Builds value indices and computes replacement scores."
+  },
+  {
+    "name": "ReplaceWithGroupConstantsMatchingSelfTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/ReplaceWithGroupConstantsMatchingSelfTest.cs",
+    "summary": "Self-test for ReplaceWithGroupConstantsMatching. Runs validation tests on value indexing and name matching logic."
+  },
+  {
+    "name": "RevisionDescriptor.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/RevisionDescriptor.cs",
+    "summary": "Describes a comparison revision source (live SDK project, TOML file, git ref, driveprojx archive) with display labels and resolution metadata."
+  },
+  {
+    "name": "RuleAnalysisModels.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleAnalysisModels.cs",
+    "summary": "Data model for rule analysis findings including kind, message, and span information for diagnostic reporting."
+  },
+  {
+    "name": "RuleCollectionHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleCollectionHelper.cs",
+    "summary": "Helper to extract all project rules from an open SDK Project into a flat list of InternalRuleItems."
+  },
+  {
+    "name": "RuleDiagnostic.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleDiagnostic.cs",
+    "summary": "Data model for a single rule diagnostic entry with error kind, reason, span bounds, root cause key, and diagnostic code."
+  },
+  {
+    "name": "RuleDiagnosticCode.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleDiagnosticCode.cs",
+    "summary": "Constants for well-known rule diagnostic codes used in error reporting."
+  },
+  {
+    "name": "RuleErrorDetection.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleErrorDetection.cs",
+    "summary": "Static helper to detect #NAME and #VALUE errors in rule evaluation results. Provides both production and test-facing methods."
+  },
+  {
+    "name": "RuleErrorDiagnosticEntry.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleErrorDiagnosticEntry.cs",
+    "summary": "Entry model for rule error diagnostics containing rule key, error kind, reason, root cause key, and span information."
+  },
+  {
+    "name": "RuleErrorDiagnosticResult.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleErrorDiagnosticResult.cs",
+    "summary": "Result model for rule error diagnostics containing diagnostic entries and root cause key sets."
+  },
+  {
+    "name": "RuleErrorKind.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleErrorKind.cs",
+    "summary": "Enum defining rule error kinds: NameError and ValueError."
+  },
+  {
+    "name": "RuleFormatter.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleFormatter.cs",
+    "summary": "DriveWorks rule formatter adapted from Python. Tokenizes and reformats rules with proper indentation for nested functions, arguments, and table literals."
+  },
+  {
+    "name": "RuleFormattingCandidates.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleFormattingCandidates.cs",
+    "summary": "Collects rules that are formatting candidates and applies formatted rule text with normalization and line ending handling."
+  },
+  {
+    "name": "RuleNamePrefixes.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleNamePrefixes.cs",
+    "summary": "Constants for DriveWorks rule name prefixes (Constant, Variable, CalcTable, GroupTable, LookupTable) used in rule parsing."
+  },
+  {
+    "name": "RuleSectionMap.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/RuleSectionMap.cs",
+    "summary": "Maps rule section names to comparison data type names for consistent categorization in the comparison report."
+  },
+  {
+    "name": "RuleSpellCheckHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleSpellCheckHelper.cs",
+    "summary": "Extracts words from rule text for spell-checking. Tokenizes rules, splits PascalCase identifiers, and runs dictionary checks with suggestion generation."
+  },
+  {
+    "name": "RuleStringSpans.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/RuleStringSpans.cs",
+    "summary": "Extracts string literal spans from DriveWorks rule text. Used to determine if an offset is inside a string literal for diagnostic purposes."
+  },
+  {
+    "name": "ScribanUiRenderer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/ScribanUiRenderer.cs",
+    "summary": "Renders Scriban templates for composable WebView UI surfaces. Loads partials from feature folders or shared defaults."
+  },
+  {
+    "name": "ScriptBrowserCatalogProjection.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/ScriptBrowserCatalogProjection.cs",
+    "summary": "Projects the script catalog into browser tiles with filtering, category matching, search, and enabled/disabled state for the Script Tools UI."
+  },
+  {
+    "name": "ScriptBrowserRunCommandPolicy.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/ScriptBrowserRunCommandPolicy.cs",
+    "summary": "Evaluates whether a script's run command is allowed based on current mode, project state, and script context requirements."
+  },
+  {
+    "name": "ScriptBrowserSurfaceModels.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/ScriptBrowserSurfaceModels.cs",
+    "summary": "Surface models for the script browser WebView including script tiles, categories, run commands, and display state."
+  },
+  {
+    "name": "ScriptCategoryHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ScriptCategoryHelper.cs",
+    "summary": "Helper to extract script category from namespace and provide the Version Control category name constant."
+  },
+  {
+    "name": "ScriptContext.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ScriptContext.cs",
+    "summary": "Enum defining script context modes (Project, Group) for script execution."
+  },
+  {
+    "name": "ScriptContextExtensions.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ScriptContextExtensions.cs",
+    "summary": "Extension methods for IAutexScriptContext reducing boilerplate in scripts. Provides require-open helpers, path resolution, input reading, and project/group guard methods."
+  },
+  {
+    "name": "ScriptContextHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ScriptContextHelper.cs",
+    "summary": "Helper for script context mode conversion, run support detection, and primary run button content resolution."
+  },
+  {
+    "name": "ScriptInputSpec.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ScriptInputSpec.cs",
+    "summary": "Defines script input specifications including kind, validation, dependencies, and UI schema. Provides factory methods for Checkbox, Text, Dropdown, and FilePath inputs."
+  },
+  {
+    "name": "ScriptMessages.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ScriptMessages.cs",
+    "summary": "Shared user-facing message constants for scripts (open project/group first, export path errors, data type selection prompts)."
+  },
+  {
+    "name": "ScriptOperationResultColumns.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ScriptOperationResultColumns.cs",
+    "summary": "Column name constants for script operation result tables (Project, Item, Status, Reason)."
+  },
+  {
+    "name": "ScriptTestCompanion.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/ScriptTestCompanion.cs",
+    "summary": "Test companion for scripts providing input override resolution and default input building for test runner integration."
+  },
+  {
+    "name": "ScriptTestReport.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/ScriptTestReport.cs",
+    "summary": "Test report builder for script test suites. Creates result DataTables, publishes assertion tables, and manages stop-on-failure and summary reporting."
+  },
+  {
+    "name": "ScriptToolsHostState.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/ScriptToolsHostState.cs",
+    "summary": "State model for the Script Tools WebView host including script catalog, categories, favorites, recents, search, results, cache panel, and review state. Large model with nested types."
+  },
+  {
+    "name": "ScriptToolsScriptInputValidation.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/ScriptToolsScriptInputValidation.cs",
+    "summary": "Validates script input values before run. Checks required inputs, regex patterns, and project-blocking conditions for compare scripts."
+  },
+  {
+    "name": "SelfParityGate.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/SelfParityGate.cs",
+    "summary": "Pass/fail gate for self-compare parity testing (live SDK vs own .driveprojx or TOML round-trip), logging any diff rows as parity failures with section-limited output."
+  },
+  {
+    "name": "SettingsComparer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/SettingsComparer.cs",
+    "summary": "Compares project-level settings between two snapshots, producing setting diffs for the comparison result."
+  },
+  {
+    "name": "SlabPackingSettingsTableCatalog.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Catalogs/SlabPackingSettingsTableCatalog.cs",
+    "summary": "Catalog of slab packing settings table rows. Provides header property/value matching, row lookup, and simple table data building."
+  },
+  {
+    "name": "SnapshotDeltaMergeKeys.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotDeltaMergeKeys.cs",
+    "summary": "Constants for snapshot delta merge key names (Constant, Variable, Form, Document, etc.) used in TOML delta serialization."
+  },
+  {
+    "name": "SnapshotJsonSerialization.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotJsonSerialization.cs",
+    "summary": "JSON serialization helpers for snapshot items using Newtonsoft.Json. Provides consistent item serialization for delta builders."
+  },
+  {
+    "name": "SnapshotTomlDeltaExportHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotTomlDeltaExportHelper.cs",
+    "summary": "Helper for parsing export delta flags, capturing baselines, and writing group/project delta TOML files for incremental exports."
+  },
+  {
+    "name": "SnapshotTomlDeltaTypes.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotTomlDeltaTypes.cs",
+    "summary": "Type definitions for TOML delta payloads including project and group shapes, data sections, and removal lists."
+  },
+  {
+    "name": "SnapshotTomlDeserializer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotTomlDeserializer.cs",
+    "summary": "Deserializes TOML (produced by SnapshotTomlSerializer) back into ProjectData and GroupData. Reverses projected sub-table format and restores omitted fields to defaults."
+  },
+  {
+    "name": "SnapshotTomlExportSorter.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotTomlExportSorter.cs",
+    "summary": "Sorts project and group data for deterministic TOML export ordering. Ensures consistent diff-friendly output."
+  },
+  {
+    "name": "SnapshotTomlSerializer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotTomlSerializer.cs",
+    "summary": "Serializes ProjectData and GroupData to TOML via Tomlyn. Uses projected sub-tables for named collections and omits blank/default values for compact, diff-friendly output."
+  },
+  {
+    "name": "SnapshotTomlUtf8FileWriter.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Snapshot/SnapshotTomlUtf8FileWriter.cs",
+    "summary": "UTF-8 file writer for TOML output with configurable buffer size. Ensures consistent encoding for snapshot files."
+  },
+  {
+    "name": "SpecificationFlowDiffEngine.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/SpecificationFlowDiffEngine.cs",
+    "summary": "Path-based structural comparison engine for SpecificationFlow definitions, comparing states, transitions, conditions, and tasks between two flow versions."
+  },
+  {
+    "name": "SpecificationFlowDisplay.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationFlowDisplay.cs",
+    "summary": "Enriches and formats specification flow definitions for human-readable display. Builds state titles, transition labels, and tree-formatted text output."
+  },
+  {
+    "name": "SpecificationFlowDisplaySelfTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/SpecificationFlowDisplaySelfTest.cs",
+    "summary": "Self-test for SpecificationFlowDisplay formatting logic. Validates state title resolution and tree output."
+  },
+  {
+    "name": "SpecificationFlowDtoMapper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationFlowDtoMapper.cs",
+    "summary": "Maps specification flow data from SDK Project objects to DTO models for use in scripts and reports."
+  },
+  {
+    "name": "SpecificationFlowFromXmlMapper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationFlowFromXmlMapper.cs",
+    "summary": "Parses specification flow definitions from preprocessed project XML into DTO models. Handles states, transitions, operations, tasks, and conditions."
+  },
+  {
+    "name": "SpecificationFlowInfoToXmlMapper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationFlowInfoToXmlMapper.cs",
+    "summary": "Maps specification flow DTO models back to XML elements for write-back to DriveWorks projects. Resolves task and condition types."
+  },
+  {
+    "name": "SpecificationFlowNodeXmlHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationFlowNodeXmlHelper.cs",
+    "summary": "Helper for cloning specification flow XML nodes during read-modify-write operations."
+  },
+  {
+    "name": "SpecificationFlowPathHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/SpecificationFlowPathHelper.cs",
+    "summary": "Helper for combining and parsing specification flow display paths (state > transition > task) used in the diff engine."
+  },
+  {
+    "name": "SpecificationFlowRuleFlattening.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationFlowRuleFlattening.cs",
+    "summary": "Extracts and flattens rule text from specification flow properties for spell-checking and analysis. Builds rule lists from flow states and tasks."
+  },
+  {
+    "name": "SpecificationFlowTomlMapper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationFlowTomlMapper.cs",
+    "summary": "Reads and writes SpecificationFlowDefinitionInfo as nested TOML. Handles deep cloning, TOML table construction, and legacy JSON migration."
+  },
+  {
+    "name": "SpecificationMacroDiffSummarizer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationMacros/SpecificationMacroDiffSummarizer.cs",
+    "summary": "Produces human-readable summaries for specification macro differences in project comparison reports."
+  },
+  {
+    "name": "SpecificationMacroReferenceQueries.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationMacros/SpecificationMacroReferenceQueries.cs",
+    "summary": "Queries for specification macro cross-references. Detects if macros are referenced, collects triggers, and identifies RunMacro tasks in specification flows."
+  },
+  {
+    "name": "SpecificationMacroSnapshotApply.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationMacros/SpecificationMacroSnapshotApply.cs",
+    "summary": "Applies specification macro snapshots to projects. Handles creation, update, and deletion of macros from snapshot data."
+  },
+  {
+    "name": "SpecificationTaskWalker.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/SpecificationFlow/SpecificationTaskWalker.cs",
+    "summary": "Walks specification flow tasks and macro tasks in an SDK Project. Enumerates all tasks, extracts property values, and appends string values for text analysis."
+  },
+  {
+    "name": "SpellingDictionary.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/SpellingDictionary.cs",
+    "summary": "Hunspell-based spelling dictionary with en-GB embedded resources. Loads custom words, acronym prefixes, and typo mappings from user folders. Provides word checking, splitting, and suggestion generation."
+  },
+  {
+    "name": "SpellingUserPaths.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Rules/SpellingUserPaths.cs",
+    "summary": "Resolves user spelling folder paths from Documents/AutexToolkit/Spelling and legacy DLL folder. Provides file paths for custom words, acronyms, and mappings."
+  },
+  {
+    "name": "TestResultCollector.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/TestResultCollector.cs",
+    "summary": "Simple pass/fail test result collector that accumulates results and converts to a list for reporting."
+  },
+  {
+    "name": "TestRunner.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/TestRunner.cs",
+    "summary": "Runs test suites discovered from the script registry. Executes tests with optional stop-on-failure and collects results."
+  },
+  {
+    "name": "TextFilterHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/TextStrings/TextFilterHelper.cs",
+    "summary": "Shared filter logic for Rule/Value columns. Supports Contains, StartsWith, Matches (regex), and Exactly operators with input spec generation."
+  },
+  {
+    "name": "TextStringCandidateScanner.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/TextStrings/TextStringCandidateScanner.cs",
+    "summary": "Finds double-quoted literals in DriveWorks rule text that may be user-facing i18n candidates. Skips lookup column names, SQL, paths, HTML, and group constant keys."
+  },
+  {
+    "name": "TextStringCandidateScannerSelfTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Testing/TextStringCandidateScannerSelfTest.cs",
+    "summary": "Self-test for TextStringCandidateScanner validating quoted literal extraction and skip heuristics."
+  },
+  {
+    "name": "TextStringsGroupTableHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/TextStrings/TextStringsGroupTableHelper.cs",
+    "summary": "Helper for managing text strings in DriveWorks group tables. Provides grid lookup, key-value search, and row appending."
+  },
+  {
+    "name": "TomlAtGitRefSource.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/TomlAtGitRefSource.cs",
+    "summary": "IComparisonSource implementation that resolves project data from a TOML file at a specific git reference, enabling version-controlled snapshot comparison."
+  },
+  {
+    "name": "ToolkitBrowseSidebarKeys.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/ScriptUi/ToolkitBrowseSidebarKeys.cs",
+    "summary": "Constants for browse sidebar navigation keys: All, Recents, Favourites."
+  },
+  {
+    "name": "ToolkitLog.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Diagnostics/ToolkitLog.cs",
+    "summary": "Shared structured logging pipeline using Serilog. Writes compact JSON lines for diagnostics, mirrors to Debug output, and supports area-based loggers with environment variable configuration."
+  },
+  {
+    "name": "ToolkitNativeHostShell.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Diagnostics/ToolkitNativeHostShell.cs",
+    "summary": "Manages the native WPF host shell for Toolkit windows. Handles content attachment and chrome state (title, status bars, busy indicator)."
+  },
+  {
+    "name": "ToolkitPreferenceList.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Ui/ToolkitPreferenceList.cs",
+    "summary": "Manages favorite and recent item lists with configurable display/stored counts. Used for script favorites, icon picker, and metaclass picker preferences."
+  },
+  {
+    "name": "ToolkitTry.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Diagnostics/ToolkitTry.cs",
+    "summary": "Utility class providing safe execution wrappers and try-pattern helpers for DriveWorks SDK boundary calls."
+  },
+  {
+    "name": "ToolkitUiFont.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Ui/ToolkitUiFont.cs",
+    "summary": "Font management for the Toolkit UI. Provides standard font family names, font creation, CSS font-face generation, and embedded font resources."
+  },
+  {
+    "name": "ToolkitUserUiPreferences.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Ui/ToolkitUserUiPreferences.cs",
+    "summary": "User UI preferences model persisted to JSON. Manages script favorites/recents, icon picker favorites/recents, color favorites, group constant favorites, and metaclass picker preferences."
+  },
+  {
+    "name": "ToolkitUserUiPreferencesStore.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Ui/ToolkitUserUiPreferencesStore.cs",
+    "summary": "Singleton store for ToolkitUserUiPreferences. Provides thread-safe current access and mutate-and-save operations."
+  },
+  {
+    "name": "ToolkitWindowChromeState.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Ui/ToolkitWindowChromeState.cs",
+    "summary": "Immutable state model for Toolkit window chrome: product name, workflow name, context text, status bars, and busy state."
+  },
+  {
+    "name": "ToolkitWpfDesignTokens.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Ui/ToolkitWpfDesignTokens.cs",
+    "summary": "WPF-specific design tokens providing SolidColorBrush and FontFamily properties derived from the shared UiDesignTokens color palette."
+  },
+  {
+    "name": "ToTableExtensions.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/ToTableExtensions.cs",
+    "summary": "Extension methods converting various data types (constants, variables, form controls, documents, rules, etc.) to DataTable for display in the UI."
+  },
+  {
+    "name": "UdfTestSuiteSelectionInputs.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/UdfTestSuiteSelectionInputs.cs",
+    "summary": "Input spec builder for UDF test suite selection. Provides checkbox input for selecting which test suites (Geometry, Utility, RuleEval, Icons) to run."
+  },
+  {
+    "name": "UiDesignTokens.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Ui/UiDesignTokens.cs",
+    "summary": "Semantic UI design tokens shared between WPF styles and WebView CSS. Defines colors, spacing, radii, font sizes, shadows, and CSS variable generation."
+  },
+  {
+    "name": "UndoOperation.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/UndoOperation.cs",
+    "summary": "Discriminated union-like types for undo operations: UndoDelete, UndoCreate, UndoUpdate, UndoRename, UndoUpdateTeamPrivileges. Used for script undo logging."
+  },
+  {
+    "name": "UnreferencedReferenceHelpers.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Engines/UnreferencedReferenceHelpers.cs",
+    "summary": "Helpers for detecting unreferenced project items. Searches rule text for direct and indirect references to constants, variables, and other named items."
+  },
+  {
+    "name": "UserMessageKind.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Scripts/UserMessageKind.cs",
+    "summary": "Enum for user message kinds: Information, Warning, Error."
+  },
+  {
+    "name": "VariablesTypedComparer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Comparison/TypedComparers/VariablesTypedComparer.cs",
+    "summary": "Typed comparer for project variables, producing item diffs for added/removed/modified/renamed variables."
+  },
+  {
+    "name": "VcChangesCommands.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/VersionControl/VcChangesCommands.cs",
+    "summary": "Version control commands for staging, committing, and pushing TOML changes. Wraps GitHelper operations with status reporting."
+  },
+  {
+    "name": "VcScriptRunner.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/VersionControl/VcScriptRunner.cs",
+    "summary": "Runner for version control scripts providing success/failure reporting, prose output, logging, and result table summaries."
+  },
+  {
+    "name": "VcState.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/VersionControl/VcState.cs",
+    "summary": "State models for version control: branch info, commit info, repo status, changed files, and TOML report gate state."
+  },
+  {
+    "name": "VcTomlMirrorPathHelper.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/VersionControl/VcTomlMirrorPathHelper.cs",
+    "summary": "Pure path helper for tracked full TOML representations of native DriveWorks files. Resolves mirror paths under the AutexToolkit folder in the repository."
+  },
+  {
+    "name": "VcTomlReportArtifactManifest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/VersionControl/VcTomlReportArtifactManifest.cs",
+    "summary": "Data contract and serialization for VC TOML report artifacts. Tracks per-file source-to-TOML mappings with hash verification, error collection, and TOML manifest persistence."
+  },
+  {
+    "name": "VcTomlReportGateState.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/VersionControl/VcTomlReportGateState.cs",
+    "summary": "State management for the VC TOML report gate that determines when TOML reports are fresh enough to use for comparison operations."
+  },
+  {
+    "name": "WebFormMainMjsReferenceGenerator.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebFormMainMjsReferenceGenerator.cs",
+    "summary": "Parses DriveWorks Web Form Designer Main.mjs to extract dw-* custom elements, shadow parts, exportparts, and --dw-* CSS variables. Generates reference documentation for form styling."
+  },
+  {
+    "name": "WebViewComposableFragments.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewComposableFragments.cs",
+    "summary": "Builds composable WebView HTML fragments for rendering script results, comparison reports, and other UI surfaces in the Toolkit WebView host."
+  },
+  {
+    "name": "WebViewPageRenderer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewPageRenderer.cs",
+    "summary": "Renders full WebView pages with HTML, CSS, and JS assets for the Toolkit UI. Handles page composition and asset loading."
+  },
+  {
+    "name": "WebViewPartialRenderer.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/WebView/WebViewPartialRenderer.cs",
+    "summary": "Renders partial HTML fragments for WebView composition. Used for inline updates and AJAX-style content replacement."
+  }
+]

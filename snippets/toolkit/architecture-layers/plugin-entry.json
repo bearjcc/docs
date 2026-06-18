@@ -1,0 +1,98 @@
+[
+  {
+    "name": "AssemblyInfo.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Properties/AssemblyInfo.cs",
+    "summary": "Assembly metadata for the Autex Toolkit DriveWorks plugin including version, company, and product information."
+  },
+  {
+    "name": "Autex Toolkit.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.cs",
+    "summary": "Main DriveWorks Administrator plugin entry point (AutexToolkitPlugin) implementing IApplicationPlugin. Registers the Autex Tools command group, manages Form Designer WebView2 integration, context menu injection, and script tool window lifecycle."
+  },
+  {
+    "name": "AutexToolkitPlugin.FormDesignerIntegrationProbe.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.FormDesignerIntegrationProbe.cs",
+    "summary": "Partial class of AutexToolkitPlugin implementing Form Designer WebView2 resolution probe for diagnostics, triggered by Dev scripts or environment variable to inspect and log WebView2 integration state."
+  },
+  {
+    "name": "AutexToolsPresenter.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Presentation/ToolsPresenter.cs",
+    "summary": "Presenter wiring the script registry to the Autex Tools UI. Handles Run/Abort/Undo/Save Report/Export CSV/Refresh Cache lifecycle, with group-mode project looping and merged result tables."
+  },
+  {
+    "name": "DriveWorksInterface.Cache.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.Cache.cs",
+    "summary": "Partial class of DriveWorksInterface handling cache operations. Manages project data caching with timestamp-based invalidation."
+  },
+  {
+    "name": "DriveWorksInterface.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.cs",
+    "summary": "Central singleton for DriveWorks SDK interaction. Manages application lifecycle, mode detection (None/GroupOnly/ProjectOpen), event subscriptions, and the Helpers instance."
+  },
+  {
+    "name": "DriveWorksInterface.FormFont.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.FormFont.cs",
+    "summary": "Partial class of DriveWorksInterface handling form font discovery and resolution. Maps DriveWorks font values to WPF font families."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.cs",
+    "summary": "Massive partial class (9000+ lines) implementing IAutexScriptHelpers and IGroupDataProvider. The primary SDK boundary providing all script-facing operations: project data, CRUD, rule analysis, document creation, form control manipulation, and spell checking."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.DocumentsAndRulesGapFill.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/DriveWorksInterface.ScriptHelpers.DocumentsAndRulesGapFill.cs",
+    "summary": "Partial class of DriveWorksScriptHelpers handling gap-fill logic for documents and rules when reading from DriveProjx archives where evaluated values are unavailable."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.DocumentsCrudAndCrrud.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/DriveWorksInterface.ScriptHelpers.DocumentsCrudAndCrrud.cs",
+    "summary": "Partial class of DriveWorksScriptHelpers implementing CRUD and CRRUD operations for documents, data documents, and 3D documents via the DriveWorks SDK."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.GroupAndSecurity.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/DriveWorksInterface.ScriptHelpers.GroupAndSecurity.cs",
+    "summary": "Partial class of DriveWorksScriptHelpers handling group-level operations: group data, security, teams, users, and DriveApp management."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.ProjectFetchAndCalcTables.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/DriveWorksInterface.ScriptHelpers.ProjectFetchAndCalcTables.cs",
+    "summary": "Partial class of DriveWorksScriptHelpers for fetching project data and managing calc tables via the DriveWorks SDK."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.ProjectSettingsAndForms.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/DriveWorksInterface.ScriptHelpers.ProjectSettingsAndForms.cs",
+    "summary": "Partial class of DriveWorksScriptHelpers for project settings, forms, and form control operations including property capture/apply and position management."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.RuleAnalysis.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.RuleAnalysis.cs",
+    "summary": "Partial class of DriveWorksScriptHelpers for rule analysis: parse error detection, function call site extraction, named item resolution, and rule formula application."
+  },
+  {
+    "name": "DriveWorksInterface.ScriptHelpers.SpecMacrosAndCreation.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/DriveWorksInterface.ScriptHelpers.SpecMacrosAndCreation.cs",
+    "summary": "Partial class of DriveWorksScriptHelpers for specification macro operations and project/item creation workflows via the DriveWorks SDK."
+  },
+  {
+    "name": "FormControlTypeConversion.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Core/Forms/FormControlTypeConversion.cs",
+    "summary": "Defines form control type conversion rules and mappings. Specifies which control types can be converted to which other types."
+  }
+]

@@ -1,0 +1,626 @@
+[
+  {
+    "name": "AnalyzeRuleErrors.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/AnalyzeRuleErrors.cs",
+    "summary": "WIP script for analyzing rule errors across the project. Detects name errors, value errors, and root cause chains in DriveWorks rules."
+  },
+  {
+    "name": "ApplyProjectFromTomlTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ApplyProjectFromTomlTest.cs",
+    "summary": "Test script verifying TOML-based project application: delta import, property overwrite, and removal handling."
+  },
+  {
+    "name": "ChangeSummary.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/VersionControl/ChangeSummary.cs",
+    "summary": "Version control script that generates a change summary between the current project state and the last committed TOML snapshot."
+  },
+  {
+    "name": "CheckNames.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/CheckNames.cs",
+    "summary": "Release script that validates naming conventions (PascalCase, spelling) across all project data items. Reports violations with suggestions."
+  },
+  {
+    "name": "CheckNamesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CheckNamesTest.cs",
+    "summary": "Test script for the CheckNames naming validation pipeline. Tests PascalCase detection, spelling validation, and suggestion generation."
+  },
+  {
+    "name": "CheckValueRulesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CheckValueRulesTest.cs",
+    "summary": "Test script for value rule error detection. Validates identification of value errors in DriveWorks rules."
+  },
+  {
+    "name": "CircleFromThreePointsTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CircleFromThreePointsTest.cs",
+    "summary": "Test script for the circle-from-three-points geometry UDF. Validates geometric calculations and edge cases."
+  },
+  {
+    "name": "CompareGroupVsSingleControlProperties.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/CompareGroupVsSingleControlProperties.cs",
+    "summary": "Dev script that compares group-level vs single control property definitions to identify discrepancies in form control configuration."
+  },
+  {
+    "name": "CompareGroupVsSingleControlPropertiesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CompareGroupVsSingleControlPropertiesTest.cs",
+    "summary": "Test script for the group vs single control property comparison dev script."
+  },
+  {
+    "name": "CompareProjects.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/CompareProjects.cs",
+    "summary": "Release script comparing two DriveWorks projects at ProjectData level. Supports current project, TOML files, and .driveprojx archives with side-by-side HTML diff reports."
+  },
+  {
+    "name": "CompareProjectsTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CompareProjectsTest.cs",
+    "summary": "Comprehensive test script for the CompareProjects pipeline. Tests ProjectDataComparer, ProjectComparisonReport, ProjectDataSourceFactory with contract and integration tests including live parity checks."
+  },
+  {
+    "name": "CompareRulesAndSettingsDump.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CompareRulesAndSettingsDump.cs",
+    "summary": "Test script that compares rules and settings dumps for regression testing of rule formatting changes."
+  },
+  {
+    "name": "CopySelectedProjectData.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/CopySelectedProjectData.cs",
+    "summary": "Release script for copying selected project data rows from a source project into the currently open project. Supports multi-type filtering, batch copy, and project picker for multi-destination copy."
+  },
+  {
+    "name": "CopySelectedProjectDataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CopySelectedProjectDataTest.cs",
+    "summary": "Test script for the CopySelectedProjectData. Tests row selection, copy logic, override behavior, and multi-destination project picker."
+  },
+  {
+    "name": "CreateData.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/CreateData.cs",
+    "summary": "Release script for creating new project data items (constants, variables, form controls, etc.) with user-specified values and rules."
+  },
+  {
+    "name": "CreateDataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CreateDataTest.cs",
+    "summary": "Test script for the CreateData CRUD operations. Validates creation of constants, variables, form controls, and other data types."
+  },
+  {
+    "name": "CrossGroupCompareFeasibilityProbe.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/CrossGroupCompareFeasibilityProbe.cs",
+    "summary": "Dev-only feasibility probe for cross-group project comparison. Explores same-window snapshot handoff, cross-process observation, named pipes, and UI automation approaches."
+  },
+  {
+    "name": "CustomFormControlTypeDiscovery.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/CustomFormControlTypeDiscovery.cs",
+    "summary": "Dev script that discovers custom form control types registered in the DriveWorks project, listing their properties and metadata."
+  },
+  {
+    "name": "CustomFunctionUdfTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/CustomFunctionUdfTest.cs",
+    "summary": "Test script for custom function UDF evaluation. Tests geometry and utility UDF suites."
+  },
+  {
+    "name": "DeleteData.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/DeleteData.cs",
+    "summary": "Release script for deleting selected project data items with confirmation and undo support."
+  },
+  {
+    "name": "DeleteDataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/DeleteDataTest.cs",
+    "summary": "Test script for the DeleteData. Validates deletion of project data items with undo support."
+  },
+  {
+    "name": "DriveControls.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/DriveControls.cs",
+    "summary": "Release script for driving (applying values to) form controls in the current project. Used for batch property updates."
+  },
+  {
+    "name": "DriveControlsTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/DriveControlsTest.cs",
+    "summary": "Test script for the DriveControls batch property update functionality."
+  },
+  {
+    "name": "DriveProjXFileReaderTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/DriveProjXFileReaderTest.cs",
+    "summary": "Test script for the DriveProjXFileReader. Tests archive parsing, form XML extraction, and ProjectData building from .driveprojx files."
+  },
+  {
+    "name": "DynamicPropertyProbe.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/DynamicPropertyProbe.cs",
+    "summary": "Dev script that probes dynamic (rule-driven) properties on form controls to understand which properties support rule binding."
+  },
+  {
+    "name": "ExportFormControlMetadata.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/ExportFormControlMetadata.cs",
+    "summary": "Dev script that exports form control metadata (types, properties, categories) to a structured report for analysis."
+  },
+  {
+    "name": "ExportFormControlMetadataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ExportFormControlMetadataTest.cs",
+    "summary": "Test script for the ExportFormControlMetadata dev script."
+  },
+  {
+    "name": "ExportFunctionsReport.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/ExportFunctionsReport.cs",
+    "summary": "Dev script that exports a report of all DriveWorks functions available in the project context, including custom UDF registrations."
+  },
+  {
+    "name": "ExportFunctionsReportTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ExportFunctionsReportTest.cs",
+    "summary": "Test script for the ExportFunctionsReport dev script."
+  },
+  {
+    "name": "ExportGroupProjectToml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/ExportGroupProjectToml.cs",
+    "summary": "Release script for exporting group and project snapshots as TOML files to a specified directory."
+  },
+  {
+    "name": "ExportGroupProjectTomlTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ExportGroupProjectTomlTest.cs",
+    "summary": "Test script for TOML export. Validates group and project snapshot serialization to TOML format."
+  },
+  {
+    "name": "ExportToGitFolderToml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/VersionControl/ExportToGitFolderToml.cs",
+    "summary": "Version control script that exports group and project TOML snapshots to a git repository folder with optional staging and committing."
+  },
+  {
+    "name": "FindReplaceInRules.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/FindReplaceInRules.cs",
+    "summary": "Release script for find-and-replace operations across all DriveWorks rules in a project. Supports regex patterns, preview, and selective application."
+  },
+  {
+    "name": "FindReplaceInRulesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/FindReplaceInRulesTest.cs",
+    "summary": "Test script for the FindReplaceInRules. Tests pattern matching, replacement logic, preview generation, and selective application."
+  },
+  {
+    "name": "FontDiscovery.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/FontDiscovery.cs",
+    "summary": "Dev script that discovers and lists font families available on the system, used for validating font-related form control properties."
+  },
+  {
+    "name": "FontDiscoveryTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/FontDiscoveryTest.cs",
+    "summary": "Test script for the FontDiscovery. Validates font family enumeration and style discovery."
+  },
+  {
+    "name": "FormatAllRules.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/FormatAllRules.cs",
+    "summary": "Release script that formats all DriveWorks rules in the project using the rule formatter for consistent style and readability."
+  },
+  {
+    "name": "FormatAllRulesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/FormatAllRulesTest.cs",
+    "summary": "Test script for the FormatAllRules. Validates batch rule formatting across the project."
+  },
+  {
+    "name": "FormControlConversionPropertyMatrix.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/FormControlConversionPropertyMatrix.cs",
+    "summary": "Dev script that generates a property matrix report showing which properties are preserved, mapped, or lost during form control type conversion."
+  },
+  {
+    "name": "FormControlConversionTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/FormControlConversionTest.cs",
+    "summary": "Comprehensive test script for form control type conversion. Tests property mapping, value transfer, and conversion matrix across all control types."
+  },
+  {
+    "name": "FormDesignerInspectDiscovery.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/FormDesignerInspectDiscovery.cs",
+    "summary": "Dev script that probes the Form Designer's inspection API to discover available property and control metadata."
+  },
+  {
+    "name": "FormDesignerWebViewIntegrationProbe.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/FormDesignerWebViewIntegrationProbe.cs",
+    "summary": "Dev script probing WebView2 integration points within the DriveWorks Form Designer for potential UI extension."
+  },
+  {
+    "name": "GitPushStatus.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/VersionControl/GitPushStatus.cs",
+    "summary": "Version control script that reports git push status including branch tracking, ahead/behind counts, and uncommitted changes."
+  },
+  {
+    "name": "GroupConstantCandidates.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/GroupConstantCandidates.cs",
+    "summary": "WIP script that scans project rules for literal values that could be replaced with group constants. Suggests candidates based on value patterns."
+  },
+  {
+    "name": "GroupConstantCandidatesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/GroupConstantCandidatesTest.cs",
+    "summary": "Test script for the GroupConstantCandidates WIP script. Validates candidate detection and suggestion logic."
+  },
+  {
+    "name": "GroupLevelTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/GroupLevelTest.cs",
+    "summary": "Test script for group-level operations. Validates group constant access, group settings, and multi-project group iteration."
+  },
+  {
+    "name": "GroupOnlyResultTablePolicyTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/GroupOnlyResultTablePolicyTest.cs",
+    "summary": "Test script for the GroupOnlyResultTablePolicy. Validates that result tables in group mode include the required project column."
+  },
+  {
+    "name": "GroupSettingsSetterTestScript.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/GroupSettingsSetterTest.cs",
+    "summary": "Test script for group settings modification. Tests reading and writing group-level settings with validation."
+  },
+  {
+    "name": "ImagePathSwap.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/ImagePathSwap.cs",
+    "summary": "Dev script for batch-swapping image paths in form control properties. Supports find/replace patterns for migrating image references between environments."
+  },
+  {
+    "name": "ImagePathSwapTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ImagePathSwapTest.cs",
+    "summary": "Test script for the ImagePathSwap. Validates batch image path find/replace operations."
+  },
+  {
+    "name": "ImportFromGitFolder.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/VersionControl/ImportFromGitFolder.cs",
+    "summary": "Version control script that imports project data from TOML files in a git repository folder into the currently open project."
+  },
+  {
+    "name": "JustFixIt.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/JustFixIt.cs",
+    "summary": "Release script that applies a bundle of common auto-fixes to the project (name corrections, rule formatting, etc.) in a single pass."
+  },
+  {
+    "name": "JustFixItTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/JustFixItTest.cs",
+    "summary": "Test script for the JustFixIt auto-fix bundle. Validates that bundled corrections apply correctly."
+  },
+  {
+    "name": "LabelColumnPropertyTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/LabelColumnPropertyTest.cs",
+    "summary": "Test script for label column property handling in form controls. Tests label text extraction, column mapping, and display formatting."
+  },
+  {
+    "name": "ListData.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/ListData.cs",
+    "summary": "Release script for listing project data items of a selected type with filtering and export capabilities."
+  },
+  {
+    "name": "ListDataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ListDataTest.cs",
+    "summary": "Test script for the ListData. Validates data listing, filtering, and table generation across data types."
+  },
+  {
+    "name": "ListFormControlPropertyMetadata.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/ListFormControlPropertyMetadata.cs",
+    "summary": "Dev script that lists all form control property metadata including types, categories, and rule support capabilities."
+  },
+  {
+    "name": "ListFormControlPropertyMetadataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ListFormControlPropertyMetadataTest.cs",
+    "summary": "Test script for the ListFormControlPropertyMetadata dev script."
+  },
+  {
+    "name": "MacroTriggers.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/MacroTriggers.cs",
+    "summary": "Release script that lists specification macro triggers and their references across the project for dependency analysis."
+  },
+  {
+    "name": "MacroTriggersTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/MacroTriggersTest.cs",
+    "summary": "Test script for the MacroTriggers. Validates specification macro trigger detection and reference analysis."
+  },
+  {
+    "name": "MigrateLoginConstants.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/MigrateLoginConstants.cs",
+    "summary": "Dev script for migrating login-related constants between group configurations. Handles renaming, value transfer, and category assignment."
+  },
+  {
+    "name": "PrePushValidation.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/VersionControl/PrePushValidation.cs",
+    "summary": "Version control script that runs pre-push validation checks including naming conventions and rule error detection before allowing git push."
+  },
+  {
+    "name": "PrePushValidationTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/PrePushValidationTest.cs",
+    "summary": "Test script for the PrePushValidation version control script. Validates naming checks and rule error detection before git push."
+  },
+  {
+    "name": "ProjectDataParityDiagnostic.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/ProjectDataParityDiagnostic.cs",
+    "summary": "Diagnostic script for verifying snapshot parity between SDK reads and TOML/archive round-trips. Reports discrepancies by data section."
+  },
+  {
+    "name": "ProjectLevelTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ProjectLevelTest.cs",
+    "summary": "Test script for project-level operations. Tests project data access, snapshot building, and SDK interaction."
+  },
+  {
+    "name": "ProjectSelfCompareHarnessTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ProjectSelfCompareHarnessTest.cs",
+    "summary": "Test script for the self-comparison harness. Validates that a project compared against itself produces no differences (parity baseline)."
+  },
+  {
+    "name": "PropertyModesProbe.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/PropertyModesProbe.cs",
+    "summary": "Dev script probing DriveWorks property modes (Static, Dynamic, Connected) to understand how the SDK exposes property mode transitions."
+  },
+  {
+    "name": "RemoveMetaclassTokens.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/RemoveMetaclassTokens.cs",
+    "summary": "WIP script for removing metaclass tokens from rule text. Strips CSS metaclass references while preserving rule structure."
+  },
+  {
+    "name": "RemoveMetaclassTokensTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/RemoveMetaclassTokensTest.cs",
+    "summary": "Test script for the RemoveMetaclassTokens. Tests metaclass token removal from rule text with format preservation."
+  },
+  {
+    "name": "RenameDataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/RenameDataTest.cs",
+    "summary": "Test script for data renaming operations. Validates rename of constants, variables, and other project data items with rule reference updates."
+  },
+  {
+    "name": "ReplaceWithGroupConstants.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/ReplaceWithGroupConstants.cs",
+    "summary": "WIP script that replaces literal values in rules with group constant references. Supports preview and selective application."
+  },
+  {
+    "name": "ReplaceWithGroupConstantsTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/ReplaceWithGroupConstantsTest.cs",
+    "summary": "Test script for the ReplaceWithGroupConstants. Validates replacement of literal values with group constant references in rules."
+  },
+  {
+    "name": "RestoreAdministratorsPrivileges.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/RestoreAdministratorsPrivileges.cs",
+    "summary": "Dev script that restores administrator privileges for DriveWorks team/user configurations that may have been inadvertently modified."
+  },
+  {
+    "name": "RestoreAdministratorsPrivilegesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/RestoreAdministratorsPrivilegesTest.cs",
+    "summary": "Test script for the RestoreAdministratorsPrivileges."
+  },
+  {
+    "name": "RoundTripParityGateTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/RoundTripParityGateTest.cs",
+    "summary": "Test script for the SelfParityGate. Validates round-trip parity evaluation between SDK and TOML/archive snapshots."
+  },
+  {
+    "name": "RuleDiagnosticTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/RuleDiagnosticTest.cs",
+    "summary": "Test script for rule diagnostic functionality. Tests error detection, root cause analysis, and diagnostic result formatting."
+  },
+  {
+    "name": "RuleErrorRootCauseTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/RuleErrorRootCauseTest.cs",
+    "summary": "Test script for rule error root cause analysis. Validates chain detection from surface errors back to root cause rules."
+  },
+  {
+    "name": "RunAllTestScripts.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/RunAllTestScripts.cs",
+    "summary": "Meta-test script that discovers and runs all other test scripts in sequence. Aggregates pass/fail results into a summary table."
+  },
+  {
+    "name": "SemanticIconRegistryTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/SemanticIconRegistryTest.cs",
+    "summary": "Test script for the semantic icon registry. Validates icon key resolution, candidate validation, and embedded resource availability."
+  },
+  {
+    "name": "SetFormMetadata.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/SetFormMetadata.cs",
+    "summary": "WIP script for setting form metadata properties (data-metadata attributes) on form controls in bulk."
+  },
+  {
+    "name": "SetFormMetadataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/SetFormMetadataTest.cs",
+    "summary": "Test script for the SetFormMetadata. Tests form metadata property assignment and validation."
+  },
+  {
+    "name": "SetupCutEstimate.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/SetupCutEstimate.cs",
+    "summary": "Release script for setting up cut estimate profile tables. Configures header properties, profile rows, and table structure for manufacturing estimation."
+  },
+  {
+    "name": "SetupCutEstimateTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/SetupCutEstimateTest.cs",
+    "summary": "Test script for the SetupCutEstimate. Validates cut estimate profile table configuration and row generation."
+  },
+  {
+    "name": "SetupGitRepository.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/VersionControl/SetupGitRepository.cs",
+    "summary": "Version control script for initializing a git repository for the group, configuring export paths, and creating the initial commit."
+  },
+  {
+    "name": "SyncThreeDEnvironment.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/SyncThreeDEnvironment.cs",
+    "summary": "Release script for synchronizing 3D document environment settings across the project. Ensures consistency of 3D rendering configuration."
+  },
+  {
+    "name": "SyncThreeDEnvironmentTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/SyncThreeDEnvironmentTest.cs",
+    "summary": "Test script for the SyncThreeDEnvironment. Validates 3D environment setting synchronization."
+  },
+  {
+    "name": "SystemsTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/SystemsTest.cs",
+    "summary": "Integration test script for system-level operations. Tests end-to-end workflows spanning multiple toolkit subsystems."
+  },
+  {
+    "name": "TableFromFormControlType.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/TableFromFormControlType.cs",
+    "summary": "Release script that generates a summary table of all form controls grouped by type, showing properties, counts, and configuration status."
+  },
+  {
+    "name": "TableFromFormControlTypeTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/TableFromFormControlTypeTest.cs",
+    "summary": "Test script for the TableFromFormControlType. Validates form control type summary table generation."
+  },
+  {
+    "name": "TableFromSlabPackingSettings.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/TableFromSlabPackingSettings.cs",
+    "summary": "Release script generating a configuration table from slab packing settings for manufacturing review."
+  },
+  {
+    "name": "TableFromSlabPackingSettingsTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/TableFromSlabPackingSettingsTest.cs",
+    "summary": "Test script for the TableFromSlabPackingSettings. Validates slab packing settings table generation."
+  },
+  {
+    "name": "TextStringCandidateScannerTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/TextStringCandidateScannerTest.cs",
+    "summary": "Test script for the TextStringCandidateScanner self-test. Validates string candidate scanning in rule text."
+  },
+  {
+    "name": "TextStringsCandidates.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/TextStringsCandidates.cs",
+    "summary": "WIP script that scans rules for text string candidates that could be externalized to group tables for localization or centralization."
+  },
+  {
+    "name": "TomlRoundTripTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/TomlRoundTripTest.cs",
+    "summary": "Comprehensive test script for TOML round-trip serialization. Tests project and group data serialization/deserialization with delta and full snapshot modes."
+  },
+  {
+    "name": "UndoApiTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/UndoApiTest.cs",
+    "summary": "Test script for the undo API. Tests undo operations for create, delete, update, and rename of project data items."
+  },
+  {
+    "name": "UnreferencedData.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Release/UnreferencedData.cs",
+    "summary": "Release script that finds unreferenced project data items (constants, variables, macros) not used in any rule or form control, with indirect reference detection."
+  },
+  {
+    "name": "UnreferencedFiles.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/UnreferencedFiles.cs",
+    "summary": "WIP script that detects unreferenced files in the project content folder, checking for orphaned images, documents, and other assets."
+  },
+  {
+    "name": "UnreferencedFilesTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/UnreferencedFilesTest.cs",
+    "summary": "Test script for the UnreferencedFiles. Validates detection of unreferenced files and indirect reference analysis."
+  },
+  {
+    "name": "UpdateDataTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/UpdateDataTest.cs",
+    "summary": "Test script for data update operations. Tests value and rule modification for constants, variables, and other project data items."
+  },
+  {
+    "name": "VerifySetUserGroup.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/WIP/VerifySetUserGroup.cs",
+    "summary": "WIP script for verifying and setting user/group privileges in DriveWorks team configuration."
+  },
+  {
+    "name": "VerifySetUserGroupTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/VerifySetUserGroupTest.cs",
+    "summary": "Test script for the VerifySetUserGroup. Tests user/group privilege verification and assignment."
+  },
+  {
+    "name": "WebFormCssReference.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/WebFormCssReference.cs",
+    "summary": "Dev script that analyzes CSS references in web forms, listing which stylesheets and selectors are used by form controls."
+  },
+  {
+    "name": "WebView2Diagnostics.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Dev/WebView2Diagnostics.cs",
+    "summary": "Dev diagnostic script for WebView2 runtime. Checks installation, version, and rendering capabilities of the embedded browser."
+  },
+  {
+    "name": "WebView2DiagnosticsTest.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Scripts/Test/WebView2DiagnosticsTest.cs",
+    "summary": "Test script for the WebView2Diagnostics."
+  }
+]

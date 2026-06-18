@@ -4,8 +4,6 @@ sidebarTitle: Autex Toolkit architecture
 description: Architecture map of Autex Toolkit generated from the Understand-Anything knowledge graph.
 ---
 
-
-
 This section documents how **Autex Toolkit** is structured in code: layers, scripts, WebView assets, and build tooling.
 Content is generated deterministically from `Autex Toolkit/.understand-anything` and is intended for maintainers and integrators.
 
@@ -13,28 +11,28 @@ Content is generated deterministically from `Autex Toolkit/.understand-anything`
 
 DriveWorks Administrator plugin for SDK-based Group and Project maintenance -- validation, bulk refactors, reports, snapshot-oriented export
 
-| Metric | Value |
-| --- | --- |
-| Nodes | 700 |
-| Edges | 253 |
-| Layers | 9 |
-| Files scanned | 649 |
+| Metric                | Value                                      |
+| --------------------- | ------------------------------------------ |
+| Nodes                 | 700                                        |
+| Edges                 | 253                                        |
+| Layers                | 9                                          |
+| Files scanned         | 649                                        |
 | Git commit (analysis) | `aad0287abfa5752e5f1327637770fa9253bc52e6` |
-| Analysis timestamp | 2026-05-24T21:46:36.092Z |
+| Analysis timestamp    | 2026-05-24T21:46:36.092Z                   |
 
 ## Architecture layers
 
-| Layer | Components | Wiki page |
-| --- | ---: | --- |
-| Plugin Entry | 19 | [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry) |
-| Core Services | 227 | [Core Services](/driveworks/plugins/toolkit/architecture/core-services) |
-| Data Models | 64 | [Data Models](/driveworks/plugins/toolkit/architecture/data-models) |
-| Scripts | 109 | [Scripts](/driveworks/plugins/toolkit/architecture/scripts) |
-| WebView UI | 155 | [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) |
-| WPF Views | 29 | [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views) |
-| Rules Builder Integration | 42 | [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder) |
-| Assets & Services | 15 | [Assets & Services](/driveworks/plugins/toolkit/architecture/assets-and-services) |
-| Build & Infrastructure | 40 | [Build & Infrastructure](/driveworks/plugins/toolkit/architecture/build-infra) |
+| Layer                     | Components | Layer page                                                                          |
+| ------------------------- | ---------: | ----------------------------------------------------------------------------------- |
+| Plugin Entry              |         19 | [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry)               |
+| Core Services             |        227 | [Core Services](/driveworks/plugins/toolkit/architecture/core-services)             |
+| Data Models               |         64 | [Data Models](/driveworks/plugins/toolkit/architecture/data-models)                 |
+| Scripts                   |        109 | [Scripts](/driveworks/plugins/toolkit/architecture/scripts)                         |
+| WebView UI                |        155 | [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui)                   |
+| WPF Views                 |         29 | [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views)                     |
+| Rules Builder Integration |         42 | [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder) |
+| Assets & Services         |         15 | [Assets & Services](/driveworks/plugins/toolkit/architecture/assets-and-services)   |
+| Build & Infrastructure    |         40 | [Build & Infrastructure](/driveworks/plugins/toolkit/architecture/build-infra)      |
 
 ## Suggested reading order
 
@@ -45,6 +43,7 @@ Follow this tour when learning the codebase top-down.
 Start here. The AutexToolkitPlugin class bootstraps the entire plugin when DriveWorks Administrator loads it. It registers the Autex Tools window, wires up the presenter, and initializes the Rules Builder integration.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.cs`
 
 ### 2. Presenter & Main Window
@@ -52,6 +51,7 @@ Primary nodes:
 The AutexToolsPresenter orchestrates the plugin's UI lifecycle, connecting the DriveWorks SDK interface to the WPF main window. It manages view state transitions and dispatches user actions to scripts and services.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/AutexToolsPresenter.cs`
 - `Autex Toolkit/DWPlugin/Views/AutexToolsWindow.xaml`
 - `Autex Toolkit/DWPlugin/Views/AutexToolsWindow.xaml.cs`
@@ -61,6 +61,7 @@ Primary nodes:
 DriveWorksInterface is the gateway to the DriveWorks SDK. It wraps all SDK calls for project/group data access, rule analysis, form control manipulation, and document generation. Script helpers extend it with domain-specific operations.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.cs`
 - `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.cs`
 - `Autex Toolkit/DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.RoleComposition.cs`
@@ -70,6 +71,7 @@ Primary nodes:
 The unified data model centers on ProjectData and GroupData, which represent snapshots of DriveWorks projects and groups. These models support comparison, TOML serialization, and snapshot delta operations.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/Models/GroupData.cs`
 - `Autex Toolkit/DWPlugin/Models/ProjectData.cs`
 
@@ -78,6 +80,7 @@ Primary nodes:
 The comparison engine compares two ProjectData snapshots, producing detailed change trees with typed comparers for constants, variables, forms, and settings. It powers the Project Compare feature and parity validation.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/Core/Comparison/ChangeTreeBuilder.cs`
 - `Autex Toolkit/DWPlugin/Core/Comparison/ComparisonSession.cs`
 - `Autex Toolkit/DWPlugin/Core/Comparison/KnownLimitationPolicy.cs`
@@ -88,6 +91,7 @@ Primary nodes:
 TOML serialization and deserialization converts between ProjectData models and human-readable TOML files for git-based version control. The snapshot delta system tracks changes between revisions.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/Core/SnapshotTomlDeltaExportHelper.cs`
 - `Autex Toolkit/DWPlugin/Core/SnapshotTomlDeserializer.cs`
 - `Autex Toolkit/DWPlugin/Core/SnapshotTomlSerializer.cs`
@@ -97,6 +101,7 @@ Primary nodes:
 The script system provides a plugin-within-a-plugin architecture. Scripts extend AutexScriptContext to perform operations like data export, bulk refactors, validation, and diagnostics. Scripts are categorized as Release, Dev, Test, WIP, or Version Control.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/Core/Scripts/AutexScript.cs`
 - `Autex Toolkit/DWPlugin/Core/Scripts/AutexScriptContext.cs`
 - `Autex Toolkit/DWPlugin/Core/Scripts/AutexScriptRegistry.cs`
@@ -108,6 +113,7 @@ Primary nodes:
 The WebView2-based UI renders HTML/CSS/JS surfaces for Script Tools, Project Comparison, Version Control, and various pickers. Page builders compose Scriban templates with shared CSS/JS components.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/WebAssets/ProjectComparison/project-comparison.app.js`
 - `Autex Toolkit/DWPlugin/WebAssets/ScriptTools/script-tools.app.js`
 - `Autex Toolkit/DWPlugin/WebView/ProjectComparisonWebViewPageBuilder.cs`
@@ -120,6 +126,7 @@ Primary nodes:
 Rules Builder integration adds spell checking, icon picking, metaclass picking, group constant insertion, and rule formatting directly into the DriveWorks Rules Builder editor.
 
 Primary nodes:
+
 - `Autex Toolkit/DWPlugin/RulesBuilder/AutexIconPickerWindow.cs`
 - `Autex Toolkit/DWPlugin/RulesBuilder/MetaclassWebPickerWindow.cs`
 - `Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderButtonInjection.cs`
@@ -130,6 +137,7 @@ Primary nodes:
 PowerShell build scripts compile the plugin, run tests, and produce release artifacts. The RuleFormatter.Tests project validates core formatting and cross-project connection logic.
 
 Primary nodes:
+
 - `Autex Toolkit/Build.ps1`
 - `Autex Toolkit/Build-Release.ps1`
 - `Autex Toolkit/RuleFormatter.Tests/GroupConnectionIndexTests.cs`
@@ -142,4 +150,4 @@ Primary nodes:
 - [Scripts](/driveworks/plugins/toolkit/scripts)
 - [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)
 - [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
-- [Wiki conventions](/reference/wiki-conventions)
+- [Authoring conventions](/reference/authoring-conventions)

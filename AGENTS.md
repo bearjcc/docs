@@ -1,33 +1,19 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
+# Agents — Mintlify docs router
 
-# Documentation project instructions
+Short pointer for agents editing this Mintlify site. Policy and conventions live in scoped rules and reference pages.
 
-## About this project
+## Where to read next
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
-- Pages are MDX files with YAML frontmatter
-- Configuration lives in `docs.json`
-- Run `mint dev` to preview locally
-- Run `mint broken-links` to check links
+| Area | Start here |
+| --- | --- |
+| **MDX authoring rule** | [`.cursor/rules/mintlify-mdx.mdc`](.cursor/rules/mintlify-mdx.mdc) — components, snippets, nav, DriveWorks terms |
+| **Component examples** | [reference/mdx-tips.mdx](reference/mdx-tips.mdx) |
+| **Page structure and links** | [reference/authoring-conventions.mdx](reference/authoring-conventions.mdx) |
+| **Reference hub** | [reference/index.mdx](reference/index.mdx) |
+| **Wiki → Mintlify batch convert** | [`../.cursor/scripts/Convert-WikiToMintlify.ps1`](../.cursor/scripts/Convert-WikiToMintlify.ps1) — run from Autex workspace root; see [`.cursor/scripts/README.md`](../.cursor/scripts/README.md#convert-wikitomintlify) |
 
-## Terminology
+## Local checks
 
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
-
-## Style preferences
-
-{/* Add any project-specific style rules below */}
-
-- Use active voice and second person ("you")
-- Keep sentences concise — one idea per sentence
-- Use sentence case for headings
-- Bold for UI elements: Click **Settings**
-- Code formatting for file names, commands, paths, and code references
-
-## Content boundaries
-
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+- Preview: `mintlify dev` from this folder (`mintlify/`).
+- Navigation: register new pages in `docs.json`.
+- Assets: host under `images/wiki/`; site paths `/images/wiki/...`.

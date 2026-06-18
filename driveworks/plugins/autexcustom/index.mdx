@@ -4,7 +4,12 @@ sidebarTitle: AutexCustom
 description: Autex assembly adding custom functions for Rules, Specification Flow tasks, and Project output types (DXF, PDF integration) alongside Administrator workflows.
 ---
 
+import { DriveWorksRule } from "/snippets/DriveWorksRule.jsx";
+import { CustomFunctionDoc } from "/snippets/autex/CustomFunctionDoc.jsx";
 
+<Info>
+  Each custom function below uses the site `<CustomFunctionDoc>` component for structured inputs, outputs, and Rule Builder examples.
+</Info>
 
 ### Overview
 
@@ -20,235 +25,203 @@ description: Autex assembly adding custom functions for Rules, Specification Flo
 
 **Assembly:** `AutexCustom.dll`. It is a **separate deployable** from the Autex Toolkit plugin; install and register per your Autex deployment guide and `AutexCustom/Build.ps1` output layout.
 
-### AutexCustomPluginLoaded
+<CustomFunctionDoc
+  name="AutexCustomPluginLoaded"
+  availability="Function"
+  inputs="none"
+  output="Boolean, always true when the assembly is loaded (sanity flag in Rules)."
+  example="AutexCustomPluginLoaded()"
+/>
 
-- **Availability:** Function
-- **Inputs:** none
-- **Output:** Boolean, always true when the assembly is loaded (sanity flag in Rules).
+<CustomFunctionDoc
+  name="AutexIsRunningInAdministrator"
+  availability="Function"
+  inputs="none"
+  output="Boolean, true when the host is DriveWorks Administrator (not Live / Live runtime)."
+  example="AutexIsRunningInAdministrator()"
+/>
 
-#### Example
+<CustomFunctionDoc
+  name="AutexConvertLinearToMM"
+  availability="Both"
+  functionInputs="`length` (Number); optional `roundTo` (Number, 0 = no rounding)"
+  functionOutput="Number, length in mm. If the current user resolves as US (team-based), treats `length` as inches and converts to mm; otherwise passes mm through. Uses the open Project's Group for user resolution."
+  example="AutexConvertLinearToMM(10,0)"
+  taskPicker="Autex Convert Linear to mm"
+  taskInputs="Length, RoundTo (task properties)"
+  taskOutputs="Length (Number)"
+/>
 
-```text
-AutexCustomPluginLoaded()
-```
+<CustomFunctionDoc
+  name="AutexConvertMMToLinear"
+  availability="Both"
+  functionInputs="`length` (Number, mm); optional `roundTo` (Number)"
+  functionOutput="Number, linear units: inches when current user is US; otherwise mm unchanged."
+  example="AutexConvertMMToLinear(254,0)"
+  taskPicker="Autex Convert mm to Linear"
+  taskInputs="Length, RoundTo"
+  taskOutputs="Length (Number)"
+/>
 
-### AutexIsRunningInAdministrator
+<CustomFunctionDoc
+  name="AutexIsUserIn"
+  availability="Both"
+  functionInputs="`username` (String); `criteria1` (String); optional `criteria2` (String). Criteria: two-letter region code treated as team-name prefix (NZ, AU, US, UK per internal map) or arbitrary substring on team name. When `criteria2` is set, both must match."
+  functionOutput="Boolean"
+  example='AutexIsUserIn("john.doe","US")'
+  taskPicker="Autex Is User In"
+  taskInputs="Username, Criteria1, Criteria2 (blank Criteria2 allowed)"
+  taskOutputs="Result (Boolean). Blank username or Criteria1 fails the task."
+/>
 
-- **Availability:** Function
-- **Inputs:** none
-- **Output:** Boolean, true when the host is DriveWorks Administrator (not Live / Live runtime).
+<CustomFunctionDoc
+  name="AutexIsCurrentUserIn"
+  availability="Both"
+  functionInputs="`criteria1` (String); optional `criteria2` (String). Same matching rules as `AutexIsUserIn`."
+  functionOutput="Boolean"
+  example='AutexIsCurrentUserIn("US")'
+  taskPicker="Autex Is Current User In"
+  taskInputs="Criteria1, Criteria2"
+  taskOutputs="Result (Boolean)"
+/>
 
-#### Example
+<CustomFunctionDoc
+  name="AutexNowLocal"
+  availability="Both"
+  functionInputs="none, or `username` (String) for that user's region-based clock"
+  functionOutput="String, local time `dd MMM yyyy HH:mm` in the Windows time zone inferred from team membership (stable priority NZ, AU, US, UK when multiple region codes appear)."
+  example="AutexNowLocal()"
+  taskPicker="Autex Now Local"
+  taskInputs="`username` (optional; blank = current user)"
+  taskOutputs="Local Time (String)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/now-local">Now Local reference</a>
+  </p>
+</CustomFunctionDoc>
 
-```text
-AutexIsRunningInAdministrator()
-```
+<CustomFunctionDoc
+  name="AutexMachineMovementTime"
+  availability="Both"
+  functionInputs="`AutexMachineMovementTime(distance,maxVelocity,acceleration,dwellTime,quantity)`"
+  functionOutput="Number, seconds"
+  example="AutexMachineMovementTime(1000,500,100,0.5,2)"
+  taskPicker="Autex Machine Movement Time"
+  taskInputs="distance, maxVelocity, acceleration, dwellTime, quantity"
+  taskOutputs="Time (Number)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/machine-movement-time">
+      Machine Movement Time reference
+    </a>
+  </p>
+</CustomFunctionDoc>
 
-### AutexConvertLinearToMM
-
-- **Availability:** Both
-- **As Function**
-  - **Inputs:** `length` (Number); optional `roundTo` (Number, 0 = no rounding)
-  - **Output:** Number, length in mm. If the current user resolves as US (team-based), treats `length` as inches and converts to mm; otherwise passes mm through. Uses the open Project’s Group for user resolution.
-
-#### Example
-
-```text
-AutexConvertLinearToMM(10,0)
-```
-
-- **As task** (picker: **Autex Convert Linear to mm**)
-  - **Inputs:** Length, RoundTo (task properties)
-  - **Outputs:** Length (Number)
-
-### AutexConvertMMToLinear
-
-- **Availability:** Both
-- **As Function**
-  - **Inputs:** `length` (Number, mm); optional `roundTo` (Number)
-  - **Output:** Number, “linear” units: inches when current user is US; otherwise mm unchanged.
-
-#### Example
-
-```text
-AutexConvertMMToLinear(254,0)
-```
-
-- **As task** (picker: **Autex Convert mm to Linear**)
-  - **Inputs:** Length, RoundTo
-  - **Outputs:** Length (Number)
-
-### AutexIsUserIn
-
-- **Availability:** Both
-- **As Function**
-  - **Inputs:** `username` (String); `criteria1` (String); optional `criteria2` (String). Criteria: two-letter region code treated as team-name prefix (NZ, AU, US, UK per internal map) or arbitrary substring on team name. When `criteria2` is set, both must match.
-  - **Output:** Boolean
-
-#### Example
-
-```text
-AutexIsUserIn("john.doe","US")
-```
-
-- **As task** (picker: **Autex Is User In**)
-  - **Inputs:** Username, Criteria1, Criteria2 (blank Criteria2 allowed)
-  - **Outputs:** Result (Boolean). Blank username or Criteria1 fails the task.
-
-### AutexIsCurrentUserIn
-
-- **Availability:** Both
-- **As Function**
-  - **Inputs:** `criteria1` (String); optional `criteria2` (String). Same matching rules as `AutexIsUserIn`.
-  - **Output:** Boolean
-
-#### Example
-
-```text
-AutexIsCurrentUserIn("US")
-```
-
-- **As task** (picker: **Autex Is Current User In**)
-  - **Inputs:** Criteria1, Criteria2
-  - **Outputs:** Result (Boolean)
-
-### AutexNowLocal
-
-- **Availability:** Both
-- **As Function**
-  - **Inputs:** none, or `username` (String) for that user’s region-based clock
-  - **Output:** String, local time `dd MMM yyyy HH:mm` in the Windows time zone inferred from team membership (stable priority NZ, AU, US, UK when multiple region codes appear).
-
-#### Example
-
-```text
-AutexNowLocal()
-```
-
-- **As task** (picker: **Autex Now Local**)
-  - **Inputs:** `username` (optional; blank = current user)
-  - **Outputs:** Local Time (String)
-- **Details:** [Now Local reference](/driveworks/plugins/autexcustom/now-local)
-
-### AutexMachineMovementTime
-
-- **Availability:** Both
-- **As Function:** `AutexMachineMovementTime(distance,maxVelocity,acceleration,dwellTime,quantity)`
-- **Output:** Number, seconds
-
-#### Example
-
-```text
-AutexMachineMovementTime(1000,500,100,0.5,2)
-```
-
-- **As task** (picker: **Autex Machine Movement Time**):
-  - **Inputs:** distance, maxVelocity, acceleration, dwellTime, quantity
-  - **Outputs:** Time (Number)
-- **Details:** [Machine Movement Time reference](/driveworks/plugins/autexcustom/machine-movement-time)
-
-### AutexGetUserState
-
-- **Availability:** Function
-- **Inputs:** `country` (String, two-letter). For `AU` only, scans current user’s team names for Australian state tokens (WA, NSW, QLD, VIC, TAS, SA, ACT, NT). Other countries return empty string from this Function.
-- **Output:** String (state code or empty)
-
-#### Example
-
-```text
-AutexGetUserState("AU")
-```
+<CustomFunctionDoc
+  name="AutexGetUserState"
+  availability="Function"
+  inputs="`country` (String, two-letter). For `AU` only, scans current user’s team names for Australian state tokens (WA, NSW, QLD, VIC, TAS, SA, ACT, NT). Other countries return empty string from this Function."
+  output="String (state code or empty)"
+  example='AutexGetUserState("AU")'
+/>
 
 - **Details:** [User country and region](/driveworks/plugins/autexcustom/user-country-and-region)
 
-### AutexGetUserCountry
+<CustomFunctionDoc
+  name="AutexGetUserCountry"
+  availability="Both (Function + task with different wiring)"
+  functionInputs="none"
+  functionOutput='String, two-letter country code (NZ, AU, US, UK) from team membership / Login Group constant resolution (`Common.GetUserCountry`). On unexpected error the extender returns `"NZ"`.'
+  example="AutexGetUserCountry()"
+  taskPicker="Autex User Country"
+  taskInputs="none (uses Specification context)"
+  taskOutputs="Country (String)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/user-country-and-region">
+      User country and region
+    </a>
+  </p>
+</CustomFunctionDoc>
 
-- **Availability:** Both (Function + task with different wiring)
-- **As Function**
-  - **Inputs:** none
-  - **Output:** String, two-letter country code (NZ, AU, US, UK) from team membership / Login Group constant resolution (`Common.GetUserCountry`). On unexpected error the extender returns `"NZ"`.
+<CustomFunctionDoc
+  name="Autex Get User State"
+  availability="Task (picker: Autex Get User State). Differs from the `AutexGetUserState` Function: task resolves country from Specification context, then state."
+  inputs="none"
+  output="State (String), Australian state when country resolves to AU; otherwise empty"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    <strong>Details:</strong>{" "}
+    <a href="/driveworks/plugins/autexcustom/user-country-and-region">
+      User country and region
+    </a>
+  </p>
+</CustomFunctionDoc>
 
-#### Example
+<CustomFunctionDoc
+  name="AutexImageSwatch"
+  availability="Function"
+  inputs="`fileName` (String). Resolved under the Group’s content folder `Assets\Swatches`. Extension optional; tries `.svg`, `.png`, `.jpg`, `.bmp`."
+  output="String, full path, or `#REF! File does not exist`"
+  example='AutexImageSwatch("Oak")'
+/>
 
-```text
-AutexGetUserCountry()
-```
+<CustomFunctionDoc
+  name="AutexImageProductView"
+  availability="Function"
+  inputs="`fileName` (String), under `Assets\ProductViews` with the same extension rules as swatches."
+  output="String, full path, or `#REF! File does not exist`"
+  example='AutexImageProductView("Widget-A")'
+/>
 
-- **As task** (picker: **Autex User Country**)
-  - **Inputs:** none (uses Specification context)
-  - **Outputs:** Country (String)
-- **Details:** [User country and region](/driveworks/plugins/autexcustom/user-country-and-region)
+<CustomFunctionDoc
+  name="AutexGetLocalised"
+  availability="Function"
+  inputs="`key` (String); optional `region` (String). Reads Group table named `TextStrings` or `DWGroupTableTextStrings`: column 0 = key, column 1 = default, header row columns 2+ = region codes (NZ, AU, US, UK). Empty `region` uses current user’s resolved country for the Project."
+  output="String, cell text, or `#REF!` / `#KEY!` prefixed errors (including “did you mean …” when a value matches a non-key column)"
+  example='AutexGetLocalised("Title")'
+/>
 
-### Autex Get User State
+<CustomFunctionDoc
+  name="AutexPolygonCreateRoundedBox"
+  availability="Function"
+  example="AutexPolygonCreateRoundedBox(0,0,100,50,5,8)"
+>
+  <div className="text-sm text-gray-700 dark:text-gray-300">
+    <p className="font-medium">Overload A</p>
+    <ul className="list-none space-y-1 pl-0">
+      <li>
+        <strong>Inputs:</strong> `x`, `y`, `width`, `height` (Number, mm);
+        `cornerRadius` (Number or pipe list); `segments` (Number)
+      </li>
+      <li>
+        <strong>Output:</strong> Table/array of `x|y` points, or
+        `#INVALIDINPUT!` / `#VALUE!` on failure
+      </li>
+    </ul>
+    <p className="mt-2 font-medium">Overload B</p>
+    <ul className="list-none space-y-1 pl-0">
+      <li>
+        <strong>Inputs:</strong> `x`, `y`, `width`, `height`; per-corner radii;
+        `segments`
+      </li>
+      <li>
+        <strong>Output:</strong> same as overload A
+      </li>
+    </ul>
+  </div>
+</CustomFunctionDoc>
 
-- **Availability:** Task (picker: **Autex Get User State**). Differs from the `AutexGetUserState` Function: task resolves country from Specification context, then state.
-- **Inputs:** none
-- **Outputs:** State (String), Australian state when country resolves to AU; otherwise empty
-- **Details:** [User country and region](/driveworks/plugins/autexcustom/user-country-and-region)
-
-### AutexImageSwatch
-
-- **Availability:** Function
-- **Inputs:** `fileName` (String). Resolved under the Group’s content folder `Assets\Swatches`. Extension optional; tries `.svg`, `.png`, `.jpg`, `.bmp`.
-- **Output:** String, full path, or `#REF! File does not exist`
-
-#### Example
-
-```text
-AutexImageSwatch("Oak")
-```
-
-### AutexImageProductView
-
-- **Availability:** Function
-- **Inputs:** `fileName` (String), under `Assets\ProductViews` with the same extension rules as swatches.
-- **Output:** String, full path, or `#REF! File does not exist`
-
-#### Example
-
-```text
-AutexImageProductView("Widget-A")
-```
-
-### AutexGetLocalised
-
-- **Availability:** Function
-- **Inputs:** `key` (String); optional `region` (String). Reads Group table named `TextStrings` or `DWGroupTableTextStrings`: column 0 = key, column 1 = default, header row columns 2+ = region codes (NZ, AU, US, UK). Empty `region` uses current user’s resolved country for the Project.
-- **Output:** String, cell text, or `#REF!` / `#KEY!` prefixed errors (including “did you mean …” when a value matches a non-key column)
-
-#### Example
-
-```text
-AutexGetLocalised("Title")
-```
-
-### AutexPolygonCreateRoundedBox
-
-- **Availability:** Function
-- **Overload A**
-  - **Inputs:** `x`, `y`, `width`, `height` (Number, mm); `cornerRadius` (Number or pipe list `topLeft|topRight|bottomRight|bottomLeft`); `segments` (Number)
-  - **Output:** Table/array value of `x|y` points, or `#INVALIDINPUT!` / `#VALUE!` string on failure
-- **Overload B**
-  - **Inputs:** `x`, `y`, `width`, `height`; `radiusTopLeft`, `radiusTopRight`, `radiusBottomRight`, `radiusBottomLeft`; `segments`
-  - **Output:** same as overload A
-
-#### Example
-
-```text
-AutexPolygonCreateRoundedBox(0,0,100,50,5,8)
-```
-
-### AutexCircleFromThreePoints
-
-- **Availability:** Function
-- **Inputs:** `pointsList` (String), `x1,y1|x2,y2|x3,y3`
-- **Output:** String `cx|cy|r` (invariant culture) or `#INVALIDINPUT!` / `#VALUE!` if collinear or bad input
-
-#### Example
-
-```text
-AutexCircleFromThreePoints("0,0|100,0|50,80")
-```
+<CustomFunctionDoc
+  name="AutexCircleFromThreePoints"
+  availability="Function"
+  inputs="`pointsList` (String), `x1,y1|x2,y2|x3,y3`"
+  output="String `cx|cy|r` (invariant culture) or `#INVALIDINPUT!` / `#VALUE!` if collinear or bad input"
+  example='AutexCircleFromThreePoints("0,0|100,0|50,80")'
+/>
 
 ### AutexCoMTriangle
 
@@ -269,98 +242,78 @@ Slab Packing does **not** accept arbitrary scalene triangles in the parts table;
 
 #### Mathematics
 
-Vertices \((x_1,y_1)\), \((x_2,y_2)\), \((x_3,y_3)\) in local mm (Y-down). The centroid is the arithmetic mean of the vertices:
+Vertices $(x_1,y_1)$, $(x_2,y_2)$, $(x_3,y_3)$ in local mm (Y-down). The centroid is the arithmetic mean of the vertices:
 
 $$
-\bar\{x\} = \frac\{x_1 + x_2 + x_3\}\{3\}, \qquad \bar\{y\} = \frac\{y_1 + y_2 + y_3\}\{3\}
+\bar{x} = \frac{x_1 + x_2 + x_3}{3}, \qquad \bar{y} = \frac{y_1 + y_2 + y_3}{3}
 $$
 
-**Rotation** \(\theta\) (degrees, same as Slab Packing) is applied about the origin:
+**Rotation** $\theta$ (degrees, same as Slab Packing) is applied about the origin:
 
 $$
-\begin\{pmatrix\} x' \\ y' \end\{pmatrix\}
+\begin{pmatrix} x' \\ y' \end{pmatrix}
 =
-\begin\{pmatrix\}
+\begin{pmatrix}
 \cos\theta & -\sin\theta \\
 \sin\theta & \cos\theta
-\end\{pmatrix\}
-\begin\{pmatrix\} \bar\{x\} \\ \bar\{y\} \end\{pmatrix\}
+\end{pmatrix}
+\begin{pmatrix} \bar{x} \\ \bar{y} \end{pmatrix}
 $$
 
-The function returns \(x'|y'\).
+The function returns $x'|y'$.
 
-**Scalene** third vertex with base \(s_1\) on the x-axis and edges \(s_2\), \(s_3\) to \((0,0)\) and \((s_1,0)\):
+**Scalene** third vertex with base $s_1$ on the x-axis and edges $s_2$, $s_3$ to $(0,0)$ and $(s_1,0)$:
 
 $$
-x_3 = \frac\{s_1^2 + s_3^2 - s_2^2\}\{2 s_1\}, \qquad
-y_3 = \sqrt\{s_3^2 - x_3^2\}
+x_3 = \frac{s_1^2 + s_3^2 - s_2^2}{2 s_1}, \qquad
+y_3 = \sqrt{s_3^2 - x_3^2}
 $$
 
-(Requires triangle inequality on \(s_1,s_2,s_3\) and \(y_3 > 0\).)
+(Requires triangle inequality on $s_1,s_2,s_3$ and $y_3 > 0$.)
 
-**Equilateral** example (\(s\) = side): \((s/2,0)\), \((0, s\sqrt\{3\}/2)\), \((s, s\sqrt\{3\}/2)\). **Right** example: \((0,0)\), \((W,0)\), \((0,L)\).
+**Equilateral** example ($s$ = side): $(s/2,0)$, $(0, s\sqrt{3}/2)$, $(s, s\sqrt{3}/2)$. **Right** example: $(0,0)$, $(W,0)$, $(0,L)$.
 
 #### Example
 
-```text
-AutexCoMTriangle(500,500,0)
-```
+<DriveWorksRule>AutexCoMTriangle(500,500,0)</DriveWorksRule>
 
-Right triangle 500 mm × 500 mm, no rotation → `166.666666667|166.666666667` (approximately \(W/3\), \(L/3\)).
+Right triangle 500 mm × 500 mm, no rotation → `166.666666667|166.666666667` (approximately $W/3$, $L/3$).
 
 #### Related behaviour
 
 Nest **SVG** and **DXF** part ID labels for **Triangle** shapes use the same polygon centroid as the drawn outline (not the placed bounding-box centre). See **Autex Slab Packing** and **DXF Document (Nest)** below.
 
-### AutexPolygonTiling
+<CustomFunctionDoc
+  name="AutexPolygonTiling"
+  availability="Function"
+  inputs="`pointsList` (String, polygon `x,y|…`); `tileSize` (Number, greater than zero, same units as coordinates)"
+  output="Number (tile count) or error String"
+  example='AutexPolygonTiling("0,0|100,0|100,100|0,100",50)'
+/>
 
-- **Availability:** Function
-- **Inputs:** `pointsList` (String, polygon `x,y|…`); `tileSize` (Number, greater than zero, same units as coordinates)
-- **Output:** Number (tile count) or error String
+<CustomFunctionDoc
+  name="AutexPolygonTilingSvgRects"
+  availability="Function"
+  inputs="same as `AutexPolygonTiling`"
+  output="String, SVG fragment (`polygon` elements per counted tile), or error String"
+  example='AutexPolygonTilingSvgRects("0,0|100,0|100,100|0,100",50)'
+/>
 
-#### Example
+<CustomFunctionDoc
+  name="AutexSlabPackingImage"
+  availability="Function"
+  inputs="`nestedTable`; `pageNumber` (0 = all layouts); required `settingsTable`; optional `returnSvgRaw`"
+  output="object (SVG / data URI, or `#ERROR!` / `#VALUE!`). Host: Picture control."
+  example="AutexSlabPackingImage(DwLookupNested,1,DWLookupSlabPackingSettings,TRUE)"
+/>
 
-```text
-AutexPolygonTiling("0,0|100,0|100,100|0,100",50)
-```
-
-### AutexPolygonTilingSvgRects
-
-- **Availability:** Function
-- **Inputs:** same as `AutexPolygonTiling`
-- **Output:** String, SVG fragment (`polygon` elements per counted tile), or error String
-
-#### Example
-
-```text
-AutexPolygonTilingSvgRects("0,0|100,0|100,100|0,100",50)
-```
-
-### AutexSlabPackingImage
-
-- **Availability:** Function
-- **Inputs:** `nestedTable` (table/array from **Autex Slab Packing** task or equivalent); `pageNumber` (Number, 0 = all layouts); **required** `settingsTable` (two-column property/value table with at least **SlabWidth** and **SlabLength**; see **Nest settings table** below); optional `returnSvgRaw` last (truthy = raw SVG text, falsey/omitted = data URI `data:image/svg+xml;base64,...`; for very large nests prefer raw SVG or Web Frame HTML)
-- **Output:** object (SVG string / data URI, empty string for valid empty nest, or `#ERROR!` / `#VALUE!` message strings)
-- **Host:** Picture control (static nest layout)
-
-#### Example
-
-```text
-AutexSlabPackingImage(DwLookupNested,1,DWLookupSlabPackingSettings,TRUE)
-```
-
-### AutexSlabPackingAnimation
-
-- **Availability:** Function (Release). **AutexSlabPackingAnimationHtml** is the same cut simulation as **AutexSlabPackingCutSimulationHtmlFromTable** but is registered only in **Debug** builds for Web Frame experiments.
-- **Inputs:** `nestedTable`; `cutListTable` (from **Autex Cut Order From Nest** or **From DXF**); `pageNumber` (1+ only); **required** `settingsTable`; optional `animationSpeed` (5-arg); optional `returnSvgRaw` on the 6-arg overload only (truthy = raw animated SVG, default = data URI or temp `.svg` path for Picture)
-- **Output:** object (animated SVG / data URI, or `#ERROR!`)
-- **Host:** Picture control
-
-#### Example
-
-```text
-AutexSlabPackingAnimation(DWVariableNested,DWVariableCutList,1,DWLookupSlabPackingSettings)
-```
+<CustomFunctionDoc
+  name="AutexSlabPackingAnimation"
+  availability="Function (Release)"
+  inputs="`nestedTable`; `cutListTable`; `pageNumber` (1+); required `settingsTable`; optional `animationSpeed`; optional `returnSvgRaw` on 6-arg overload"
+  output="object (animated SVG / data URI, or `#ERROR!`). Host: Picture control."
+  example="AutexSlabPackingAnimation(DWVariableNested,DWVariableCutList,1,DWLookupSlabPackingSettings)"
+/>
 
 ---
 
@@ -368,90 +321,67 @@ AutexSlabPackingAnimation(DWVariableNested,DWVariableCutList,1,DWLookupSlabPacki
 
 Embedded catalogs ship in **AutexCustom** (no Group table required). Rule Builder category: **Autex Custom Functions**. Successful lookups return hex as `#RRGGBB` (e.g. `#FF0000`). Lookup failures return Excel-style error strings (`#INVALIDINPUT!`, `#KEY!`, `#VALUE!`); near-miss Pantone/RAL codes may include a **did you mean** suggestion on `#KEY!`.
 
-### AutexGetPantoneHex
+<CustomFunctionDoc
+  name="AutexGetPantoneHex"
+  availability="Function"
+  inputs="`pantone` (String). PMS number or catalog name (e.g. `186`, `Cool Gray 5`, `Process Yellow`). Optional leading `Pantone ` prefix (case-insensitive)."
+  output="String, hex `#RRGGBB` for the match, or an error string"
+  example="AutexGetPantoneHex(186)"
+/>
 
-- **Availability:** Function
-- **Inputs:** `pantone` (String). PMS number or catalog name (e.g. `186`, `Cool Gray 5`, `Process Yellow`). Optional leading `Pantone ` prefix (case-insensitive).
-- **Output:** String, hex `#RRGGBB` for the match, or an error string
+<CustomFunctionDoc
+  name="AutexPantoneCodesAsList"
+  availability="Function"
+  inputs="none"
+  output="String, pipe-delimited list of all Pantone PMS codes and names in the embedded catalog"
+  example="AutexPantoneCodesAsList()"
+/>
 
-#### Example
+<CustomFunctionDoc
+  name="AutexPantoneAsTable"
+  availability="Function"
+  inputs="none"
+  output="Table with header row `Code` | `Hex` and one data row per catalog entry"
+  example="AutexPantoneAsTable()"
+/>
 
-```text
-AutexGetPantoneHex(186)
-```
+<CustomFunctionDoc
+  name="AutexGetRalHex"
+  availability="Function"
+  inputs="`ral` (String). RAL Classic number (e.g. `9010`, `3020`). Optional `RAL` prefix with flexible spacing or punctuation (e.g. `RAL 9010`, `RAL-9010`)."
+  output="String, hex `#RRGGBB` for the match, or an error string"
+  example='AutexGetRalHex("RAL 9010")'
+/>
 
-### AutexPantoneCodesAsList
+<CustomFunctionDoc
+  name="AutexRalCodesAsList"
+  availability="Function"
+  inputs="none"
+  output="String, pipe-delimited list of all RAL Classic codes in the embedded catalog"
+  example="AutexRalCodesAsList()"
+/>
 
-- **Availability:** Function
-- **Inputs:** none
-- **Output:** String, pipe-delimited list of all Pantone PMS codes and names in the embedded catalog
+<CustomFunctionDoc
+  name="AutexRalAsTable"
+  availability="Function"
+  inputs="none"
+  output="Table with header row `Code` | `Hex` and one data row per catalog entry"
+  example="AutexRalAsTable()"
+/>
 
-#### Example
-
-```text
-AutexPantoneCodesAsList()
-```
-
-### AutexPantoneAsTable
-
-- **Availability:** Function
-- **Inputs:** none
-- **Output:** Table with header row `Code` | `Hex` and one data row per catalog entry
-
-#### Example
-
-```text
-AutexPantoneAsTable()
-```
-
-### AutexGetRalHex
-
-- **Availability:** Function
-- **Inputs:** `ral` (String). RAL Classic number (e.g. `9010`, `3020`). Optional `RAL` prefix with flexible spacing or punctuation (e.g. `RAL 9010`, `RAL-9010`).
-- **Output:** String, hex `#RRGGBB` for the match, or an error string
-
-#### Example
-
-```text
-AutexGetRalHex("RAL 9010")
-```
-
-### AutexRalCodesAsList
-
-- **Availability:** Function
-- **Inputs:** none
-- **Output:** String, pipe-delimited list of all RAL Classic codes in the embedded catalog
-
-#### Example
-
-```text
-AutexRalCodesAsList()
-```
-
-### AutexRalAsTable
-
-- **Availability:** Function
-- **Inputs:** none
-- **Output:** Table with header row `Code` | `Hex` and one data row per catalog entry
-
-#### Example
-
-```text
-AutexRalAsTable()
-```
-
-### AutexGetProjectTables
-
-- **Availability:** Function (overload with optional filter)
-- **Inputs:** optional `filter` (String). Pipe-delimited tokens, case-insensitive. Omit or use `all` for every project table kind.
-- **Output:** String, pipe-delimited rule reference names (e.g. `DWLookupCustomers|DWCalcOrderDetails`). Uses SDK `GetTableReferenceName` (spaces removed from display names). Not group tables; use Specification PowerPack `SppGetGroupTables` for those.
-- **Filter tokens:** `all`, `lookup` / `datatable` / `define` (all Define Tables); `simple`; `excel` / `imported`; `odbc`; `sql` / `sqlserver`; `rollup`; `calc` / `calculation` / `calctable`.
-
-#### Example
-
-```text
-AutexGetProjectTables("simple|calc")
-```
+<CustomFunctionDoc
+  name="AutexGetProjectTables"
+  availability="Function (overload with optional filter)"
+  inputs="optional `filter` (String). Pipe-delimited tokens, case-insensitive. Omit or use `all` for every project table kind."
+  output="String, pipe-delimited rule reference names (e.g. `DWLookupCustomers|DWCalcOrderDetails`). Uses SDK `GetTableReferenceName`. Not group tables; use Specification PowerPack `SppGetGroupTables` for those."
+  example='AutexGetProjectTables("simple|calc")'
+>
+  <p className="text-sm text-gray-700 dark:text-gray-300">
+    <strong>Filter tokens:</strong> `all`, `lookup` / `datatable` / `define`,
+    `simple`, `excel` / `imported`, `odbc`, `sql` / `sqlserver`, `rollup`,
+    `calc` / `calculation` / `calctable`.
+  </p>
+</CustomFunctionDoc>
 
 ---
 
@@ -459,401 +389,269 @@ AutexGetProjectTables("simple|calc")
 
 Same semantics as the native table functions they wrap; column arguments are **header text on row 1** (1-based “first data row is row 2” in the descriptions in code). Category in Rule Builder: **Autex Custom Functions (Table By Column Name)**.
 
-### AutexListAllByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table` (Table); `columnName` (String); optional `sortAscending` (Boolean)
-- **Output:** Table (ListAll family)
-
-#### Example
-
-```text
-AutexListAllByColumnName(DWLookupParts,"PartNumber",TRUE)
-```
-
-### AutexListAllDistinctByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexListAllDistinctByColumnName(DWLookupParts,"Category")
-```
-
-### AutexListAllConditionalByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `valueColumnName`; `conditionColumnName`; `condition`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexListAllConditionalByColumnName(DWLookupParts,"PartNumber","Category","Panel")
-```
-
-### AutexListAllConditionalDistinctByColumnName
-
-- **Availability:** Function
-- **Inputs:** same as conditional list-all
-- **Output:** Table
-
-#### Example
-
-```text
-AutexListAllConditionalDistinctByColumnName(DWLookupParts,"PartNumber","Category","Panel")
-```
-
-### AutexTableSortByListByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `list`; optional `hasHeaders` (Boolean); optional `caseInsensitive` (Boolean); optional `sortAscending` (Boolean)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableSortByListByColumnName(DWLookupParts,"PartNumber","A|B|C",TRUE,TRUE,TRUE)
-```
-
-### AutexTableFilterByListByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `filterList` (String); `include` (Boolean)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableFilterByListByColumnName(DWLookupParts,"Category","Panel|Trim",TRUE)
-```
-
-### AutexTableSortByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; optional `hasHeaders`; optional `sortAscending`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableSortByColumnName(DWLookupParts,"PartNumber",TRUE,TRUE)
-```
-
-### AutexTableSortByDateByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; optional `hasHeaders`; optional `sortAscending`; optional `culture` (String)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableSortByDateByColumnName(DWLookupOrders,"OrderDate",TRUE,TRUE,"en-NZ")
-```
-
-### AutexTableDistinctByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableDistinctByColumnName(DWLookupParts,"Category")
-```
-
-### AutexTableFilterByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhiteSpace` (Boolean)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableFilterByColumnName(DWLookupParts,"Category","Panel")
-```
-
-### AutexTableFilterByTwoColumnNames
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName1`; `condition1`; `columnName2`; `condition2`; optional `ignoreWhitespace`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableFilterByTwoColumnNames(DWLookupParts,"Category","Panel","Status","Active")
-```
-
-### AutexTableFilterByThreeColumnNames
-
-- **Availability:** Function
-- **Inputs:** `table`; three column/condition pairs; optional `ignoreWhitespace`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableFilterByThreeColumnNames(DWLookupParts,"Category","Panel","Status","Active","Region","NZ")
-```
-
-### AutexTableFormatByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `format` (String)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableFormatByColumnName(DWLookupParts,"Price","0.00")
-```
-
-### AutexTableWithSequenceByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `insertAtColumnName`; optional `newColumnText` (String)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableWithSequenceByColumnName(DWLookupParts,"LineNo","Seq")
-```
-
-### AutexTableMinByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableMinByColumnName(DWLookupParts,"Price")
-```
-
-### AutexTableMaxByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableMaxByColumnName(DWLookupParts,"Price")
-```
-
-### AutexTableMinValueByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Number
-
-#### Example
-
-```text
-AutexTableMinValueByColumnName(DWLookupParts,"Price")
-```
-
-### AutexTableMaxValueByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; optional `defaultValue` (Number)
-- **Output:** Number
-
-#### Example
-
-```text
-AutexTableMaxValueByColumnName(DWLookupParts,"Price",0)
-```
-
-### AutexTableSumByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Number
-
-#### Example
-
-```text
-AutexTableSumByColumnName(DWLookupParts,"Qty")
-```
-
-### AutexTableAverageByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Number
-
-#### Example
-
-```text
-AutexTableAverageByColumnName(DWLookupParts,"Price")
-```
-
-### AutexTableDistinctCountByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; optional `ignoreCase`; optional `includeHeaderRow`; optional `sortAscending`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableDistinctCountByColumnName(DWLookupParts,"Category")
-```
-
-### AutexTableDistinctSumByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `groupColumnName`; `sumColumnName`; optional `ignoreCase`, `includeHeaderRow`, `sortAscending`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableDistinctSumByColumnName(DWLookupParts,"Category","Qty")
-```
-
-### AutexTableBreakByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `condition`; `top` (Boolean); `includeBreakRow` (Boolean); optional `ignoreWhitespace`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableBreakByColumnName(DWLookupParts,"Category","Panel",TRUE,TRUE)
-```
-
-### AutexTableSubstituteByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `oldText`; `newText`; optional `instanceNumber` (Number); optional `caseInsensitive` (Boolean)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableSubstituteByColumnName(DWLookupParts,"Description","old","new")
-```
-
-### AutexDCountByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhitespace`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexDCountByColumnName(DWLookupParts,"Category","Panel")
-```
-
-### AutexDMaxByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhitespace`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexDMaxByColumnName(DWLookupParts,"Price","Category","Panel")
-```
-
-### AutexDMinByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhitespace`
-- **Output:** Table
-
-#### Example
-
-```text
-AutexDMinByColumnName(DWLookupParts,"Price","Category","Panel")
-```
-
-### AutexGetTableValueByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `rowIndex` (Number); `columnName`
-- **Output:** Table cell value (native type)
-
-#### Example
-
-```text
-AutexGetTableValueByColumnName(DWLookupParts,2,"PartNumber")
-```
-
-### AutexSumTableColumnByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnName`
-- **Output:** Number
-
-#### Example
-
-```text
-AutexSumTableColumnByColumnName(DWLookupParts,"Qty")
-```
-
-### AutexVLookupByColumnName
-
-- **Availability:** Function
-- **Inputs:** `lookupValue`; `table`; `resultColumnName`; optional `closestMatch` (Boolean)
-- **Output:** same as native VLookup
-
-#### Example
-
-```text
-AutexVLookupByColumnName("P-100",DWLookupParts,"Description")
-```
-
-### AutexDWVLookupByColumnName
-
-- **Availability:** Function
-- **Inputs:** `lookupValue`; `table`; `lookupColumnName`; `resultColumnName`; optional `closestMatch`
-- **Output:** same as native DWVLookup
-
-#### Example
-
-```text
-AutexDWVLookupByColumnName("P-100",DWLookupParts,"PartNumber","Description")
-```
-
-### AutexTableJoinByColumnName
-
-- **Availability:** Function
-- **Inputs:** `left` (Table); `leftColumnName`; `right` (Table); `rightColumnName`; optional `joinType` (String); optional `dataRowsOnly` (Boolean); optional `includeHeaders` (Boolean)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableJoinByColumnName(DWLookupOrders,"OrderId",DWLookupLines,"OrderId")
-```
-
-### AutexTableSelectColumnsByColumnName
-
-- **Availability:** Function
-- **Inputs:** `table`; `columnNamesPipeDelimited` (String, `|` between header names)
-- **Output:** Table
-
-#### Example
-
-```text
-AutexTableSelectColumnsByColumnName(DWLookupParts,"PartNumber|Category|Qty")
-```
+<CustomFunctionDoc
+  name="AutexListAllByColumnName"
+  availability="Function"
+  inputs="`table` (Table); `columnName` (String); optional `sortAscending` (Boolean)"
+  output="Table (ListAll family)"
+  example='AutexListAllByColumnName(DWLookupParts,"PartNumber",TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexListAllDistinctByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexListAllDistinctByColumnName(DWLookupParts,"Category")'
+/>
+
+<CustomFunctionDoc
+  name="AutexListAllConditionalByColumnName"
+  availability="Function"
+  inputs="`table`; `valueColumnName`; `conditionColumnName`; `condition`"
+  output="Table"
+  example='AutexListAllConditionalByColumnName(DWLookupParts,"PartNumber","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexListAllConditionalDistinctByColumnName"
+  availability="Function"
+  inputs="same as conditional list-all"
+  output="Table"
+  example='AutexListAllConditionalDistinctByColumnName(DWLookupParts,"PartNumber","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSortByListByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `list`; optional `hasHeaders` (Boolean); optional `caseInsensitive` (Boolean); optional `sortAscending` (Boolean)"
+  output="Table"
+  example='AutexTableSortByListByColumnName(DWLookupParts,"PartNumber","A|B|C",TRUE,TRUE,TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByListByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `filterList` (String); `include` (Boolean)"
+  output="Table"
+  example='AutexTableFilterByListByColumnName(DWLookupParts,"Category","Panel|Trim",TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSortByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `hasHeaders`; optional `sortAscending`"
+  output="Table"
+  example='AutexTableSortByColumnName(DWLookupParts,"PartNumber",TRUE,TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSortByDateByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `hasHeaders`; optional `sortAscending`; optional `culture` (String)"
+  output="Table"
+  example='AutexTableSortByDateByColumnName(DWLookupOrders,"OrderDate",TRUE,TRUE,"en-NZ")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableDistinctByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexTableDistinctByColumnName(DWLookupParts,"Category")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhiteSpace` (Boolean)"
+  output="Table"
+  example='AutexTableFilterByColumnName(DWLookupParts,"Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByTwoColumnNames"
+  availability="Function"
+  inputs="`table`; `columnName1`; `condition1`; `columnName2`; `condition2`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexTableFilterByTwoColumnNames(DWLookupParts,"Category","Panel","Status","Active")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFilterByThreeColumnNames"
+  availability="Function"
+  inputs="`table`; three column/condition pairs; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexTableFilterByThreeColumnNames(DWLookupParts,"Category","Panel","Status","Active","Region","NZ")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableFormatByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `format` (String)"
+  output="Table"
+  example='AutexTableFormatByColumnName(DWLookupParts,"Price","0.00")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableWithSequenceByColumnName"
+  availability="Function"
+  inputs="`table`; `insertAtColumnName`; optional `newColumnText` (String)"
+  output="Table"
+  example='AutexTableWithSequenceByColumnName(DWLookupParts,"LineNo","Seq")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMinByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexTableMinByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMaxByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Table"
+  example='AutexTableMaxByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMinValueByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexTableMinValueByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableMaxValueByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `defaultValue` (Number)"
+  output="Number"
+  example='AutexTableMaxValueByColumnName(DWLookupParts,"Price",0)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSumByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexTableSumByColumnName(DWLookupParts,"Qty")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableAverageByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexTableAverageByColumnName(DWLookupParts,"Price")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableDistinctCountByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; optional `ignoreCase`; optional `includeHeaderRow`; optional `sortAscending`"
+  output="Table"
+  example='AutexTableDistinctCountByColumnName(DWLookupParts,"Category")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableDistinctSumByColumnName"
+  availability="Function"
+  inputs="`table`; `groupColumnName`; `sumColumnName`; optional `ignoreCase`, `includeHeaderRow`, `sortAscending`"
+  output="Table"
+  example='AutexTableDistinctSumByColumnName(DWLookupParts,"Category","Qty")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableBreakByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; `top` (Boolean); `includeBreakRow` (Boolean); optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexTableBreakByColumnName(DWLookupParts,"Category","Panel",TRUE,TRUE)'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSubstituteByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `oldText`; `newText`; optional `instanceNumber` (Number); optional `caseInsensitive` (Boolean)"
+  output="Table"
+  example='AutexTableSubstituteByColumnName(DWLookupParts,"Description","old","new")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDCountByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexDCountByColumnName(DWLookupParts,"Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDMaxByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexDMaxByColumnName(DWLookupParts,"Price","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDMinByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`; `condition`; optional `ignoreWhitespace`"
+  output="Table"
+  example='AutexDMinByColumnName(DWLookupParts,"Price","Category","Panel")'
+/>
+
+<CustomFunctionDoc
+  name="AutexGetTableValueByColumnName"
+  availability="Function"
+  inputs="`table`; `rowIndex` (Number); `columnName`"
+  output="Table cell value (native type)"
+  example='AutexGetTableValueByColumnName(DWLookupParts,2,"PartNumber")'
+/>
+
+<CustomFunctionDoc
+  name="AutexSumTableColumnByColumnName"
+  availability="Function"
+  inputs="`table`; `columnName`"
+  output="Number"
+  example='AutexSumTableColumnByColumnName(DWLookupParts,"Qty")'
+/>
+
+<CustomFunctionDoc
+  name="AutexVLookupByColumnName"
+  availability="Function"
+  inputs="`lookupValue`; `table`; `resultColumnName`; optional `closestMatch` (Boolean)"
+  output="same as native VLookup"
+  example='AutexVLookupByColumnName("P-100",DWLookupParts,"Description")'
+/>
+
+<CustomFunctionDoc
+  name="AutexDWVLookupByColumnName"
+  availability="Function"
+  inputs="`lookupValue`; `table`; `lookupColumnName`; `resultColumnName`; optional `closestMatch`"
+  output="same as native DWVLookup"
+  example='AutexDWVLookupByColumnName("P-100",DWLookupParts,"PartNumber","Description")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableJoinByColumnName"
+  availability="Function"
+  inputs="`left` (Table); `leftColumnName`; `right` (Table); `rightColumnName`; optional `joinType` (String); optional `dataRowsOnly` (Boolean); optional `includeHeaders` (Boolean)"
+  output="Table"
+  example='AutexTableJoinByColumnName(DWLookupOrders,"OrderId",DWLookupLines,"OrderId")'
+/>
+
+<CustomFunctionDoc
+  name="AutexTableSelectColumnsByColumnName"
+  availability="Function"
+  inputs="`table`; `columnNamesPipeDelimited` (String, `|` between header names)"
+  output="Table"
+  example='AutexTableSelectColumnsByColumnName(DWLookupParts,"PartNumber|Category|Qty")'
+/>
 
 ---
 
@@ -900,30 +698,43 @@ Scaffold with defaults in DriveWorks Administrator: Autex Toolkit release script
 
 Task: invalid known values fall back to defaults (warning in Diagnostic). UDF / DXF document: invalid values return `#VALUE!` / `#ERROR!` or block export with a report message.
 
-### Autex Copy Form Control
+<CustomFunctionDoc
+  name="Autex Copy Form Control"
+  availability="Task"
+  inputs="Form Control to copy; Form Name (optional); Top; Left; Name (optional new control name)"
+  output="New Control Name; Diagnostic (Debug builds only)"
+/>
 
-- **Availability:** Task
-- **Inputs:** Form Control to copy; Form Name (optional); Top; Left; Name (optional new control name)
-- **Outputs:** New Control Name; Diagnostic (Debug builds only)
+<CustomFunctionDoc
+  name="Autex Batch Copy Form Controls"
+  availability="Task"
+  inputs="Form Control to copy (pipe-separated multi); Form Name; Count; Top spacing; Left"
+  output="Last Control Name; Diagnostic (Debug builds only)"
+/>
 
-### Autex Batch Copy Form Controls
+<CustomFunctionDoc
+  name="Autex Drive Form Control From Table"
+  availability="Task"
+  inputs="Form control name; Properties table (wide layout); Data row index (1-based)"
+  output="Result (summary string); Diagnostic (Debug builds only)"
+>
+  <p className="text-sm text-gray-600 dark:text-gray-400">
+    Scaffold the table with Toolkit{" "}
+    <strong>Table from form control type</strong>, fill values, then run in a
+    Specification Macro. See{" "}
+    <a href="/driveworks/how-to/table-driven-form-control-properties">
+      Table-driven form control properties
+    </a>
+    .
+  </p>
+</CustomFunctionDoc>
 
-- **Availability:** Task
-- **Inputs:** Form Control to copy (pipe-separated multi); Form Name; Count; Top spacing; Left
-- **Outputs:** Last Control Name; Diagnostic (Debug builds only)
-
-### Autex Drive Form Control From Table
-
-- **Availability:** Task
-- **Inputs:** Form control name; Properties table (wide layout: row 0 = column headers, row 1+ = data); Data row index (1-based data row; `1` = first row after headers)
-- **Outputs:** Result (summary string); Diagnostic (Debug builds only)
-- **Workflow:** Scaffold the table with Toolkit **Table from form control type**, fill values, then run this task in a **Specification Macro**. Only non-empty cells apply; empty cells do not clear properties. See [Table-driven form control properties](/driveworks/how-to/table-driven-form-control-properties).
-
-### Autex Change Form Control Type
-
-- **Availability:** Task
-- **Inputs:** Form Control Name; Target Control Type (property-editor constrained list; default `NumericTextBox`). Unsupported conversions (e.g. from CheckBoxGroup / OptionGroup) fail per Toolkit conversion rules.
-- **Outputs:** none (success/fail on task state only)
+<CustomFunctionDoc
+  name="Autex Change Form Control Type"
+  availability="Task"
+  inputs="Form Control Name; Target Control Type (default `NumericTextBox`)"
+  output="none (success/fail on task state only)"
+/>
 
 ---
 

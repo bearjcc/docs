@@ -4,6 +4,9 @@ sidebarTitle: ConvertUnits
 description: Custom functions for length, area, time, and mass unit conversion inside DriveWorks Rules, with optional rounding and common shortcuts (mm/in, kg/lb).
 ---
 
+import { DriveWorksRule } from '/snippets/DriveWorksRule.jsx';
+
+
 
 ## ConvertUnits
 
@@ -82,9 +85,9 @@ AutexConvertMMToInch(Length)
 
 **Example:**
 
-```text
+<DriveWorksRule>
 AutexConvertMMToInch(254)
-```
+</DriveWorksRule>
 
 ### AutexConvertInchToMM
 
@@ -102,9 +105,9 @@ AutexConvertInchToMM(Length)
 
 **Example:**
 
-```text
+<DriveWorksRule>
 AutexConvertInchToMM(10)
-```
+</DriveWorksRule>
 
 ### AutexConvertUnitsArea
 
@@ -171,9 +174,9 @@ AutexConvertTimeFormatted(timeInSeconds)
 
 **Example:**
 
-```text
+<DriveWorksRule>
 AutexConvertTimeFormatted(3665)
-```
+</DriveWorksRule>
 
 ### AutexConvertWeight
 
@@ -214,9 +217,9 @@ AutexConvertMass(Mass, fromUnit, toUnit, roundTo)
 
 **Example:**
 
-```text
+<DriveWorksRule>
 AutexConvertMass(5, "kg", "lb")
-```
+</DriveWorksRule>
 
 ### AutexConvertKgToLb
 
@@ -234,9 +237,9 @@ AutexConvertKgToLb(Mass)
 
 **Example:**
 
-```text
+<DriveWorksRule>
 AutexConvertKgToLb(5)
-```
+</DriveWorksRule>
 
 ## Related
 

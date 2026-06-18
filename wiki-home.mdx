@@ -1,15 +1,49 @@
 ---
 title: Home
 sidebarTitle: Home
-description: Main landing page for Autex wiki documentation areas.
+description: Hub for Autex wiki documentation areas — DriveWorks, plugins, software, and reference.
 ---
 
+import { SectionCardGrid } from "/snippets/SectionCardGrid.jsx";
 
+Browse the main documentation areas migrated from the Autex wiki. Each section has its own tab in the navigation bar, or jump directly from the cards below.
 
-### Sections
-
-- [Autex](/autex)
-- [DriveWorks](/driveworks)
-- [Software](/software)
-- [In-Product Help](/in-product-help)
-- [Reference](/reference)
+<SectionCardGrid
+  cards={[
+    {
+      title: "Autex",
+      icon: "building-2",
+      href: "/autex",
+      description:
+        "Business context, products, manufacturing process, and internal terminology.",
+    },
+    {
+      title: "DriveWorks",
+      icon: "layers",
+      href: "/driveworks",
+      description:
+        "Structure, training, troubleshooting, version control, and plugin hubs.",
+    },
+    {
+      title: "Software",
+      icon: "monitor",
+      href: "/software",
+      description:
+        "SQL Server, IIS, SolidWorks, and other supporting software operations.",
+    },
+    {
+      title: "Reference",
+      icon: "book-marked",
+      href: "/reference",
+      description:
+        "MDX components, authoring conventions, and site maintenance standards.",
+    },
+    {
+      title: "In-Product Help",
+      icon: "circle-help",
+      href: "/in-product-help",
+      description:
+        "DriveWorks and Autex help surfaced inside Administrator and related tools.",
+    },
+  ]}
+/>

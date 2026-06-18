@@ -141,8 +141,8 @@
                        {
                            "group":  "Articles",
                            "pages":  [
-                                         "reference/markdown-tips",
-                                         "reference/wiki-conventions"
+                                         "reference/mdx-tips",
+                                         "reference/authoring-conventions"
                                      ]
                        }
                    ]

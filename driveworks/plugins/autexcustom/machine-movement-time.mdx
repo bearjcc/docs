@@ -50,8 +50,8 @@ Use consistent units:
 ### Output
 
 - Returns total time in seconds.
-- Per operation: \(t_\{\text\{op\}\} = t_\{\text\{motion\}\} + 2 t_\{\text\{dwell\}\}\).
-- Final result: \(t_\{\text\{total\}\} = n \cdot t_\{\text\{op\}\}\).
+- Per operation: $t_{\text{op}} = t_{\text{motion}} + 2 t_{\text{dwell}}$.
+- Final result: $t_{\text{total}} = n \cdot t_{\text{op}}$.
 
 ## Errors and validation behavior
 
@@ -72,63 +72,63 @@ Error behavior:
 
 ## Derivation and model
 
-Symbols: distance \(d\), max velocity \(v_\{\max\}\), acceleration \(a\), deceleration \(a_d\) (the public function sets \(a_d = a\)), dwell \(t_\{\text\{dwell\}\}\), quantity \(n\).
+Symbols: distance $d$, max velocity $v_{\max}$, acceleration $a$, deceleration $a_d$ (the public function sets $a_d = a$), dwell $t_{\text{dwell}}$, quantity $n$.
 
-For one move, velocity rises from zero, may cruise at \(v_\{\max\}\), then falls to zero. Two cases apply.
+For one move, velocity rises from zero, may cruise at $v_{\max}$, then falls to zero. Two cases apply.
 
 ### Case 1: Full trapezoid (reaches max velocity)
 
-Distance used while accelerating to \(v_\{\max\}\):
+Distance used while accelerating to $v_{\max}$:
 
 $$
-s_a = \frac\{v_\{\max\}^2\}\{2a\}
+s_a = \frac{v_{\max}^2}{2a}
 $$
 
-Distance used while decelerating from \(v_\{\max\}\):
+Distance used while decelerating from $v_{\max}$:
 
 $$
-s_d = \frac\{v_\{\max\}^2\}\{2 a_d\}
+s_d = \frac{v_{\max}^2}{2 a_d}
 $$
 
-When \(d \ge s_a + s_d\), the move reaches \(v_\{\max\}\) and includes a cruise segment:
+When $d \ge s_a + s_d$, the move reaches $v_{\max}$ and includes a cruise segment:
 
 $$
-t_a = \frac\{v_\{\max\}\}\{a\}, \qquad
-t_d = \frac\{v_\{\max\}\}\{a_d\}, \qquad
+t_a = \frac{v_{\max}}{a}, \qquad
+t_d = \frac{v_{\max}}{a_d}, \qquad
 s_c = d - s_a - s_d, \qquad
-t_c = \frac\{s_c\}\{v_\{\max\}\}
+t_c = \frac{s_c}{v_{\max}}
 $$
 
 Motion time:
 
 $$
-t_\{\text\{motion\}\} = t_a + t_c + t_d
+t_{\text{motion}} = t_a + t_c + t_d
 $$
 
 ### Case 2: Triangular profile (cannot reach max velocity)
 
-When \(d < s_a + s_d\), peak velocity \(v_p < v_\{\max\}\) is found from distance:
+When $d < s_a + s_d$, peak velocity $v_p < v_{\max}$ is found from distance:
 
 $$
-v_p = \sqrt\{\frac\{d\}\{\dfrac\{1\}\{2a\} + \dfrac\{1\}\{2 a_d\}\}\}
+v_p = \sqrt{\frac{d}{\dfrac{1}{2a} + \dfrac{1}{2 a_d}}}
 $$
 
 Motion time:
 
 $$
-t_\{\text\{motion\}\} = \frac\{v_p\}\{a\} + \frac\{v_p\}\{a_d\}
+t_{\text{motion}} = \frac{v_p}{a} + \frac{v_p}{a_d}
 $$
 
 ### Total for one operation
 
 $$
-t_\{\text\{op\}\} = t_\{\text\{motion\}\} + 2 t_\{\text\{dwell\}\}
+t_{\text{op}} = t_{\text{motion}} + 2 t_{\text{dwell}}
 $$
 
 Total for all operations:
 
 $$
-t_\{\text\{total\}\} = n \cdot t_\{\text\{op\}\}
+t_{\text{total}} = n \cdot t_{\text{op}}
 $$
 
 ## Limitations and assumptions

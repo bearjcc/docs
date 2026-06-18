@@ -4,7 +4,9 @@ sidebarTitle: DriveWorks Administrator UI region map
 description: Visual map of DriveWorks Administrator chrome and major view regions with decompiled WPF names and Autex Toolkit injection targets.
 ---
 
-
+import { AdministratorShellDiagram } from "/snippets/diagrams/AdministratorShellDiagram.jsx";
+import { AdministratorFormDesignerDiagram } from "/snippets/diagrams/AdministratorFormDesignerDiagram.jsx";
+import { AdministratorRulesBuilderDiagram } from "/snippets/diagrams/AdministratorRulesBuilderDiagram.jsx";
 
 This page names the regions of **DriveWorks Administrator** for maintainer work: what users see, what the decompiled WPF tree calls each area, and which injection surface to use when extending the product. Code identifiers below come from decompiled **23.1.0.630** (`DriveWorks.Applications.Implementation`, `DriveWorksAdministratorCore`, `DriveWorks.Applications.AdministratorViews`). Names are stable across recent releases; always confirm against the Live Visual Tree when debugging a specific build.
 
@@ -14,20 +16,22 @@ Use this map with the [injection guides](/driveworks/plugins/toolkit/injection) 
 
 DriveWorks docs and Toolkit guides use product names; decompiled XAML and reflection use different labels for the same real estate.
 
-| User / Wiki term | Decompiled control or type | SDK or service |
-| ---------------- | -------------------------- | -------------- |
-| QuickBar | `QuickBar` (`DriveWorks.Applications.Support.CommandBar`) | `IQuickBarManager` |
-| Command Manager | `CommandBar` | Application `ICommandBarManager`; per-view `IViewCommandBarManager` on `IViewEnvironment.CommandBarManager` |
-| Command group | `ICommandBarGroup` | `AddGroup(...)` then `AddCommandButton(...)` |
-| Commands registry | `CommandManager` (implementation type) | `ICommandManager` (`RegisterCommand`, `InvokeCommand`) |
-| Left sidebar / ToDo tree | `ToDo` (`TreeView`), `ViewTreeViewModel` | `IViewManager`, `IViewRegistrationService` / `InsertControlViewAfter` |
-| Content area | `ContentHost` (`DockPanel`) | Hosts active `IView`; WinForms views use `DriveWorksWindowsFormsHost` |
-| Status bar | `StatusBar`, `StatusBarItem` children | `IStatusBarService` |
-| Tree (in a view) | `CommandTreeView` | Selection, drag-drop, filter via `FilterTextBox` |
-| Property grid | `PropertyGrid`, `FormDesignerPropertyGrid`, hosts | `DynamicProperty`, custom `IPropertyEditor` |
+| User / Wiki term         | Decompiled control or type                                | SDK or service                                                                                              |
+| ------------------------ | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| QuickBar                 | `QuickBar` (`DriveWorks.Applications.Support.CommandBar`) | `IQuickBarManager`                                                                                          |
+| Command Manager          | `CommandBar`                                              | Application `ICommandBarManager`; per-view `IViewCommandBarManager` on `IViewEnvironment.CommandBarManager` |
+| Command group            | `ICommandBarGroup`                                        | `AddGroup(...)` then `AddCommandButton(...)`                                                                |
+| Commands registry        | `CommandManager` (implementation type)                    | `ICommandManager` (`RegisterCommand`, `InvokeCommand`)                                                      |
+| Left sidebar / ToDo tree | `ToDo` (`TreeView`), `ViewTreeViewModel`                  | `IViewManager`, `IViewRegistrationService` / `InsertControlViewAfter`                                       |
+| Content area             | `ContentHost` (`DockPanel`)                               | Hosts active `IView`; WinForms views use `DriveWorksWindowsFormsHost`                                       |
+| Status bar               | `StatusBar`, `StatusBarItem` children                     | `IStatusBarService`                                                                                         |
+| Tree (in a view)         | `CommandTreeView`                                         | Selection, drag-drop, filter via `FilterTextBox`                                                            |
+| Property grid            | `PropertyGrid`, `FormDesignerPropertyGrid`, hosts         | `DynamicProperty`, custom `IPropertyEditor`                                                                 |
 
 <Info>
-**Command Manager** in Wiki and Toolkit docs is the **`CommandBar` WPF control**, not `ICommandManager`. Commands are registered on `ICommandManager`; buttons are placed on `CommandBar` groups.
+  **Command Manager** in Wiki and Toolkit docs is the **`CommandBar` WPF
+  control**, not `ICommandManager`. Commands are registered on
+  `ICommandManager`; buttons are placed on `CommandBar` groups.
 </Info>
 
 ## Application shell (`SolidWorksWindow`)
@@ -36,27 +40,25 @@ The Administrator main window is `SolidWorksWindow` (factory: `SolidWorksChromeF
 
 Editable source: [`administrator-ui-shell.drawio`](/images/wiki/driveworks/administrator-ui-shell.drawio).
 
-```diagram
-PG14ZmlsZSBob3N0PSJhcHAuZGlhZ3JhbXMubmV0IiBhZ2VudD0iQXV0ZXggV2lraSIgdmVyc2lvbj0iMjIuMS4wIj4KICA8ZGlhZ3JhbSBpZD0iYWRtaW4tc2hlbGwiIG5hbWU9IlNvbGlkV29ya3NXaW5kb3ciPgogICAgPG14R3JhcGhNb2RlbCBkeD0iMTIwMCIgZHk9IjgwMCIgZ3JpZD0iMSIgZ3JpZFNpemU9IjEwIiBndWlkZXM9IjEiIHRvb2x0aXBzPSIxIiBjb25uZWN0PSIwIiBhcnJvd3M9IjAiIGZvbGQ9IjEiIHBhZ2U9IjEiIHBhZ2VTY2FsZT0iMSIgcGFnZVdpZHRoPSIxMTAwIiBwYWdlSGVpZ2h0PSI4NTAiIG1hdGg9IjAiIHNoYWRvdz0iMCI+CiAgICAgIDxyb290PgogICAgICAgIDxteENlbGwgaWQ9IjAiIC8+CiAgICAgICAgPG14Q2VsbCBpZD0iMSIgcGFyZW50PSIwIiAvPgogICAgICAgIDxteENlbGwgaWQ9IndpbiIgdmFsdWU9IiZsdDtiJmd0O0FwcGxpY2F0aW9uIHdpbmRvdyZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7U29saWRXb3Jrc1dpbmRvdyAvIE1haW5XaW5kb3cmbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7dmVydGljYWxBbGlnbj10b3A7YWxpZ249bGVmdDtzcGFjaW5nTGVmdD04O3NwYWNpbmdUb3A9NjtmaWxsQ29sb3I9I2Y1ZjVmNTtzdHJva2VDb2xvcj0jMzMzMzMzO2ZvbnRTaXplPTEyOyIgdmVydGV4PSIxIiBwYXJlbnQ9IjEiPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iNDAiIHk9IjMwIiB3aWR0aD0iMTAyMCIgaGVpZ2h0PSI3NjAiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJ0aXRsZSIgdmFsdWU9IiZsdDtiJmd0O1RpdGxlIGJhciBjaHJvbWUmbHQ7L2ImZ3Q7Jmx0O2JyJmd0OyZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O1RpdGxlQ29tbWFuZEJhckJhY2tpbmcmbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7dmVydGljYWxBbGlnbj10b3A7YWxpZ249bGVmdDtzcGFjaW5nTGVmdD02O3NwYWNpbmdUb3A9NDtmaWxsQ29sb3I9I2RhZThmYztzdHJva2VDb2xvcj0jNmM4ZWJmO2ZvbnRTaXplPTExOyIgdmVydGV4PSIxIiBwYXJlbnQ9IndpbiI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSIxMiIgeT0iMjgiIHdpZHRoPSI5OTYiIGhlaWdodD0iNTYiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJpY29uIiB2YWx1ZT0iJmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7QXBwbGljYXRpb25JY29uQnV0dG9uJmx0Oy9mb250Jmd0OyIgc3R5bGU9InJvdW5kZWQ9MDt3aGl0ZVNwYWNlPXdyYXA7aHRtbD0xO2ZpbGxDb2xvcj0jZmZmZmZmO3N0cm9rZUNvbG9yPSM5OTk5OTk7Zm9udFNpemU9MTA7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0idGl0bGUiPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iOCIgeT0iMjIiIHdpZHRoPSI0NCIgaGVpZ2h0PSIyOCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9Im5hbWUiIHZhbHVlPSImbHQ7Zm9udCBzdHlsZT0mcXVvdDtmb250LXNpemU6MTBweCZxdW90OyZndDtBcHBsaWNhdGlvbk5hbWUmbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7ZmlsbENvbG9yPSNmZmZmZmY7c3Ryb2tlQ29sb3I9Izk5OTk5OTtmb250U2l6ZT0xMDsiIHZlcnRleD0iMSIgcGFyZW50PSJ0aXRsZSI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSI1OCIgeT0iMjIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMjgiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJxdWljayIgdmFsdWU9IiZsdDtiJmd0O1F1aWNrQmFyJmx0Oy9iJmd0OyZsdDticiZndDsmbHQ7Zm9udCBzdHlsZT0mcXVvdDtmb250LXNpemU6MTBweCZxdW90OyZndDtRdWlja0JhciAoQ29tbWFuZEJhcikmbHQ7YnImZ3Q7SVF1aWNrQmFyTWFuYWdlciZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTtmaWxsQ29sb3I9I2ZmZjJjYztzdHJva2VDb2xvcj0jZDZiNjU2O2ZvbnRTaXplPTExOyIgdmVydGV4PSIxIiBwYXJlbnQ9InRpdGxlIj4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9IjIxMCIgeT0iMTQiIHdpZHRoPSI1MjAiIGhlaWdodD0iNDAiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJ3aW5idG5zIiB2YWx1ZT0iJmx0O2ImZ3Q7V2luZG93IGJ1dHRvbnMmbHQ7L2ImZ3Q7Jmx0O2JyJmd0OyZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O1dpbmRvd3NCdXR0b25zQmFyJmx0O2JyJmd0O0hlbHAgLyBNaW5pbWl6ZSAvIE1heFJlc3RvcmUgLyBDbG9zZSZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTtmaWxsQ29sb3I9I2ZmZmZmZjtzdHJva2VDb2xvcj0jOTk5OTk5O2ZvbnRTaXplPTEwOyIgdmVydGV4PSIxIiBwYXJlbnQ9InRpdGxlIj4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9Ijc0OCIgeT0iMTQiIHdpZHRoPSIyNDAiIGhlaWdodD0iNDAiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJjbWQiIHZhbHVlPSImbHQ7YiZndDtDb21tYW5kIE1hbmFnZXImbHQ7L2ImZ3Q7Jmx0O2JyJmd0OyZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O0NvbW1hbmRCYXImbHQ7YnImZ3Q7SUNvbW1hbmRCYXJNYW5hZ2VyICsgSVZpZXdDb21tYW5kQmFyTWFuYWdlciZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTtmaWxsQ29sb3I9I2ZmZjJjYztzdHJva2VDb2xvcj0jZDZiNjU2O2ZvbnRTaXplPTExOyIgdmVydGV4PSIxIiBwYXJlbnQ9IndpbiI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSIxMiIgeT0iOTIiIHdpZHRoPSI5OTYiIGhlaWdodD0iNTIiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJib2R5IiB2YWx1ZT0iJmx0O2ImZ3Q7QXBwbGljYXRpb24gYm9keSZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7QXBwbGljYXRpb25Cb2R5R3JpZCZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTt2ZXJ0aWNhbEFsaWduPXRvcDthbGlnbj1sZWZ0O3NwYWNpbmdMZWZ0PTY7c3BhY2luZ1RvcD00O2ZpbGxDb2xvcj0jZTFkNWU3O3N0cm9rZUNvbG9yPSM5NjczYTY7Zm9udFNpemU9MTE7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0id2luIj4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9IjEyIiB5PSIxNTIiIHdpZHRoPSI5OTYiIGhlaWdodD0iNTQwIiBhcz0iZ2VvbWV0cnkiIC8+CiAgICAgICAgPC9teENlbGw+CiAgICAgICAgPG14Q2VsbCBpZD0idG9kbyIgdmFsdWU9IiZsdDtiJmd0O1RvRG8gdHJlZSAobGVmdCBzaWRlYmFyKSZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7VG9EbyAoVHJlZVZpZXcpJmx0O2JyJmd0O1ZpZXdUcmVlVmlld01vZGVsIC8gVmlld0RlZmluaXRpb24mbHQ7YnImZ3Q7SVZpZXdNYW5hZ2VyJmx0Oy9mb250Jmd0OyIgc3R5bGU9InJvdW5kZWQ9MDt3aGl0ZVNwYWNlPXdyYXA7aHRtbD0xO2ZpbGxDb2xvcj0jZmZmMmNjO3N0cm9rZUNvbG9yPSNkNmI2NTY7Zm9udFNpemU9MTE7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0iYm9keSI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSI4IiB5PSIyOCIgd2lkdGg9IjIyMCIgaGVpZ2h0PSI1MDAiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJzcGxpdCIgdmFsdWU9IiZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O1RvZG9TcGxpdHRlciZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTtmaWxsQ29sb3I9I2Y4Y2VjYztzdHJva2VDb2xvcj0jYjg1NDUwO2ZvbnRTaXplPTEwOyIgdmVydGV4PSIxIiBwYXJlbnQ9ImJvZHkiPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iMjMyIiB5PSIyOCIgd2lkdGg9IjgiIGhlaWdodD0iNTAwIiBhcz0iZ2VvbWV0cnkiIC8+CiAgICAgICAgPC9teENlbGw+CiAgICAgICAgPG14Q2VsbCBpZD0iY29udGVudCIgdmFsdWU9IiZsdDtiJmd0O0NvbnRlbnQgaG9zdCZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7Q29udGVudEhvc3QgKERvY2tQYW5lbCkmbHQ7YnImZ3Q7YWN0aXZlIElWaWV3Jmx0O2JyJmd0O0RyaXZlV29ya3NXaW5kb3dzRm9ybXNIb3N0IHdoZW4gV2luRm9ybXMmbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7ZmlsbENvbG9yPSNmZmYyY2M7c3Ryb2tlQ29sb3I9I2Q2YjY1Njtmb250U2l6ZT0xMTsiIHZlcnRleD0iMSIgcGFyZW50PSJib2R5Ij4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9IjI0OCIgeT0iMjgiIHdpZHRoPSI3NDAiIGhlaWdodD0iNTAwIiBhcz0iZ2VvbWV0cnkiIC8+CiAgICAgICAgPC9teENlbGw+CiAgICAgICAgPG14Q2VsbCBpZD0ic3RhdHVzIiB2YWx1ZT0iJmx0O2ImZ3Q7U3RhdHVzIGJhciZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7U3RhdHVzQmFyIC8gSVN0YXR1c0JhclNlcnZpY2UmbHQ7YnImZ3Q7UmVhZHlTdGF0ZVRleHQsIFZlcnNpb25TdGF0ZSwgQnVpbGRTdGF0dXMsIExpY2Vuc2VUeXBlU3RhdHVzLCZsdDticiZndDtHcm91cFN0YXR1cywgUHJvamVjdFN0YXR1cywgVXNlclN0YXR1cywgU2VydmVyU3RhdHVzJmx0Oy9mb250Jmd0OyIgc3R5bGU9InJvdW5kZWQ9MDt3aGl0ZVNwYWNlPXdyYXA7aHRtbD0xO2ZpbGxDb2xvcj0jZDVlOGQ0O3N0cm9rZUNvbG9yPSM4MmIzNjY7Zm9udFNpemU9MTE7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0id2luIj4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9IjEyIiB5PSI3MDAiIHdpZHRoPSI5OTYiIGhlaWdodD0iNDgiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgPC9yb290PgogICAgPC9teEdyYXBoTW9kZWw+CiAgPC9kaWFncmFtPgo8L214ZmlsZT4K
-```
+<AdministratorShellDiagram />
 
 ### Shell region reference
 
-| Friendly name | Code name | WPF type / notes |
-| ------------- | --------- | ---------------- |
-| Application window | `MainWindow` / `SolidWorksWindow` | Root `Window` |
-| Title bar chrome | `TitleCommandBarBacking` | `CommandBar`; drag and double-click maximize |
-| App icon | `ApplicationIconButton` | `Button` |
-| App title label | `ApplicationName` | `Label` |
-| QuickBar | `QuickBar` | Populated by `State_UpdateQuickBar` / `IQuickBarManager` |
-| Window buttons | `WindowsButtonsBar` | `HelpButton`, `MinimizeButton`, `MaxRestoreButton`, `CloseButton` |
-| Command Manager | `CommandBar` | Merges `ICommandBarManager` groups with active view `IViewCommandBarManager` groups (`State_UpdateCommandBar`) |
-| Body grid | `ApplicationBodyGrid` | `Grid` |
-| Sidebar column | `TodoColumnDefinition` | `ColumnDefinition` width persistence |
-| ToDo tree | `ToDo` | `TreeView` bound to `ViewTreeViewModel.RootViews` |
-| Sidebar splitter | `TodoSplitter` | `GridSplitter` |
-| Content host | `ContentHost` | `DockPanel`; children cleared on `ActiveViewChanged` |
-| Status bar | `StatusBar` | `ReadyStateText`, `VersionState`, `BuildStatus`, `LicenseTypeStatus`, `GroupStatus`, `ProjectStatus`, `UserStatus`, `ServerStatus` |
+| Friendly name      | Code name                         | WPF type / notes                                                                                                                   |
+| ------------------ | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Application window | `MainWindow` / `SolidWorksWindow` | Root `Window`                                                                                                                      |
+| Title bar chrome   | `TitleCommandBarBacking`          | `CommandBar`; drag and double-click maximize                                                                                       |
+| App icon           | `ApplicationIconButton`           | `Button`                                                                                                                           |
+| App title label    | `ApplicationName`                 | `Label`                                                                                                                            |
+| QuickBar           | `QuickBar`                        | Populated by `State_UpdateQuickBar` / `IQuickBarManager`                                                                           |
+| Window buttons     | `WindowsButtonsBar`               | `HelpButton`, `MinimizeButton`, `MaxRestoreButton`, `CloseButton`                                                                  |
+| Command Manager    | `CommandBar`                      | Merges `ICommandBarManager` groups with active view `IViewCommandBarManager` groups (`State_UpdateCommandBar`)                     |
+| Body grid          | `ApplicationBodyGrid`             | `Grid`                                                                                                                             |
+| Sidebar column     | `TodoColumnDefinition`            | `ColumnDefinition` width persistence                                                                                               |
+| ToDo tree          | `ToDo`                            | `TreeView` bound to `ViewTreeViewModel.RootViews`                                                                                  |
+| Sidebar splitter   | `TodoSplitter`                    | `GridSplitter`                                                                                                                     |
+| Content host       | `ContentHost`                     | `DockPanel`; children cleared on `ActiveViewChanged`                                                                               |
+| Status bar         | `StatusBar`                       | `ReadyStateText`, `VersionState`, `BuildStatus`, `LicenseTypeStatus`, `GroupStatus`, `ProjectStatus`, `UserStatus`, `ServerStatus` |
 
 When the active view changes, `mViewManager_ActiveViewChanged` clears `ContentHost`, mounts the new `IView`, updates `mActiveViewCommandBarManager`, and rebuilds the Command Manager bar.
 
@@ -71,45 +73,45 @@ Injection uses `parentViewName` (stage) and `afterViewName` (sibling order). See
 <details>
 <summary>AdministratorViewNames reference (expand)</summary>
 
-| Constant | `Name` value | Typical role | Typical `Parent` |
-| -------- | ------------ | ------------ | ---------------- |
-| `Today` | `DriveWorksToday` | Top-level view | *(empty)* |
-| `Help` | `DriveWorksHelp` | Top-level view | *(empty)* |
-| `Settings` | `Settings` | Top-level view | *(empty)* |
-| `GroupSetup` | `GroupSetup` | Stage (Group Setup) | *(empty)* |
-| `GroupOptions` | `GroupOptions` | Child view | `GroupSetup` |
-| `DriveAppAdministration` | `DriveAppAdministration` | Child view | `GroupSetup` |
-| `Security` | `Security` | Child view | `GroupSetup` |
-| `Autopilot` | `Autopilot` | Child view | `GroupSetup` |
-| `GroupTables` | `GroupTables` | Child view | `GroupSetup` |
-| `GroupPersonalWebEdition` | `GroupPersonalWebEdition` | Child view | `GroupSetup` |
-| `DataManagement` | `DataManagement` | Top-level / stage | *(empty)* |
-| `UserInterface` | `UserInterface` | Stage (User Interface) | *(empty)* |
-| `FormDesigner` | `FormDesigner` | Child view | `UserInterface` |
-| `FormMessages` | `FormMessages` | Child view | `UserInterface` |
-| `FormNavigation` | `FormNavigation` | Child view | `UserInterface` |
-| `DataAndRules` | `DataAndRules` | Stage (Data and Rules) | *(empty)* |
-| `Constants` | `Constants` | Child view | `DataAndRules` |
-| `Variables` | `Variables` | Child view | `DataAndRules` |
-| `DataTables` | `DataTables` | Child view | `DataAndRules` |
-| `CalculationTables` | `CalculationTables` | Child view | `DataAndRules` |
-| `OutputRules` | `OutputRules` | Stage (Output Rules) | *(empty)* |
-| `SpecificationSettings` | `SpecificationSettings` | Child view | `OutputRules` |
-| `SpecificationProperties` | `SpecificationProperties` | Child view | `OutputRules` |
-| `SpecificationMacros` | `SpecificationMacros` | Child view | `OutputRules` |
-| `SpecificationFlow` | `SpecificationFlow` | Child view | `OutputRules` |
-| `Documents` | `FileDocuments` | Child view | `OutputRules` |
-| `DisplayFiles` | `DisplayFiles` | Child view | `OutputRules` |
-| `DataDocuments` | `DataDocuments` | Child view | `OutputRules` |
-| `SpecificationControl` | `SpecificationControl` | Child view | `OutputRules` |
-| `ModelRules` | `ModelRules` | Child view | `OutputRules` |
-| `GenerationTasks` | `GenerationTasks` | Child view | `OutputRules` |
-| `Documents3D` | `3DDocuments` | Child view | `OutputRules` |
-| `GroupSpecification` | `GroupSpecification` | Stage / explorer | *(empty)* |
-| `GroupSpecificationExplorer` | `GroupSpecificationExplorer` | Child view | `GroupSpecification` |
-| `ProjectSpecification` | `ProjectSpecification` | Stage / explorer | *(empty)* |
-| `ProjectSpecificationExplorer` | `ProjectSpecificationExplorer` | Child view | `ProjectSpecification` |
-| `ProjectPersonalWebEdition` | `ProjectPersonalWebEdition` | Child view | `UserInterface` or project UI stage |
+| Constant                       | `Name` value                   | Typical role           | Typical `Parent`                    |
+| ------------------------------ | ------------------------------ | ---------------------- | ----------------------------------- |
+| `Today`                        | `DriveWorksToday`              | Top-level view         | _(empty)_                           |
+| `Help`                         | `DriveWorksHelp`               | Top-level view         | _(empty)_                           |
+| `Settings`                     | `Settings`                     | Top-level view         | _(empty)_                           |
+| `GroupSetup`                   | `GroupSetup`                   | Stage (Group Setup)    | _(empty)_                           |
+| `GroupOptions`                 | `GroupOptions`                 | Child view             | `GroupSetup`                        |
+| `DriveAppAdministration`       | `DriveAppAdministration`       | Child view             | `GroupSetup`                        |
+| `Security`                     | `Security`                     | Child view             | `GroupSetup`                        |
+| `Autopilot`                    | `Autopilot`                    | Child view             | `GroupSetup`                        |
+| `GroupTables`                  | `GroupTables`                  | Child view             | `GroupSetup`                        |
+| `GroupPersonalWebEdition`      | `GroupPersonalWebEdition`      | Child view             | `GroupSetup`                        |
+| `DataManagement`               | `DataManagement`               | Top-level / stage      | _(empty)_                           |
+| `UserInterface`                | `UserInterface`                | Stage (User Interface) | _(empty)_                           |
+| `FormDesigner`                 | `FormDesigner`                 | Child view             | `UserInterface`                     |
+| `FormMessages`                 | `FormMessages`                 | Child view             | `UserInterface`                     |
+| `FormNavigation`               | `FormNavigation`               | Child view             | `UserInterface`                     |
+| `DataAndRules`                 | `DataAndRules`                 | Stage (Data and Rules) | _(empty)_                           |
+| `Constants`                    | `Constants`                    | Child view             | `DataAndRules`                      |
+| `Variables`                    | `Variables`                    | Child view             | `DataAndRules`                      |
+| `DataTables`                   | `DataTables`                   | Child view             | `DataAndRules`                      |
+| `CalculationTables`            | `CalculationTables`            | Child view             | `DataAndRules`                      |
+| `OutputRules`                  | `OutputRules`                  | Stage (Output Rules)   | _(empty)_                           |
+| `SpecificationSettings`        | `SpecificationSettings`        | Child view             | `OutputRules`                       |
+| `SpecificationProperties`      | `SpecificationProperties`      | Child view             | `OutputRules`                       |
+| `SpecificationMacros`          | `SpecificationMacros`          | Child view             | `OutputRules`                       |
+| `SpecificationFlow`            | `SpecificationFlow`            | Child view             | `OutputRules`                       |
+| `Documents`                    | `FileDocuments`                | Child view             | `OutputRules`                       |
+| `DisplayFiles`                 | `DisplayFiles`                 | Child view             | `OutputRules`                       |
+| `DataDocuments`                | `DataDocuments`                | Child view             | `OutputRules`                       |
+| `SpecificationControl`         | `SpecificationControl`         | Child view             | `OutputRules`                       |
+| `ModelRules`                   | `ModelRules`                   | Child view             | `OutputRules`                       |
+| `GenerationTasks`              | `GenerationTasks`              | Child view             | `OutputRules`                       |
+| `Documents3D`                  | `3DDocuments`                  | Child view             | `OutputRules`                       |
+| `GroupSpecification`           | `GroupSpecification`           | Stage / explorer       | _(empty)_                           |
+| `GroupSpecificationExplorer`   | `GroupSpecificationExplorer`   | Child view             | `GroupSpecification`                |
+| `ProjectSpecification`         | `ProjectSpecification`         | Stage / explorer       | _(empty)_                           |
+| `ProjectSpecificationExplorer` | `ProjectSpecificationExplorer` | Child view             | `ProjectSpecification`              |
+| `ProjectPersonalWebEdition`    | `ProjectPersonalWebEdition`    | Child view             | `UserInterface` or project UI stage |
 
 Parent assignments for native views follow the Administrator navigation tree shipped with the product. Plugin views (for example `AutexGroupConstants`) set `parent` explicitly at registration time. Confirm placement in the Live Visual Tree when adding siblings.
 
@@ -119,11 +121,11 @@ Parent assignments for native views follow the Administrator navigation tree shi
 
 Views hosted in `ContentHost` implement `IView`. Layout varies; three recurring shapes matter for injection.
 
-| Archetype | Example type | Notable regions | Injection |
-| --------- | ------------ | --------------- | --------- |
-| Command bar + trees | `MacroFlowsViewControl` | `MacrosTree`, `ToolboxTree`, `ConditionsToolboxTree`, `CategoryFilter`, `ToolboxFilter`, `MacrosSplitter`, `ToolboxSplitter` | [View-scoped command button](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button) |
-| Web designer | `FormDesignerView` | `ControlTreeView`, `WebFormDesigner`, `DesignerPropertyGrid`, `DesignerContextMenu` | [Form Designer context menu](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item), [property grid](/driveworks/plugins/toolkit/injection/add-form-control-properties), view command bar |
-| List / grid views | `VariablesViewControl`, document admins, etc. | Often `CommandTreeView` or list + detail pane | View-scoped commands when `IViewEnvironment.CommandBarManager` is present |
+| Archetype           | Example type                                  | Notable regions                                                                                                              | Injection                                                                                                                                                                                                     |
+| ------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Command bar + trees | `MacroFlowsViewControl`                       | `MacrosTree`, `ToolboxTree`, `ConditionsToolboxTree`, `CategoryFilter`, `ToolboxFilter`, `MacrosSplitter`, `ToolboxSplitter` | [View-scoped command button](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button)                                                                                                            |
+| Web designer        | `FormDesignerView`                            | `ControlTreeView`, `WebFormDesigner`, `DesignerPropertyGrid`, `DesignerContextMenu`                                          | [Form Designer context menu](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item), [property grid](/driveworks/plugins/toolkit/injection/add-form-control-properties), view command bar |
+| List / grid views   | `VariablesViewControl`, document admins, etc. | Often `CommandTreeView` or list + detail pane                                                                                | View-scoped commands when `IViewEnvironment.CommandBarManager` is present                                                                                                                                     |
 
 `IViewEnvironment` exposes `ViewName`, `CommandManager`, and `CommandBarManager` for the active view. Form Designer may omit `CommandBarManager` while still exposing the property grid and designer context menu.
 
@@ -133,18 +135,16 @@ Views hosted in `ContentHost` implement `IView`. Layout varies; three recurring 
 
 Editable source: [`administrator-ui-form-designer.drawio`](/images/wiki/driveworks/administrator-ui-form-designer.drawio).
 
-```diagram
-PG14ZmlsZSBob3N0PSJhcHAuZGlhZ3JhbXMubmV0IiBhZ2VudD0iQXV0ZXggV2lraSIgdmVyc2lvbj0iMjIuMS4wIj4KICA8ZGlhZ3JhbSBpZD0iZm9ybS1kZXNpZ25lciIgbmFtZT0iRm9ybURlc2lnbmVyVmlldyI+CiAgICA8bXhHcmFwaE1vZGVsIGR4PSIxMjAwIiBkeT0iODAwIiBncmlkPSIxIiBncmlkU2l6ZT0iMTAiIGd1aWRlcz0iMSIgdG9vbHRpcHM9IjEiIGNvbm5lY3Q9IjAiIGFycm93cz0iMCIgZm9sZD0iMSIgcGFnZT0iMSIgcGFnZVNjYWxlPSIxIiBwYWdlV2lkdGg9IjExMDAiIHBhZ2VIZWlnaHQ9IjcwMCIgbWF0aD0iMCIgc2hhZG93PSIwIj4KICAgICAgPHJvb3Q+CiAgICAgICAgPG14Q2VsbCBpZD0iMCIgLz4KICAgICAgICA8bXhDZWxsIGlkPSIxIiBwYXJlbnQ9IjAiIC8+CiAgICAgICAgPG14Q2VsbCBpZD0idmlldyIgdmFsdWU9IiZsdDtiJmd0O1dlYiBGb3JtIERlc2lnbmVyIHZpZXcmbHQ7L2ImZ3Q7Jmx0O2JyJmd0OyZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O0Zvcm1EZXNpZ25lclZpZXcgKElWaWV3IGluIENvbnRlbnRIb3N0KSZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTt2ZXJ0aWNhbEFsaWduPXRvcDthbGlnbj1sZWZ0O3NwYWNpbmdMZWZ0PTg7c3BhY2luZ1RvcD02O2ZpbGxDb2xvcj0jZjVmNWY1O3N0cm9rZUNvbG9yPSMzMzMzMzM7Zm9udFNpemU9MTI7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0iMSI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSI0MCIgeT0iNDAiIHdpZHRoPSIxMDIwIiBoZWlnaHQ9IjYyMCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9InZiYXIiIHZhbHVlPSImbHQ7YiZndDtWaWV3IENvbW1hbmQgTWFuYWdlciZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7SVZpZXdFbnZpcm9ubWVudC5Db21tYW5kQmFyTWFuYWdlciZsdDticiZndDt6b29tLCB0ZXN0IG1vZGUsIGFsaWdubWVudCBncm91cHMmbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7ZmlsbENvbG9yPSNmZmYyY2M7c3Ryb2tlQ29sb3I9I2Q2YjY1Njtmb250U2l6ZT0xMTsiIHZlcnRleD0iMSIgcGFyZW50PSJ2aWV3Ij4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9IjEyIiB5PSIzMiIgd2lkdGg9Ijk5NiIgaGVpZ2h0PSI0NCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9ImZvcm1zIiB2YWx1ZT0iJmx0O2ImZ3Q7Rm9ybXMgbGlzdCBiYW5kJmx0Oy9iJmd0OyZsdDticiZndDsmbHQ7Zm9udCBzdHlsZT0mcXVvdDtmb250LXNpemU6MTBweCZxdW90OyZndDtGb3JtTGlzdFJvdyAvIEZvcm1zTGlzdFNwbGl0dGVyJmx0Oy9mb250Jmd0OyIgc3R5bGU9InJvdW5kZWQ9MDt3aGl0ZVNwYWNlPXdyYXA7aHRtbD0xO2ZpbGxDb2xvcj0jZmZmZmZmO3N0cm9rZUNvbG9yPSM5OTk5OTk7Zm9udFNpemU9MTA7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0idmlldyI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSIxMiIgeT0iODQiIHdpZHRoPSI5OTYiIGhlaWdodD0iMzYiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJsZWZ0IiB2YWx1ZT0iJmx0O2ImZ3Q7Q29udHJvbCB0cmVlIGNvbHVtbiZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7Q29udHJvbFRyZWVGaWx0ZXJUZXh0Qm94Jmx0O2JyJmd0O3RyZWUgdG9vbGJhcjogWk9yZGVyVHJlZUJ1dHRvbiwgTmFtZU9yZGVyVHJlZUJ1dHRvbiwgLi4uJmx0O2JyJmd0OyZsdDtiJmd0O0NvbnRyb2xUcmVlVmlldyZsdDsvYiZndDsgKENvbW1hbmRUcmVlVmlldykmbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7dmVydGljYWxBbGlnbj10b3A7YWxpZ249bGVmdDtzcGFjaW5nTGVmdD02O3NwYWNpbmdUb3A9NDtmaWxsQ29sb3I9I2RhZThmYztzdHJva2VDb2xvcj0jNmM4ZWJmO2ZvbnRTaXplPTExOyIgdmVydGV4PSIxIiBwYXJlbnQ9InZpZXciPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iMTIiIHk9IjEyOCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSI0MjAiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJjYW52YXMiIHZhbHVlPSImbHQ7YiZndDtGb3JtIGRlc2lnbmVyIGNhbnZhcyZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7V2ViRm9ybURlc2lnbmVyIChXZWJWaWV3MikmbHQ7YnImZ3Q7RGVzaWduZXJDb250ZXh0TWVudSAvIENvbnZlcnRNZW51SXRlbSZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTtmaWxsQ29sb3I9I2ZmZjJjYztzdHJva2VDb2xvcj0jZDZiNjU2O2ZvbnRTaXplPTExOyIgdmVydGV4PSIxIiBwYXJlbnQ9InZpZXciPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iMjYwIiB5PSIxMjgiIHdpZHRoPSI1MDAiIGhlaWdodD0iNDIwIiBhcz0iZ2VvbWV0cnkiIC8+CiAgICAgICAgPC9teENlbGw+CiAgICAgICAgPG14Q2VsbCBpZD0icHNwbGl0IiB2YWx1ZT0iJmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7UHJvcGVydHlHcmlkU3BsaXR0ZXImbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7ZmlsbENvbG9yPSNmOGNlY2M7c3Ryb2tlQ29sb3I9I2I4NTQ1MDtmb250U2l6ZT0xMDsiIHZlcnRleD0iMSIgcGFyZW50PSJ2aWV3Ij4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9Ijc2OCIgeT0iMTI4IiB3aWR0aD0iOCIgaGVpZ2h0PSI0MjAiIGFzPSJnZW9tZXRyeSIgLz4KICAgICAgICA8L214Q2VsbD4KICAgICAgICA8bXhDZWxsIGlkPSJncmlkIiB2YWx1ZT0iJmx0O2ImZ3Q7UHJvcGVydHkgZ3JpZCZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7UHJvcGVydHlHcmlkSG9zdCZsdDticiZndDtEZXNpZ25lclByb3BlcnR5R3JpZCZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTtmaWxsQ29sb3I9I2ZmZjJjYztzdHJva2VDb2xvcj0jZDZiNjU2O2ZvbnRTaXplPTExOyIgdmVydGV4PSIxIiBwYXJlbnQ9InZpZXciPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iNzg0IiB5PSIxMjgiIHdpZHRoPSIyMjQiIGhlaWdodD0iNDIwIiBhcz0iZ2VvbWV0cnkiIC8+CiAgICAgICAgPC9teENlbGw+CiAgICAgIDwvcm9vdD4KICAgIDwvbXhHcmFwaE1vZGVsPgogIDwvZGlhZ3JhbT4KPC9teGZpbGU+Cg==
-```
+<AdministratorFormDesignerDiagram />
 
-| Region | Code names | Injection |
-| ------ | ---------- | --------- |
+| Region               | Code names                                                               | Injection                                                                                               |
+| -------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
 | View Command Manager | `IViewEnvironment.CommandBarManager` groups (zoom, test mode, alignment) | [Command Manager button](/driveworks/plugins/toolkit/injection/add-command-manager-button) on this view |
-| Forms list | `FormListRow`, `FormsListSplitter` | — |
-| Control tree | `ControlTreeFilterTextBox`, sort/move toolbar buttons, `ControlTreeView` | Selection drives designer |
-| Canvas | `WebFormDesigner` (WebView2) | WebView bridge patterns (Toolkit: Form Designer WebView) |
-| Context menu | `DesignerContextMenu`, `ConvertMenuItem` | [Form Designer context menu](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) |
-| Property grid | `PropertyGridSplitter`, `PropertyGridHost`, `DesignerPropertyGrid` | [Form control properties](/driveworks/plugins/toolkit/injection/add-form-control-properties) |
+| Forms list           | `FormListRow`, `FormsListSplitter`                                       | —                                                                                                       |
+| Control tree         | `ControlTreeFilterTextBox`, sort/move toolbar buttons, `ControlTreeView` | Selection drives designer                                                                               |
+| Canvas               | `WebFormDesigner` (WebView2)                                             | WebView bridge patterns (Toolkit: Form Designer WebView)                                                |
+| Context menu         | `DesignerContextMenu`, `ConvertMenuItem`                                 | [Form Designer context menu](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) |
+| Property grid        | `PropertyGridSplitter`, `PropertyGridHost`, `DesignerPropertyGrid`       | [Form control properties](/driveworks/plugins/toolkit/injection/add-form-control-properties)            |
 
 ## Rules Builder (`RulesBuilderFormWpf`)
 
@@ -152,39 +152,37 @@ PG14ZmlsZSBob3N0PSJhcHAuZGlhZ3JhbXMubmV0IiBhZ2VudD0iQXV0ZXggV2lraSIgdmVyc2lvbj0i
 
 Editable source: [`administrator-ui-rules-builder.drawio`](/images/wiki/driveworks/administrator-ui-rules-builder.drawio).
 
-```diagram
-PG14ZmlsZSBob3N0PSJhcHAuZGlhZ3JhbXMubmV0IiBhZ2VudD0iQXV0ZXggV2lraSIgdmVyc2lvbj0iMjIuMS4wIj4KICA8ZGlhZ3JhbSBpZD0icnVsZXMtYnVpbGRlciIgbmFtZT0iUnVsZXNCdWlsZGVyRm9ybVdwZiI+CiAgICA8bXhHcmFwaE1vZGVsIGR4PSIxMjAwIiBkeT0iODAwIiBncmlkPSIxIiBncmlkU2l6ZT0iMTAiIGd1aWRlcz0iMSIgdG9vbHRpcHM9IjEiIGNvbm5lY3Q9IjAiIGFycm93cz0iMCIgZm9sZD0iMSIgcGFnZT0iMSIgcGFnZVNjYWxlPSIxIiBwYWdlV2lkdGg9IjExMDAiIHBhZ2VIZWlnaHQ9Ijc1MCIgbWF0aD0iMCIgc2hhZG93PSIwIj4KICAgICAgPHJvb3Q+CiAgICAgICAgPG14Q2VsbCBpZD0iMCIgLz4KICAgICAgICA8bXhDZWxsIGlkPSIxIiBwYXJlbnQ9IjAiIC8+CiAgICAgICAgPG14Q2VsbCBpZD0id2luIiB2YWx1ZT0iJmx0O2ImZ3Q7UnVsZXMgQnVpbGRlciB3aW5kb3cmbHQ7L2ImZ3Q7Jmx0O2JyJmd0OyZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O1J1bGVzQnVpbGRlckZvcm1XcGYgKG1vZGFsIFdpbmRvdywgbm90IGluIENvbnRlbnRIb3N0KSZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTt2ZXJ0aWNhbEFsaWduPXRvcDthbGlnbj1sZWZ0O3NwYWNpbmdMZWZ0PTg7c3BhY2luZ1RvcD02O2ZpbGxDb2xvcj0jZjVmNWY1O3N0cm9rZUNvbG9yPSMzMzMzMzM7Zm9udFNpemU9MTI7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0iMSI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSI0MCIgeT0iMzAiIHdpZHRoPSIxMDIwIiBoZWlnaHQ9IjY4MCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9ImJhciIgdmFsdWU9IiZsdDtiJmd0O1J1bGVzIEJ1aWxkZXIgdG9vbGJhciZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7TWFpbkNvbW1hbmRCYXImbHQ7YnImZ3Q7RnVuY3Rpb25zU3BsaXRCdXR0b24sIEZpbGVCdXR0b24sIFRhYmxlc0J1dHRvbiwgLi4uJmx0Oy9mb250Jmd0OyIgc3R5bGU9InJvdW5kZWQ9MDt3aGl0ZVNwYWNlPXdyYXA7aHRtbD0xO2ZpbGxDb2xvcj0jZmZmMmNjO3N0cm9rZUNvbG9yPSNkNmI2NTY7Zm9udFNpemU9MTE7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0id2luIj4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9IjEyIiB5PSIzMiIgd2lkdGg9Ijk5NiIgaGVpZ2h0PSI0OCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9Im1haW4iIHZhbHVlPSImbHQ7YiZndDtNYWluIGVkaXRvciBhcmVhJmx0Oy9iJmd0OyIgc3R5bGU9InJvdW5kZWQ9MDt3aGl0ZVNwYWNlPXdyYXA7aHRtbD0xO3ZlcnRpY2FsQWxpZ249dG9wO2FsaWduPWxlZnQ7c3BhY2luZ0xlZnQ9NjtzcGFjaW5nVG9wPTQ7ZmlsbENvbG9yPSNlMWQ1ZTc7c3Ryb2tlQ29sb3I9Izk2NzNhNjtmb250U2l6ZT0xMTsiIHZlcnRleD0iMSIgcGFyZW50PSJ3aW4iPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iMTIiIHk9Ijg4IiB3aWR0aD0iOTk2IiBoZWlnaHQ9IjQyMCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9ImVkaXRvciIgdmFsdWU9IiZsdDtiJmd0O1J1bGUgZWRpdG9yJmx0Oy9iJmd0OyZsdDticiZndDsmbHQ7Zm9udCBzdHlsZT0mcXVvdDtmb250LXNpemU6MTBweCZxdW90OyZndDtSdWxlRWRpdG9yIChSdWxlRWRpdG9yVGV4dEJveCkmbHQ7YnImZ3Q7V2FybmluZ0NvbnRhaW5lciZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTtmaWxsQ29sb3I9I2RhZThmYztzdHJva2VDb2xvcj0jNmM4ZWJmO2ZvbnRTaXplPTExOyIgdmVydGV4PSIxIiBwYXJlbnQ9Im1haW4iPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iOCIgeT0iMjgiIHdpZHRoPSI1NjAiIGhlaWdodD0iMzg0IiBhcz0iZ2VvbWV0cnkiIC8+CiAgICAgICAgPC9teENlbGw+CiAgICAgICAgPG14Q2VsbCBpZD0idnNwbGl0IiB2YWx1ZT0iJmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7TWFpblZlcnRpY2FsU3BsaXR0ZXImbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7ZmlsbENvbG9yPSNmOGNlY2M7c3Ryb2tlQ29sb3I9I2I4NTQ1MDtmb250U2l6ZT0xMDsiIHZlcnRleD0iMSIgcGFyZW50PSJtYWluIj4KICAgICAgICAgIDxteEdlb21ldHJ5IHg9IjU3NiIgeT0iMjgiIHdpZHRoPSI4IiBoZWlnaHQ9IjM4NCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9InNpZGUiIHZhbHVlPSImbHQ7YiZndDtTaWRlIHRhYiBwYW5lbCZsdDsvYiZndDsmbHQ7YnImZ3Q7Jmx0O2ZvbnQgc3R5bGU9JnF1b3Q7Zm9udC1zaXplOjEwcHgmcXVvdDsmZ3Q7U2lkZVRhYlBhbmVsJmx0O2JyJmd0O0Zvcm1zVGFiIC8gRm9ybXNQYW5lbCZsdDticiZndDtWYXJpYWJsZXNUYWIgLyBWYXJpYWJsZXNQYW5lbCAoVmFyaWFibGVzVHJlZSkmbHQ7YnImZ3Q7Q29uc3RhbnRzVGFiIC8gQ29uc3RhbnRzUGFuZWwgKENvbnN0YW50c1RyZWUpJmx0O2JyJmd0O01lc3NhZ2VzVGFiIC8gTWVzc2FnZXNQYW5lbCZsdDsvZm9udCZndDsiIHN0eWxlPSJyb3VuZGVkPTA7d2hpdGVTcGFjZT13cmFwO2h0bWw9MTt2ZXJ0aWNhbEFsaWduPXRvcDthbGlnbj1sZWZ0O3NwYWNpbmdMZWZ0PTY7c3BhY2luZ1RvcD00O2ZpbGxDb2xvcj0jZmZmZmZmO3N0cm9rZUNvbG9yPSM5OTk5OTk7Zm9udFNpemU9MTA7IiB2ZXJ0ZXg9IjEiIHBhcmVudD0ibWFpbiI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSI1OTIiIHk9IjI4IiB3aWR0aD0iMzk2IiBoZWlnaHQ9IjM4NCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICAgIDxteENlbGwgaWQ9ImhzcGxpdCIgdmFsdWU9IiZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O01haW5Ib3Jpem9udGFsU3BsaXR0ZXImbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7ZmlsbENvbG9yPSNmOGNlY2M7c3Ryb2tlQ29sb3I9I2I4NTQ1MDtmb250U2l6ZT0xMDsiIHZlcnRleD0iMSIgcGFyZW50PSJ3aW4iPgogICAgICAgICAgPG14R2VvbWV0cnkgeD0iMTIiIHk9IjUxMiIgd2lkdGg9Ijk5NiIgaGVpZ2h0PSI4IiBhcz0iZ2VvbWV0cnkiIC8+CiAgICAgICAgPC9teENlbGw+CiAgICAgICAgPG14Q2VsbCBpZD0ibG93ZXIiIHZhbHVlPSImbHQ7YiZndDtMb3dlciB0YWIgcGFuZWwmbHQ7L2ImZ3Q7Jmx0O2JyJmd0OyZsdDtmb250IHN0eWxlPSZxdW90O2ZvbnQtc2l6ZToxMHB4JnF1b3Q7Jmd0O0xvd2VyVGFiUGFuZWwmbHQ7YnImZ3Q7SGVscFRhYiAoRHluYW1pY0hlbHBCcm93c2VyKSwgVmFsdWVzVGFiL1ZhbHVlc0xpc3QsIFN0ZXBzVGFiL1N0ZXBzTGlzdCwmbHQ7YnImZ3Q7RHJpbGxEb3duVGFiL0RyaWxsRG93blBhbmVsLCBDb21tZW50c1RhYiwgRnVuY3Rpb25UYWIvRnVuY3Rpb25QYW5lbEhvc3QmbHQ7L2ZvbnQmZ3Q7IiBzdHlsZT0icm91bmRlZD0wO3doaXRlU3BhY2U9d3JhcDtodG1sPTE7dmVydGljYWxBbGlnbj10b3A7YWxpZ249bGVmdDtzcGFjaW5nTGVmdD02O3NwYWNpbmdUb3A9NDtmaWxsQ29sb3I9I2Q1ZThkNDtzdHJva2VDb2xvcj0jODJiMzY2O2ZvbnRTaXplPTEwOyIgdmVydGV4PSIxIiBwYXJlbnQ9IndpbiI+CiAgICAgICAgICA8bXhHZW9tZXRyeSB4PSIxMiIgeT0iNTI4IiB3aWR0aD0iOTk2IiBoZWlnaHQ9IjE0MCIgYXM9Imdlb21ldHJ5IiAvPgogICAgICAgIDwvbXhDZWxsPgogICAgICA8L3Jvb3Q+CiAgICA8L214R3JhcGhNb2RlbD4KICA8L2RpYWdyYW0+CjwvbXhmaWxlPgo=
-```
+<AdministratorRulesBuilderDiagram />
 
-| Region | Code names | Injection |
-| ------ | ---------- | --------- |
-| Toolbar | `MainCommandBar` | [Rules Builder toolbar button](/driveworks/plugins/toolkit/injection/add-rules-builder-button) |
-| Editor | `RuleEditor` (`RuleEditorTextBox`), `WarningContainer` | Editor context menu (not yet documented in injection index) |
-| Side references | `SideTabPanel`, `FormsPanel`, `VariablesPanel` / `VariablesTree`, `ConstantsPanel` / `ConstantsTree`, `MessagesPanel` | Built-in reference trees |
-| Analysis / help | `LowerTabPanel`, `ValuesList`, `StepsList`, `DrillDownPanel`, `DynamicHelpBrowser`, `FunctionPanelHost` | Built-in tabs |
+| Region          | Code names                                                                                                            | Injection                                                                                      |
+| --------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Toolbar         | `MainCommandBar`                                                                                                      | [Rules Builder toolbar button](/driveworks/plugins/toolkit/injection/add-rules-builder-button) |
+| Editor          | `RuleEditor` (`RuleEditorTextBox`), `WarningContainer`                                                                | Editor context menu (not yet documented in injection index)                                    |
+| Side references | `SideTabPanel`, `FormsPanel`, `VariablesPanel` / `VariablesTree`, `ConstantsPanel` / `ConstantsTree`, `MessagesPanel` | Built-in reference trees                                                                       |
+| Analysis / help | `LowerTabPanel`, `ValuesList`, `StepsList`, `DrillDownPanel`, `DynamicHelpBrowser`, `FunctionPanelHost`               | Built-in tabs                                                                                  |
 
 ## Injection quick reference
 
-| Region | Mechanism | Guide |
-| ------ | --------- | ----- |
-| `QuickBar` | `IQuickBarManager` + application `ICommandManager` | [QuickBar button](/driveworks/plugins/toolkit/injection/add-quickbar-button) |
-| `CommandBar` (application) | `ICommandBarManager` | [Command Manager button](/driveworks/plugins/toolkit/injection/add-command-manager-button) |
-| `CommandBar` (view) | `IViewCommandBarManager` | [View-scoped command](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button), [virtual split](/driveworks/plugins/toolkit/injection/add-virtual-split-command-button) |
-| `ToDo` / custom views | `IViewRegistrationService` or reflection `InsertControlViewAfter` | [Sidebar menu item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item) |
-| `MainCommandBar` | Reflection on `RulesBuilderFormWpf` | [Rules Builder button](/driveworks/plugins/toolkit/injection/add-rules-builder-button) |
-| `DesignerContextMenu` | WPF `ContextMenu` reflection | [Form Designer context menu](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) |
-| `DesignerPropertyGrid` | `DynamicProperty.Register` + grid wrap | [Form control properties](/driveworks/plugins/toolkit/injection/add-form-control-properties) |
-| Floating UI | WPF `Window` / modal | [Toolkit window](/driveworks/plugins/toolkit/injection/create-toolkit-window) |
+| Region                     | Mechanism                                                         | Guide                                                                                                                                                                                |
+| -------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `QuickBar`                 | `IQuickBarManager` + application `ICommandManager`                | [QuickBar button](/driveworks/plugins/toolkit/injection/add-quickbar-button)                                                                                                         |
+| `CommandBar` (application) | `ICommandBarManager`                                              | [Command Manager button](/driveworks/plugins/toolkit/injection/add-command-manager-button)                                                                                           |
+| `CommandBar` (view)        | `IViewCommandBarManager`                                          | [View-scoped command](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button), [virtual split](/driveworks/plugins/toolkit/injection/add-virtual-split-command-button) |
+| `ToDo` / custom views      | `IViewRegistrationService` or reflection `InsertControlViewAfter` | [Sidebar menu item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item)                                                                                                     |
+| `MainCommandBar`           | Reflection on `RulesBuilderFormWpf`                               | [Rules Builder button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)                                                                                               |
+| `DesignerContextMenu`      | WPF `ContextMenu` reflection                                      | [Form Designer context menu](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item)                                                                              |
+| `DesignerPropertyGrid`     | `DynamicProperty.Register` + grid wrap                            | [Form control properties](/driveworks/plugins/toolkit/injection/add-form-control-properties)                                                                                         |
+| Floating UI                | WPF `Window` / modal                                              | [Toolkit window](/driveworks/plugins/toolkit/injection/create-toolkit-window)                                                                                                        |
 
 ## Diagram maintenance
 
-| Asset | Path |
-| ----- | ---- |
-| Shell diagram source | `/images/wiki/driveworks/administrator-ui-shell.drawio` |
+| Asset                | Path                                                            |
+| -------------------- | --------------------------------------------------------------- |
+| Shell diagram source | `/images/wiki/driveworks/administrator-ui-shell.drawio`         |
 | Form Designer source | `/images/wiki/driveworks/administrator-ui-form-designer.drawio` |
 | Rules Builder source | `/images/wiki/driveworks/administrator-ui-rules-builder.drawio` |
 
-In Wiki.js, open the page in the Markdown editor and use **Insert Diagram** to replace or refresh embedded `diagram` blocks from the `.drawio` sources. The fenced `diagram` blocks on this page contain base64-encoded draw.io XML for render preview.
+Rendered diagrams are JSX components in `/snippets/diagrams/`. Edit the `.drawio` sources for layout reference, then update the matching snippet when region names or structure change.
 
 ## Internal references
 

@@ -1,0 +1,152 @@
+[
+  {
+    "name": "ActionButtonControl.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Controls/ActionButtonControl.cs",
+    "summary": "WPF control providing an action button with configurable icon and size, used in toolbar and script browser surfaces."
+  },
+  {
+    "name": "AutexToolsWindow.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/AutexToolsWindow.xaml",
+    "summary": "XAML layout for the main Autex Tools window. Hosts the script browser, runner, and shell views in a tabbed interface."
+  },
+  {
+    "name": "AutexToolsWindow.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/AutexToolsWindow.xaml.cs",
+    "summary": "Code-behind for the main Autex Tools window. Initializes the script browser, runner pages, and manages the window lifecycle."
+  },
+  {
+    "name": "CopySourceOverlayButton.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/CopySourceOverlayButton.xaml",
+    "summary": "XAML for a small overlay button used in the copy-source workflow. Provides a floating action button on table rows."
+  },
+  {
+    "name": "CopySourceOverlayButton.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/CopySourceOverlayButton.xaml.cs",
+    "summary": "Code-behind for the copy source overlay button. Handles click events for initiating copy operations from table rows."
+  },
+  {
+    "name": "GroupConstantEditDialog.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/GroupConstantEditDialog.cs",
+    "summary": "Simple dialog for editing a single group constant's name, value, and category."
+  },
+  {
+    "name": "GroupConstantsWindow.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/GroupConstantsWindow.cs",
+    "summary": "WPF window for managing Group Constants with categories. Primary UI is WebView2-based, hosted via ToolkitWebViewHostControl with bridge message handling for CRUD operations."
+  },
+  {
+    "name": "GroupConstantsWindow.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/GroupConstantsWindow.xaml",
+    "summary": "XAML layout for the Group Constants window. Contains the WebView2 host control and chrome elements."
+  },
+  {
+    "name": "InputBoxWindow.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/InputBoxWindow.xaml",
+    "summary": "XAML for a simple input dialog window with text entry, OK/Cancel buttons."
+  },
+  {
+    "name": "InputBoxWindow.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/InputBoxWindow.xaml.cs",
+    "summary": "Code-behind for the input dialog window. Returns the entered text via a dialog result."
+  },
+  {
+    "name": "RuleAnalysisResultsWindow.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/RuleAnalysisResultsWindow.cs",
+    "summary": "WPF window for displaying rule analysis results. Shows error diagnostics, root cause chains, and suggested fixes in a data grid."
+  },
+  {
+    "name": "ScriptBrowserPage.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ScriptBrowserPage.xaml",
+    "summary": "XAML layout for the script browser page. Contains category tabs, script cards grid, description panel, and input controls."
+  },
+  {
+    "name": "ScriptBrowserPage.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ScriptBrowserPage.xaml.cs",
+    "summary": "Code-behind for the script browser page. Manages script card display, category filtering, input control generation, and run command routing."
+  },
+  {
+    "name": "ScriptRunnerPage.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ScriptRunnerPage.xaml",
+    "summary": "XAML layout for the script runner page. Contains progress indicators, result table, and action buttons."
+  },
+  {
+    "name": "ScriptRunnerPage.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ScriptRunnerPage.xaml.cs",
+    "summary": "Code-behind for the script runner page. Manages script execution, progress reporting, result table display, and apply/select-and-continue workflows."
+  },
+  {
+    "name": "ScriptShellView.WebViewBridge.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ScriptShellView.WebViewBridge.cs",
+    "summary": "WebView2 bridge for the Script Tools shell view. Handles postMessage communication between the C# host and the script-tools web UI, including state updates, run commands, and result rendering."
+  },
+  {
+    "name": "ScriptShellView.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ScriptShellView.xaml",
+    "summary": "XAML layout for the Script Tools shell view. Hosts the WebView2 control for the script tools UI3 interface."
+  },
+  {
+    "name": "ScriptShellView.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ScriptShellView.xaml.cs",
+    "summary": "Code-behind for the Script Tools shell view. Initializes the WebView2 host, manages the script tools page lifecycle, and coordinates between browser and runner pages."
+  },
+  {
+    "name": "SharedDiagnosticResultsPanel.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/SharedDiagnosticResultsPanel.cs",
+    "summary": "Shared WPF panel for displaying diagnostic results (rule errors, naming issues) reused across multiple views."
+  },
+  {
+    "name": "SpellCheckResultsWindow.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/SpellCheckResultsWindow.cs",
+    "summary": "WPF window for displaying spell check results. Shows misspelled words, suggestions, and allows batch corrections."
+  },
+  {
+    "name": "ToolkitWebViewChromeForm.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/ToolkitWebViewChromeForm.cs",
+    "summary": "WinForms form hosting a WebView2 control with custom chrome (title bar, status bar) for toolkit WebView pages outside the main WPF shell."
+  },
+  {
+    "name": "VcShellView.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/VcShellView.xaml",
+    "summary": "XAML layout for the Version Control shell view. Hosts the WebView2 control for the version control UI3 interface."
+  },
+  {
+    "name": "VcShellView.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/VcShellView.xaml.cs",
+    "summary": "Code-behind for the Version Control shell view. Manages WebView2 initialization, git operations, and state synchronization with the version control web UI."
+  },
+  {
+    "name": "VersionControlWindow.xaml",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/VersionControlWindow.xaml",
+    "summary": "XAML layout for the Version Control standalone window. Wraps the VcShellView in a window container."
+  },
+  {
+    "name": "VersionControlWindow.xaml.cs",
+    "type": "file",
+    "sourcePath": "Autex Toolkit/DWPlugin/Views/VersionControlWindow.xaml.cs",
+    "summary": "Code-behind for the Version Control window. Manages window lifecycle and delegates to VcShellView."
+  }
+]
