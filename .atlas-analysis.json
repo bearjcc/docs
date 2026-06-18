@@ -1,0 +1,164 @@
+{
+  "projectType": "saas",
+  "projectName": "Autex Knowledge Base",
+  "projectDescription": "An internal employee knowledge base covering onboarding, HR policies, IT & security, and engineering runbooks for Autex staff.",
+  "theme": "maple",
+  "primaryColor": "#166E3F",
+  "lightColor": "#26BD6C",
+  "darkColor": "#0F5230",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Onboarding",
+        "groups": [
+          {
+            "group": "Welcome",
+            "pages": ["index"]
+          },
+          {
+            "group": "Your first days",
+            "pages": [
+              "onboarding/first-day",
+              "onboarding/first-week",
+              "onboarding/meet-the-team"
+            ]
+          },
+          {
+            "group": "Tools & access",
+            "pages": [
+              "onboarding/tools/laptop-setup",
+              "onboarding/tools/account-access",
+              "onboarding/tools/vpn-setup"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "HR & People",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["hr-people/index"]
+          },
+          {
+            "group": "Benefits & time off",
+            "pages": [
+              "hr-people/benefits",
+              "hr-people/time-off"
+            ]
+          },
+          {
+            "group": "Growth & pay",
+            "pages": [
+              "hr-people/performance-reviews",
+              "hr-people/compensation/index",
+              "hr-people/compensation/salary-bands",
+              "hr-people/compensation/equity-overview"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "IT & Security",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["it-security/index"]
+          },
+          {
+            "group": "Access & devices",
+            "pages": [
+              "it-security/access-requests",
+              "it-security/device-policy"
+            ]
+          },
+          {
+            "group": "Security training",
+            "pages": [
+              "it-security/security-training/index",
+              "it-security/security-training/phishing",
+              "it-security/security-training/data-handling"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Policies",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["policies/index"]
+          },
+          {
+            "group": "Conduct & spend",
+            "pages": [
+              "policies/code-of-conduct",
+              "policies/expense-reimbursement",
+              "policies/travel-policy"
+            ]
+          },
+          {
+            "group": "Remote work",
+            "pages": [
+              "policies/remote-work/index",
+              "policies/remote-work/home-office-setup",
+              "policies/remote-work/time-zones"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Engineering",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["engineering/index"]
+          },
+          {
+            "group": "Setup & deployment",
+            "pages": [
+              "engineering/dev-setup",
+              "engineering/deployment"
+            ]
+          },
+          {
+            "group": "Incident response",
+            "pages": [
+              "engineering/incident-response/index",
+              "engineering/incident-response/on-call",
+              "engineering/incident-response/postmortem"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "engineering/architecture/index",
+              "engineering/architecture/services-overview",
+              "engineering/architecture/data-models"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Step-by-step employee onboarding with day-one and first-week checklists",
+    "HR benefits, time off, and performance review documentation",
+    "Compensation transparency with salary bands and equity overview",
+    "IT access request workflows and device security policies",
+    "Security training covering phishing awareness and data handling",
+    "Company policies: code of conduct, expenses, travel, and remote work",
+    "Engineering runbooks: developer setup, deployment, incident response",
+    "Architecture documentation: services overview and data models"
+  ],
+  "publicApiSurface": [
+    "IT access request ticket submission (#it-requests Slack / IT portal)",
+    "HR portal — benefits enrollment, time-off requests, expense submissions",
+    "Employee directory — org chart and contact lookup",
+    "VPN client — split-tunnel, first-connection walkthrough",
+    "Expense tool — receipt submission, category selection, manager approval",
+    "Travel booking tool — flights, hotels, ground transport",
+    "On-call schedule — NightWatch rotation management",
+    "Postmortem template — blameless review process"
+  ]
+}

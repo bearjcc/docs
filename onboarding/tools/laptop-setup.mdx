@@ -1,0 +1,81 @@
+---
+title: "Configure your Autex-issued laptop from first boot"
+sidebarTitle: "Laptop Setup"
+description: "Set up your Autex-issued laptop the right way: complete MDM enrollment, confirm required software installs, and verify full-disk encryption."
+---
+
+All company laptops ship with a base OS image and endpoint management pre-installed. This means your device is already prepared to join Autex's security infrastructure from the moment you turn it on. **Do not wipe or reimage your laptop without explicit approval from IT** — doing so may remove critical security tooling and will require re-enrollment.
+
+## First boot
+
+Work through these steps in order the first time you power on your laptop. Skipping or dismissing any prompt — especially the MDM enrollment — can delay access to essential tools by hours.
+
+<Steps>
+  <Step title="Complete the OS setup wizard">
+    Power on your laptop and follow the on-screen setup wizard. When prompted for an account or Apple ID / Microsoft account, use your **company email address** (e.g. `you@autex.com`). Do not use a personal email at any setup screen.
+  </Step>
+  <Step title="Allow MDM enrollment">
+    Connect to any Wi-Fi network. Within a few minutes, you will see a prompt to install or approve an MDM (Mobile Device Management) configuration profile from Autex IT. **Do not skip, cancel, or defer this prompt.** MDM enrollment is required for software delivery, security policy enforcement, and remote support. If you accidentally dismiss it, restart your laptop and reconnect to Wi-Fi — the prompt will reappear.
+  </Step>
+  <Step title="Confirm enrollment via email">
+    Check your company inbox for a confirmation email from IT confirming that your device has been successfully enrolled. This typically arrives within 5–10 minutes of MDM installation completing.
+
+    If you have not received a confirmation within **30 minutes**, file a support ticket at [/it-security/access-requests](/it-security/access-requests) with your device serial number (found on the underside of your laptop or in system settings).
+  </Step>
+</Steps>
+
+## Required software
+
+The following applications are pushed to your laptop automatically through MDM. **You do not need to — and should not — download or install these manually.** Allow up to 24 hours after enrollment for all software to finish installing.
+
+| Application | Purpose |
+|---|---|
+| Password manager | Secure storage and autofill for all work credentials |
+| Endpoint security agent | Antivirus, threat detection, and device compliance monitoring |
+| VPN client | Encrypted access to internal networks and systems (see [VPN Setup](/onboarding/tools/vpn-setup)) |
+| SSO agent | Single sign-on integration for browser-based and desktop applications |
+
+<Warning>
+  If any of the above applications are missing **more than 24 hours** after enrollment, contact the IT help desk immediately. Do not attempt to install them from unofficial sources — the MDM-distributed versions are pre-configured for Autex's environment.
+</Warning>
+
+## Role-specific setup
+
+Once MDM enrollment is complete and required software has installed, your next steps depend on your role.
+
+- **All new hires:** Your manager or tech lead will point you to any team-specific configuration guides relevant to your work.
+- **Engineers:** Follow the [Engineering Dev Setup](/engineering/dev-setup) guide to configure your development environment, including local tooling, shell configuration, and repository access.
+- **Other roles:** Check with your manager for any department-specific software or account provisioning steps beyond the defaults covered here.
+
+## Full-disk encryption
+
+Full-disk encryption is **required** on all company laptops and is enforced automatically by MDM. In most cases you do not need to take any action — encryption is enabled as part of the MDM enrollment process. However, you should verify that it is active after your first boot.
+
+**macOS — Verify FileVault:**
+
+1. Open **System Settings**.
+2. Navigate to **Privacy & Security**.
+3. Scroll to the **FileVault** section and confirm it shows **FileVault is turned on**.
+
+**Windows — Verify Device Encryption:**
+
+1. Open **Settings**.
+2. Navigate to **Privacy & Security**.
+3. Select **Device encryption** and confirm encryption is listed as **On**.
+
+<Note>
+  If encryption shows as disabled on either platform, do not attempt to enable it yourself. Notify IT and they can enable it remotely via MDM without requiring you to take further action.
+</Note>
+
+## Troubleshooting and support
+
+<CardGroup cols={2}>
+  <Card title="Hardware problems" icon="screwdriver-wrench">
+    If your laptop has a physical defect — cracked screen, keyboard issues, won't power on — contact the IT help desk. **Do not attempt to repair hardware yourself.** Self-repair voids the device warranty and may create a security risk.
+  </Card>
+  <Card title="Missing software" icon="circle-question">
+    If MDM-managed applications haven't appeared after 24 hours, contact IT. Provide your device serial number and the date/time of MDM enrollment confirmation.
+  </Card>
+</CardGroup>
+
+For all IT requests, use the ticketing system at [/it-security/access-requests](/it-security/access-requests).

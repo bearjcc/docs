@@ -1,0 +1,113 @@
+---
+title: "Developer setup: get your local environment running"
+sidebarTitle: "Dev Setup"
+description: "Step-by-step guide to setting up your local development environment on a company-issued macOS laptop — from bootstrap to first passing test."
+---
+
+This guide walks you through getting your local development environment up and running from scratch. It assumes you're on a fresh macOS setup using your company-issued laptop enrolled in MDM. If you're on Windows, see the note at the bottom of this page before you start.
+
+## Prerequisites
+
+Before running any setup commands, make sure you have the following in place:
+
+- **Company laptop enrolled in MDM** — see [Laptop Setup](/onboarding/tools/laptop-setup) if you haven't done this yet.
+- **VPN connected** — some internal resources require VPN access. See [VPN Setup](/onboarding/tools/vpn-setup).
+- **Git repository access granted** — see [Account Access](/onboarding/tools/account-access) to confirm your GitHub or GitLab access is set up.
+
+<Warning>
+  Do not skip MDM enrollment or VPN setup. Some steps in this guide will silently fail or time out without them — and troubleshooting those failures is frustrating and time-consuming.
+</Warning>
+
+## Setup steps
+
+<Steps>
+  <Step title="Install core tooling">
+    Run the following command in your terminal to download and execute the Autex bootstrap script:
+
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://setup.autex.co.nz/bootstrap.sh)"
+    ```
+
+    The script installs and configures:
+    - **Package manager** (Homebrew)
+    - **Git** (with company-standard config)
+    - **Language runtimes** (Node, Python, or others depending on your team)
+    - **Docker**
+    - **IDE** (VS Code with recommended extensions)
+
+    The script is idempotent — safe to re-run if something goes wrong partway through. Follow any prompts it surfaces; some steps require your password or manual confirmation.
+  </Step>
+
+  <Step title="Clone the main repository">
+    Create a local directory for your code and clone the main repo:
+
+    ```bash
+    mkdir ~/code && cd ~/code
+    git clone git@git.yourcompany.com:your-repo.git
+    ```
+
+    <Note>
+      Your tech lead will give you the exact repo URL on your first day.
+    </Note>
+
+    <Note>
+      If you get a **Permission denied (publickey)** error, your SSH key hasn't been authorized yet. Reach out to your tech lead with your public key (`~/.ssh/id_ed25519.pub` or `~/.ssh/id_rsa.pub`) and they'll get you added.
+    </Note>
+  </Step>
+
+  <Step title="Set up environment variables">
+    Each repo includes a `.env.example` file that lists the environment variables the app needs. Copy it to create your local config:
+
+    ```bash
+    cp .env.example .env.local
+    ```
+
+    Open `.env.local` and fill in the values. For development secrets (API keys, database URLs, etc.), ask your tech lead or check the **#eng-setup** Slack channel — there's usually a pinned message with the current dev secrets.
+
+    <Warning>
+      Never commit `.env.local` to version control. It's already in `.gitignore`, but double-check before running `git add .` on a new machine.
+    </Warning>
+  </Step>
+
+  <Step title="Install dependencies and run the app locally">
+    ```bash
+    cd your-repo
+    npm install
+    npm run dev
+    ```
+
+    Once the server starts, open [http://localhost:3000](http://localhost:3000) in your browser. You should see the app running.
+
+    <Tip>
+      If you hit errors during `npm install` or `npm run dev`, check the repo's **README** first — it often includes known issues and platform-specific workarounds.
+    </Tip>
+  </Step>
+
+  <Step title="Verify your setup">
+    Run the test suite to confirm everything is wired up correctly:
+
+    ```bash
+    npm test
+    ```
+
+    All tests should pass on a clean setup. If any tests fail, **don't spend more than 10 minutes debugging solo** — post in **#eng-setup** on Slack with your OS version, the exact command you ran, and the full error output. Someone will help you get unblocked quickly.
+  </Step>
+</Steps>
+
+## Windows support
+
+Windows is not officially supported as a development platform at Autex. That said, most engineers who prefer Windows use **WSL2 (Windows Subsystem for Linux)**, which works well for the majority of our stack.
+
+<Note>
+  If you're planning to use Windows, reach out to your tech lead **before your start date** to confirm WSL2 will work for your team's setup and to get any Windows-specific guidance. Don't wait until day one to find out.
+</Note>
+
+## Getting help
+
+If you run into problems at any point during setup, post in **#eng-setup** on Slack. Include:
+
+1. Your **OS version** (e.g., macOS 14.4)
+2. The **exact command** you ran
+3. The **full error output** (paste it, don't paraphrase it)
+
+Most setup issues are solved in under 15 minutes with the right information. The team is friendly and expects new engineers to need help — don't hesitate to ask.

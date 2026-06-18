@@ -1,0 +1,66 @@
+---
+title: "Data handling: classify, store, and share data responsibly"
+sidebarTitle: "Data Handling"
+description: "How you store and share data at Autex carries legal, contractual, and reputational weight. Follow these rules to handle it correctly."
+---
+
+How you handle data has legal, contractual, and reputational consequences — for Autex and for the individuals whose data we hold. These rules apply to all employees and contractors regardless of role or seniority. Getting this right protects customers, colleagues, and the company.
+
+## Data classification
+
+Every piece of data Autex handles falls into one of four classification levels. Use the table below as a reference for how each level should be treated.
+
+| Classification | Examples | Handling requirements |
+|---|---|---|
+| **Public** | Marketing content, public documentation | No restrictions — safe to share freely |
+| **Internal** | Meeting notes, roadmaps, org charts | Do not share externally without approval |
+| **Confidential** | Customer data, financial data, contracts | Encrypt in transit and at rest; apply need-to-know access |
+| **Restricted** | Credentials, personal health data, M&A information | Strict access controls; report any exposure immediately |
+
+When you're unsure which classification applies to a piece of data, treat it as one level higher than your best guess. It's easier to relax controls later than to remediate an exposure.
+
+## Storage rules
+
+Where you store data matters as much as what you do with it. Follow these rules for every piece of data you work with.
+
+<Note>
+  **Approved tools only.** Store data in Google Drive, Notion, or S3 — whichever is appropriate for the data type. Do not use personal Dropbox, iCloud, or any other unapproved service, even temporarily.
+</Note>
+
+<Note>
+  **No local copies of customer data.** Customer data must stay in approved systems. Use authorised query and reporting tools to access it. Do not download it to your laptop or export it to local files for convenience.
+</Note>
+
+<Note>
+  **Never store credentials in code.** Passwords, API keys, and secrets must go in the secrets manager — not in source code, config files, comments, or documentation. If you discover credentials stored in code (including in git history), rotate them immediately and file a security ticket.
+</Note>
+
+## Sharing data
+
+How you share data depends on who's receiving it and what classification it carries.
+
+**Internally:** Use the appropriate tool for the audience. Don't CC personal email addresses or share content through unapproved channels just because it's quicker.
+
+**With external parties:** Sharing confidential data with vendors or partners requires a current NDA to be in place. If you're unsure whether one exists, check with the legal team before sharing — don't assume.
+
+**Customer data:** Never share customer data with third parties without a data processing agreement (DPA) in place. All requests to share or export customer data must be routed through the legal and privacy team. This is a legal requirement, not a preference.
+
+## Retention and deletion
+
+Don't retain data longer than necessary. Holding onto data you no longer need increases your exposure if something goes wrong. When a project ends or a customer offboards, follow the data retention schedule in the legal runbook to determine what must be deleted, what must be archived, and for how long.
+
+If you're unsure what the retention requirement is for a specific dataset, ask the legal team before making a decision.
+
+## Reporting a data incident
+
+<Warning>
+  If you suspect a data incident — an accidental exposure, an unauthorised share, a misdirected email, or anything else — report it to [security@autex.co.nz](mailto:security@autex.co.nz) immediately. Do not wait while you investigate it yourself.
+</Warning>
+
+When you report, include:
+
+- **What happened** — a brief description of the incident
+- **What data was involved** — classification level, type, and approximate volume if known
+- **Who may have seen it** — any external parties, incorrect recipients, or unauthorised individuals
+
+Early reporting significantly reduces the harm of any incident. There is no penalty for honest mistakes — the penalty comes from not reporting. The security team is there to help you contain the situation, not to assign blame.

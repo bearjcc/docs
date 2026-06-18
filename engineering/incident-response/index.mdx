@@ -1,0 +1,62 @@
+---
+title: "Incident response: how we handle production issues"
+sidebarTitle: "Overview"
+description: "When something breaks in production, restore service first — then understand why. Covers severity levels, response steps, and escalation paths."
+---
+
+When something breaks in production, your first priority is restoring service — not diagnosing root cause. A fast, calm response prevents small problems from becoming big ones. This page walks you through severity levels, the response process, and where to find deeper guidance.
+
+## Severity levels
+
+Not every alert is a fire drill. Use this table to classify the issue as soon as you've done an initial assessment, then calibrate your response accordingly.
+
+| Severity | Definition | Response target |
+|----------|------------|-----------------|
+| **SEV-1** | Production down or data loss | Immediate — all hands |
+| **SEV-2** | Significant degradation or major feature broken | Within 30 minutes |
+| **SEV-3** | Minor degradation, workaround available | Within 2 hours |
+| **SEV-4** | Cosmetic or low-impact issue | Next business day |
+
+<Note>
+  When in doubt, classify higher and downgrade once you have more information. It's always better to over-respond to a SEV-2 than to under-respond to a SEV-1.
+</Note>
+
+## Responding to an alert
+
+Follow these steps in order. Resist the urge to jump straight into debugging — acknowledging, communicating, and mitigating first keeps the whole team aligned and reduces time-to-resolution.
+
+<Steps>
+  <Step title="Acknowledge the alert">
+    Acknowledge the page in your alerting tool as soon as you see it. This signals to the system — and your teammates — that a human is on it and stops repeat pages from firing.
+  </Step>
+  <Step title="Assess severity">
+    Spend no more than two or three minutes doing a quick triage. Is this a SEV-1/SEV-2 or something lower? Check dashboards, error rates, and recent deploys. Your initial classification drives everything that follows.
+  </Step>
+  <Step title="Open a war room">
+    For SEV-1 and SEV-2, immediately create a Slack thread in **#incidents** and invite your on-call partner. Use the thread as the single source of truth for the incident — all updates, decisions, and findings go there.
+  </Step>
+  <Step title="Mitigate first">
+    Before diving into root cause, stop the bleeding. Common mitigation options include rolling back the most recent deploy, disabling the relevant feature flag, or scaling up the affected service. A system that's degraded-but-functional is far better than one that's down while you investigate.
+  </Step>
+  <Step title="Communicate">
+    Post a status update to **#incidents** every 15 minutes until the incident is resolved. Updates don't need to be long — even "still investigating, no change" keeps stakeholders informed and prevents interruptions while you work.
+  </Step>
+  <Step title="Resolve and document">
+    Once service is restored, mark the incident as resolved in your alerting tool. For SEV-1 and SEV-2, file a postmortem. See the Postmortem Process page for the full template and timeline.
+  </Step>
+</Steps>
+
+<Tip>
+  If you're unsure whether to escalate, escalate. Asking for help after 15 minutes of being stuck is always the right call — not a sign of weakness.
+</Tip>
+
+## Go deeper
+
+<CardGroup cols={2}>
+  <Card title="On-Call Expectations" icon="bell" href="/engineering/incident-response/on-call">
+    How the on-call rotation works, what's expected during your shift, and how to hand off cleanly.
+  </Card>
+  <Card title="Postmortem Process" icon="file-magnifying-glass" href="/engineering/incident-response/postmortem">
+    How to write a blameless postmortem, the template to use, and what happens in the review meeting.
+  </Card>
+</CardGroup>

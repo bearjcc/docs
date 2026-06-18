@@ -1,0 +1,110 @@
+---
+title: "Autex deployment process: from merged PR to production"
+sidebarTitle: "Deployment"
+description: "How Autex deploys code — trunk-based flow, staging auto-deploys, production promotion, feature flags, rollbacks, and deploy freeze windows."
+---
+
+Autex uses a trunk-based deployment model. When your PR is reviewed and merged to `main`, it automatically deploys to the staging environment. You then promote it to production manually after verifying it looks good. This page explains each step in that process, as well as how we handle feature flags, rollbacks, database migrations, and deploy freezes.
+
+## Deployment flow
+
+```
+feature branch → PR review → merge to main → auto-deploy to staging → manual promote to production
+```
+
+The separation between staging and production is intentional: it gives you a chance to verify behavior in a real environment before it reaches users, without creating a bureaucratic bottleneck that slows down shipping.
+
+## Deploying to staging
+
+Every merge to `main` triggers an automatic deploy to staging via CI. You don't need to do anything to kick it off.
+
+- **Monitor progress** in the **#deploys** Slack channel. A bot posts status updates as the deploy runs.
+- **Typical deploy time:** ~5–10 minutes from merge to live on staging.
+- **If the deploy fails:** the bot posts a failure message in **#deploys** with a link to the CI log. Fix the issue on a new branch, get it reviewed, and merge again.
+
+<Tip>
+  Keep **#deploys** in your sidebar and check it after merging. Catching a staging failure quickly means you can fix it before it blocks other engineers.
+</Tip>
+
+## Promoting to production
+
+Production deploys are triggered manually after you've verified your changes on staging. Promoting requires at least one engineer who didn't author the change to click **Promote to production** — this is a lightweight second set of eyes, not a formal approval gate.
+
+<Steps>
+  <Step title="Open the deploy tool">
+    The deploy tool link is pinned in the **#deploys** channel description. Open it and log in with your company SSO.
+  </Step>
+  <Step title="Select the staging build to promote">
+    Find the staging build that contains your changes. Builds are listed with the commit SHA, author, and timestamp to help you identify the right one.
+  </Step>
+  <Step title="Click Promote to production">
+    A second engineer (not the PR author) must click **Promote to production**. If you authored the change, ask a teammate to promote it — a message in **#deploys** or your team's channel is fine.
+  </Step>
+  <Step title="Monitor the deploy">
+    Watch **#deploys** for a confirmation message or error. Production deploys also take approximately 5–10 minutes. Once confirmed, spot-check your change in production before closing the loop with your team.
+  </Step>
+</Steps>
+
+<Note>
+  The two-engineer rule for production deploys is a safeguard, not a bureaucratic hurdle. It takes 30 seconds to ask a teammate to promote — and it has caught real issues before they reached users.
+</Note>
+
+## Feature flags
+
+Most new features are deployed behind **feature flags** to decouple the deploy from the release. This lets you merge and deploy code to production without exposing it to users until you're ready.
+
+Feature flags are managed in **your feature flag tool**. Ask your tech lead about:
+- The **naming convention** for flags in your team's area of the codebase.
+- The **cleanup process** — flags that are fully rolled out or permanently off should be removed to keep the codebase clean.
+
+<Tip>
+  If your feature touches user-facing behavior, ask your tech lead whether it should be behind a flag before you start building. Adding a flag at the end is harder than designing with one from the start.
+</Tip>
+
+## Rollbacks
+
+If a production deploy causes an incident, roll back immediately. Don't wait until you've diagnosed the root cause — roll back first, investigate after. Users should not stay in a broken state while you debug.
+
+<Steps>
+  <Step title="Roll back to the previous build">
+    Open the deploy tool, find the previous production build, and click **Promote to production** to re-deploy it. Rolling back takes approximately **2 minutes**.
+  </Step>
+  <Step title="Don't diagnose before rolling back">
+    Resist the urge to investigate first. Every minute you spend diagnosing is a minute users spend hitting the broken behavior. Roll back, then investigate with users unaffected.
+  </Step>
+  <Step title="File an incident and start a postmortem">
+    If users were affected, open an incident following the [Incident Response](/engineering/incident-response) process and start a postmortem. Even small incidents are worth documenting so we can prevent them from happening again.
+  </Step>
+</Steps>
+
+<Warning>
+  A rollback is not a failure — it's the correct response to an unexpected production regression. The failure is waiting too long to act.
+</Warning>
+
+## Database migrations
+
+Migrations run automatically as part of the deploy pipeline. Most of the time, you don't need to do anything special.
+
+**However:** backward-incompatible migrations require a multi-phase deploy strategy. If your change involves any of the following, ask in **#eng** before merging:
+
+- Dropping a column or table
+- Renaming a column
+- Changing a column's data type
+- Adding a non-nullable column without a default
+
+<Warning>
+  A migration that drops or renames a column will break the currently running version of the app if both happen in the same deploy. A multi-phase approach (deploy code that no longer reads the column, then migrate) prevents downtime. Ask before you merge — it's much easier to plan this upfront than to recover from it in production.
+</Warning>
+
+## Deploy freeze windows
+
+Production deploys are **frozen** during major company events and on the **last business day before a public holiday**. When a freeze is active, a pinned message in **#deploys** will say so explicitly.
+
+During a freeze:
+- You can still merge to `main` and verify changes on staging.
+- You **cannot promote to production** until the freeze lifts.
+- Emergency exceptions require approval from your engineering manager.
+
+<Accordion title="How do I know when a freeze is active?">
+  Check the pinned messages in **#deploys**. When a freeze starts, the bot pins a message with the start and end time. When it ends, the pin is removed. If you're unsure, ask in **#deploys** before attempting a production promotion.
+</Accordion>

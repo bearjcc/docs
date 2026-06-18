@@ -1,0 +1,98 @@
+---
+title: "How to connect to the Autex VPN for internal access"
+sidebarTitle: "VPN Setup"
+description: "Learn to connect to the Autex VPN for the first time, understand when it is required for internal tools, and resolve common connection issues."
+---
+
+The VPN client is installed automatically on your laptop through MDM — you don't need to download or configure it yourself. This guide walks you through making your first connection, explains when you need to be on the VPN, and provides troubleshooting steps for the most common issues. If the VPN client isn't on your laptop yet, see [Laptop Setup](/onboarding/tools/laptop-setup) first.
+
+## First connection
+
+<Steps>
+  <Step title="Open the VPN client">
+    Find the VPN client in your **Applications** folder (macOS) or **Start menu** (Windows). It was installed automatically by MDM — if you don't see it, check again after 24 hours from MDM enrollment, or refer to the [Laptop Setup troubleshooting section](/onboarding/tools/laptop-setup#troubleshooting-and-support).
+  </Step>
+  <Step title="Enter the server address">
+    When prompted, enter the **server address** provided in your IT welcome email. This is the address specific to Autex's VPN gateway. If you can't locate the welcome email, search your inbox for the subject line "IT Onboarding — VPN Details" or contact the IT help desk.
+  </Step>
+  <Step title="Authenticate with your credentials and MFA">
+    Sign in using your company email and password, then approve the **multi-factor authentication (MFA)** prompt on your registered device. If you haven't set up MFA yet, complete that step in your SSO-easy dashboard before attempting to connect.
+  </Step>
+  <Step title="Confirm the connected status">
+    The VPN client should display a **"Connected"** status within 10 seconds of successful authentication. You'll also typically see a VPN icon appear in your menu bar (macOS) or system tray (Windows). If the connection doesn't complete within 10 seconds, disconnect and try again.
+  </Step>
+</Steps>
+
+## When you need the VPN
+
+Not every tool requires a VPN connection. Use the guide below to know when to connect.
+
+**VPN required:**
+
+- Internal dashboards and admin tools
+- Staging and production environments
+- Code repositories
+- HR portal and payroll systems
+
+**VPN not required:**
+
+- Company email
+- Slack
+- Zoom
+- SSO-easy and other SSO-connected SaaS tools
+
+<Tip>
+  A good rule of thumb: if the tool is hosted externally and accessible at a public URL, you probably don't need the VPN. If it lives on internal infrastructure or involves sensitive data, connect first.
+</Tip>
+
+## Split tunnel vs. full tunnel
+
+By default, your VPN is configured as a **split tunnel**. This means only traffic destined for Autex's internal network is routed through the VPN — everything else (general web browsing, video calls, cloud SaaS tools) travels directly over your regular internet connection.
+
+<Warning>
+  Do not change the tunnel configuration. Switching to full tunnel without IT guidance can degrade performance and interfere with MDM communication. If you believe your role requires a different configuration, open a ticket with IT.
+</Warning>
+
+## Staying connected
+
+The VPN client is configured to **auto-reconnect** after your laptop wakes from sleep or switches between networks (e.g., home Wi-Fi to a mobile hotspot). In most cases you don't need to do anything.
+
+If the client doesn't reconnect automatically, disconnect manually and reconnect following the same steps above — this resolves the issue in almost all cases.
+
+<Note>
+  If you are working remotely from a **different country**, check with IT before connecting. Some VPN configurations are region-sensitive and may need adjustment to avoid compliance or routing issues.
+</Note>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="I can't authenticate — login keeps failing">
+    The most common cause is an **MFA setup issue**. Verify that:
+
+    - Your MFA authenticator app is registered and generating valid codes.
+    - You're entering the code before it expires (codes rotate every 30 seconds).
+    - Your company email password hasn't recently changed — if it has, update it in PasswordBuddy and try again.
+
+    If your MFA was recently reset by IT (e.g., after a lost phone), you'll need to re-enroll your authenticator. Check your email for instructions from IT, or contact the help desk directly.
+  </Accordion>
+  <Accordion title="I'm connected but can't reach internal tools">
+    If the VPN shows "Connected" but internal URLs are still unreachable:
+
+    1. **Disconnect** from the VPN completely.
+    2. Wait 10 seconds, then **reconnect**.
+    3. If that doesn't resolve it, **restart the VPN client** entirely (quit the application and reopen it).
+    4. If the problem persists after a full restart, reboot your laptop and attempt the connection again.
+
+    This is usually caused by a stale tunnel session after a long sleep or an abrupt network change.
+  </Accordion>
+  <Accordion title="The VPN client isn't installed on my laptop">
+    The VPN client is distributed through MDM. If it's missing, this typically indicates one of the following:
+
+    - MDM enrollment hasn't completed yet — allow up to **24 hours** after enrollment.
+    - Your device failed to enroll properly — check [Laptop Setup](/onboarding/tools/laptop-setup) to verify MDM status.
+
+    Do not download the VPN client from the vendor's website — the MDM-distributed version is pre-configured for Autex's network. Installing an unconfigured version will not work.
+  </Accordion>
+</AccordionGroup>
+
+If none of the above steps resolve your issue, open a support ticket at [/it-security/access-requests](/it-security/access-requests) and include a description of what you tried, any error messages you saw, and your device's OS version.
