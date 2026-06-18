@@ -6,14 +6,26 @@ description: Data transfer objects and model classes representing projects, grou
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+**Data Models** define the in-memory shape of **Group** and **Project** snapshots Toolkit reads, compares, exports, and merges. Most features flow through `ProjectData` and `GroupData` rather than calling the DriveWorks SDK ad hoc.
 
+## In this layer
 
+- **Snapshot containers** — `ProjectData`, `GroupData`, and open-session wrappers (`ProjectOpen`, `GroupOpen`).
+- **Partial classes** — comparison, merge-delta, and serialization concerns split across `*.Comparison.cs` / `*.MergeDelta.cs` files.
+- **Typed sections** — constants, variables, forms, documents, specification flow, and related DTOs hung off the root models.
 
-Data transfer objects and model classes representing projects, groups, forms, controls, rules, specification flows, and other domain entities. This page lists 64 indexed components from the Understand-Anything graph for that layer.
+Boundary: comparison algorithms and TOML IO live in [Core Services](/driveworks/plugins/toolkit/architecture/core-services); scripts consume models through `IAutexScriptContext` in [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry).
 
-## Overview
+## Start here
 
-Data transfer objects and model classes representing projects, groups, forms, controls, rules, specification flows, and other domain entities.
+| File | Role |
+| --- | --- |
+| `Models/ProjectData.cs` | Canonical **Project** snapshot root |
+| `Models/GroupData.cs` | Canonical **Group** snapshot root |
+| `Models/ProjectData.Comparison.cs` | Comparison-specific projections |
+| `Models/ProjectData.MergeDelta.cs` | Merge/delta operations |
+
+When adding a new compared section, expect to touch both a model type here and a typed comparer under `Core/Comparison/`.
 
 <Info>
 Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:data-models`).
@@ -21,11 +33,13 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
+Filter 64 indexed file nodes.
+
 <ArchitectureLayerTable layer="data-models" />
 
 ## Key relationships
 
-Up to 7 internal edges (source, relationship, target), sorted deterministically.
+The graph shows how partial classes hang off the two snapshot roots — a small, highly connected layer.
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -39,6 +53,7 @@ Up to 7 internal edges (source, relationship, target), sorted deterministically.
 
 ## Related
 
+- [Core Services](/driveworks/plugins/toolkit/architecture/core-services) — engines that diff and serialize these models
+- [Scripts](/driveworks/plugins/toolkit/architecture/scripts) — export/import and validation scripts
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
+- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)

@@ -6,14 +6,28 @@ description: DriveWorks Rules Builder extensions including spell check, icon pic
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+**Rules Builder Integration** extends the DriveWorks **Rule Builder** editor: toolbar buttons, spell checking, pickers, formatting, and **Form Designer** property-grid hooks. Most pickers reuse [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) assets inside WPF host windows.
 
+## In this layer
 
+- **Button injection** — `RulesBuilderButtonInjection` registers Autex commands on the Rule Builder toolbar.
+- **Entry points** — one class per feature (spell check, icon picker, metaclass picker, group constants, formatter, rule analysis).
+- **Picker windows** — `AutexIconPickerWindow`, `MetaclassWebPickerWindow`, `GroupConstantWebPickerWindow`.
+- **Form Designer** — layout grid bridge and dynamic property registration under `FormDesigner/`.
 
-DriveWorks Rules Builder extensions including spell check, icon picker, metaclass picker, group constant picker, rule formatting, and form designer property grid injection. This page lists 42 indexed components from the Understand-Anything graph for that layer.
+Boundary: shared spelling and icon assets live in [Assets & Services](/driveworks/plugins/toolkit/architecture/assets-and-services); generic Administrator injection patterns are documented under [Injection guides](/driveworks/plugins/toolkit/injection).
 
-## Overview
+## Start here
 
-DriveWorks Rules Builder extensions including spell check, icon picker, metaclass picker, group constant picker, rule formatting, and form designer property grid injection.
+| File | Role |
+| --- | --- |
+| `RulesBuilder/RulesBuilderButtonInjection.cs` | Central toolbar registration |
+| `RulesBuilder/RulesBuilderSpellCheckEntryPoint.cs` | Spell-check integration |
+| `RulesBuilder/AutexIconPickerWindow.cs` | Icon picker host |
+| `RulesBuilder/MetaclassWebPickerWindow.cs` | Metaclass picker host |
+| `FormDesigner/FormDesignerWebLayoutBridgeInjection.cs` | Form Designer bridge |
+
+Feature docs: [Spell checker](/driveworks/plugins/toolkit/spell-checker), [Form styling metaclass](/driveworks/plugins/toolkit/form-styling-metaclass).
 
 <Info>
 Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:rules-builder`).
@@ -21,11 +35,13 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
+Filter 42 indexed file nodes.
+
 <ArchitectureLayerTable layer="rules-builder" />
 
 ## Key relationships
 
-Up to 19 internal edges (source, relationship, target), sorted deterministically.
+Most entry points `depend_on` `RulesBuilderButtonInjection`; Form Designer types chain through layout metadata contracts.
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -51,6 +67,7 @@ Up to 19 internal edges (source, relationship, target), sorted deterministically
 
 ## Related
 
+- [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) — picker front ends
+- [Assets & Services](/driveworks/plugins/toolkit/architecture/assets-and-services) — icons and spelling seeds
+- [Add Rules Builder button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

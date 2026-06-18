@@ -6,14 +6,27 @@ description: WebView2 page builders, bridge actions, host controls, and the HTML
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+**WebView UI** is the HTML/CSS/JS half of Toolkit surfaces hosted in **WebView2**. C# page builders compose Scriban templates; front-end apps talk to the host through a shared **bridge** (`bridge.js`).
 
+## In this layer
 
+- **WebAssets** — per-feature folders (`ProjectComparison/`, `ScriptTools/`, `VersionControl/`, pickers) plus `_shared/` partials and JS utilities.
+- **WebView** — `*WebViewPageBuilder.cs`, `ToolkitWebViewHostControl`, `WebView2BridgeV1` and bridge action handlers.
+- **Template composition** — Scriban partials for trees, filters, workflow strips, and picker panels.
 
-WebView2 page builders, bridge actions, host controls, and the HTML/CSS/JS web assets that render plugin UI surfaces including Script Tools, Project Comparison, Version Control, and pickers. This page lists 155 indexed components from the Understand-Anything graph for that layer.
+Boundary: WPF shells that embed WebView controls live in [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views); Rules Builder picker windows bridge from [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder).
 
-## Overview
+## Start here
 
-WebView2 page builders, bridge actions, host controls, and the HTML/CSS/JS web assets that render plugin UI surfaces including Script Tools, Project Comparison, Version Control, and pickers.
+| File | Role |
+| --- | --- |
+| `WebView/ToolkitWebViewHostControl.cs` | Host control and navigation |
+| `WebView/WebView2BridgeV1.cs` | JS ↔ .NET message bridge |
+| `WebAssets/ScriptTools/script-tools.app.js` | Autex Tools script runner UI |
+| `WebAssets/ProjectComparison/project-comparison.app.js` | Compare report UI |
+| `WebAssets/_shared/js/bridge.js` | Shared bridge client |
+
+Tech stack detail: [WebView2](/driveworks/plugins/toolkit/tech-stack/webview2), [Scriban](/driveworks/plugins/toolkit/tech-stack/scriban).
 
 <Info>
 Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:webview-ui`).
@@ -21,11 +34,13 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
+Filter 155 indexed nodes — many are Scriban partials and small JS/CSS assets. Search by feature folder name when exploring a single surface.
+
 <ArchitectureLayerTable layer="webview-ui" />
 
 ## Key relationships
 
-Up to 25 internal edges (source, relationship, target), sorted deterministically.
+Edges often show `*.app.js` depending on `_shared/js/bridge.js` and Scriban partial import chains (especially in Project Comparison and picker groups).
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -57,6 +72,7 @@ Up to 25 internal edges (source, relationship, target), sorted deterministically
 
 ## Related
 
+- [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views) — windows and shells hosting WebView2
+- [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder) — picker entry points
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
+- [Tech stack: WebView2](/driveworks/plugins/toolkit/tech-stack/webview2)

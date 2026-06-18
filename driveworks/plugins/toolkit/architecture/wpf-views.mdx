@@ -6,14 +6,27 @@ description: XAML windows, pages, and code-behind for the Autex Tools main windo
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+**WPF Views** are native **DriveWorks Administrator** windows and pages: the **Autex Tools** main window, script browser/runner pages, version-control shell, and auxiliary dialogs. Most host [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) surfaces inside XAML layouts.
 
+## In this layer
 
+- **Main window** — `AutexToolsWindow.xaml` and code-behind; entry chrome for Toolkit in Administrator.
+- **Script UX** — `ScriptBrowserPage`, `ScriptRunnerPage`, `ScriptShellView` (WebView bridge partial).
+- **Version control** — `VersionControlWindow`, `VcShellView`.
+- **Utilities** — `GroupConstantsWindow`, `InputBoxWindow`, overlay buttons.
 
-XAML windows, pages, and code-behind for the Autex Tools main window, Script Browser, Script Runner, Version Control shell, Group Constants, and other WPF surfaces. This page lists 29 indexed components from the Understand-Anything graph for that layer.
+Boundary: plugin registration and presenter logic sit in [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry); HTML/JS assets sit in WebView UI.
 
-## Overview
+## Start here
 
-XAML windows, pages, and code-behind for the Autex Tools main window, Script Browser, Script Runner, Version Control shell, Group Constants, and other WPF surfaces.
+| File | Role |
+| --- | --- |
+| `Views/AutexToolsWindow.xaml` | Main Toolkit window layout |
+| `Views/ScriptBrowserPage.xaml.cs` | Script catalog page |
+| `Views/ScriptRunnerPage.xaml.cs` | Script execution page |
+| `Views/ScriptShellView.WebViewBridge.cs` | WebView bridge wiring for script shell |
+
+User-facing window map: [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window). Administrator chrome context: [UI region map](/driveworks/plugins/toolkit/injection/administrator-ui-map).
 
 <Info>
 Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:wpf-views`).
@@ -21,11 +34,13 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
+Filter 29 indexed file nodes (mostly paired `.xaml` / `.xaml.cs` files).
+
 <ArchitectureLayerTable layer="wpf-views" />
 
 ## Key relationships
 
-Up to 14 internal edges (source, relationship, target), sorted deterministically.
+Typical pattern: code-behind `depends_on` its XAML; shell views `depends_on` WebView bridge partials.
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -46,6 +61,7 @@ Up to 14 internal edges (source, relationship, target), sorted deterministically
 
 ## Related
 
+- [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) — embedded HTML surfaces
+- [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry) — presenter and plugin bootstrap
+- [Injection guides](/driveworks/plugins/toolkit/injection)
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

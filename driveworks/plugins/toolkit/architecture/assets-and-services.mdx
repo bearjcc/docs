@@ -6,14 +6,28 @@ description: Icon loading, semantic icon maps, theme resources, spelling diction
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+Shared **assets** and small **services** consumed across Toolkit UI and Rules Builder features — not feature screens themselves.
 
+## In this layer
 
+- **Icons** — `ToolkitIconLoader`, semantic icon map JSON, catalog providers for pickers.
+- **Spelling** — Hunspell seed files under `Resources/SpellingSeeds/` (custom words, acronyms, mappings).
+- **Export & utilities** — `CsvExportService` and similar one-purpose services.
+- **Embedded resources** — theme and asset files referenced from multiple features.
 
-Icon loading, semantic icon maps, theme resources, spelling dictionaries, CSV export, rule service, and other shared assets. This page lists 15 indexed components from the Understand-Anything graph for that layer.
+Boundary: spelling *logic* and UDF registration sit in [Core Services](/driveworks/plugins/toolkit/architecture/core-services); picker UI sits in [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder) and [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui).
 
-## Overview
+## Start here
 
-Icon loading, semantic icon maps, theme resources, spelling dictionaries, CSV export, rule service, and other shared assets.
+| File | Role |
+| --- | --- |
+| `Assets/ToolkitIconLoader.cs` | Loads icon resources for UI |
+| `Assets/ToolkitSemanticIconMap.cs` | Semantic name → icon mapping |
+| `Assets/SemanticIconMap.json` | Icon map data |
+| `Resources/SpellingSeeds/CustomWords.txt` | Spell-check dictionary seed |
+| `Services/CsvExportService.cs` | CSV export from script results |
+
+Tech stack: [Hunspell](/driveworks/plugins/toolkit/tech-stack/hunspell). Icons plugin overlap: [Icons](/driveworks/plugins/icons).
 
 <Info>
 Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:assets-and-services`).
@@ -21,11 +35,13 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
+Filter 15 indexed file nodes.
+
 <ArchitectureLayerTable layer="assets-and-services" />
 
 ## Key relationships
 
-Up to 6 internal edges (source, relationship, target), sorted deterministically.
+Icon loader depends on semantic map JSON; spelling seed files cross-reference each other for custom word lists.
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -38,6 +54,6 @@ Up to 6 internal edges (source, relationship, target), sorted deterministically.
 
 ## Related
 
+- [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder) — primary consumers of icons and spelling
+- [Spell checker](/driveworks/plugins/toolkit/spell-checker)
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

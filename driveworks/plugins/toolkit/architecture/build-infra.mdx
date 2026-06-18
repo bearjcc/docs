@@ -6,14 +6,29 @@ description: Build scripts, project configuration, solution files, external test
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+**Build & Infrastructure** spans repo-root tooling: **`Build.ps1`**, release deploy, test projects, Understand-Anything graph artifacts, and maintainer docs. Agents and contributors should use these entry points rather than raw MSBuild on the plugin `.csproj`.
 
+## In this layer
 
+- **Build scripts** — `Build.ps1`, `Build-Release.ps1`, debug helpers; version bump via `version.json`.
+- **Project config** — `Autex Toolkit.csproj`, Fody weavers, solution layout.
+- **Tests** — `RuleFormatter.Tests` and other validation assemblies.
+- **Analysis artifacts** — `.understand-anything/` intermediate files feeding architecture docs and `export-architecture-layers.py`.
+- **Docs** — `README.md`, `AGENTS.md`, `docs/SCRIPTS.md` at Toolkit root.
 
-Build scripts, project configuration, solution files, external test projects, documentation, and root-level infrastructure. This page lists 40 indexed components from the Understand-Anything graph for that layer.
+Boundary: plugin runtime code lives in other layers; this layer is how you compile, release, and regenerate architecture metadata.
 
-## Overview
+## Start here
 
-Build scripts, project configuration, solution files, external test projects, documentation, and root-level infrastructure.
+| File | Role |
+| --- | --- |
+| `Build.ps1` | Local debug build (canonical for agents) |
+| `Build-Release.ps1` | Release build and deploy |
+| `version.json` | Release build counter |
+| `RuleFormatter.Tests/RuleFormatterTests.cs` | Core formatter tests |
+| `mintlify/scripts/export-architecture-layers.py` | Regenerate architecture layer JSON for docs |
+
+Operator guide: [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy).
 
 <Info>
 Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:build-infra`).
@@ -21,11 +36,13 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
+Filter 40 indexed file nodes (includes graph intermediates and repo-level markdown).
+
 <ArchitectureLayerTable layer="build-infra" />
 
 ## Key relationships
 
-Up to 21 internal edges (source, relationship, target), sorted deterministically.
+Build scripts read/write `version.json`; Release script relates to debug build; Understand-Anything batch files depend on scan/import intermediates.
 
 | Source                                                 | Relationship | Target                                                                           |
 | ------------------------------------------------------ | ------------ | -------------------------------------------------------------------------------- |
@@ -53,6 +70,6 @@ Up to 21 internal edges (source, relationship, target), sorted deterministically
 
 ## Related
 
-- [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
 - [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
+- [Architecture index](/driveworks/plugins/toolkit/architecture) — graph that feeds layer exports
+- [Autex Toolkit hub](/driveworks/plugins/toolkit)

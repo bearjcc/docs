@@ -6,26 +6,41 @@ description: Comparison engine, snapshot/TOML serialization, form control analys
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+The largest layer by file count. **Core Services** holds domain logic that transforms, compares, caches, and serializes **Project** data — the engine behind project compare, snapshot export, spelling, and script infrastructure.
 
+## In this layer
 
+- **Comparison** — `ProjectDataComparisonEngine`, change trees, typed comparers, known-limitation tagging for parity work.
+- **Snapshots & TOML** — serialize/deserialize **Project** snapshots for git-based version control workflows.
+- **Script hosting** — `AutexScript`, `AutexScriptContext`, registry, cancellation, and shared project extender UDF registration.
+- **Cross-cutting utilities** — caching, rule formatting helpers, form-control analysis, diff summarizers.
 
-Comparison engine, snapshot/TOML serialization, form control analysis, spelling, rule formatting, script hosting infrastructure, and utility classes. This page lists 227 indexed components from the Understand-Anything graph for that layer.
+Boundary: DTO shapes live in [Data Models](/driveworks/plugins/toolkit/architecture/data-models); UI that renders comparison or script tools lives in [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) and [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views).
 
-## Overview
+## Start here
 
-Comparison engine, snapshot/TOML serialization, form control analysis, spelling, rule formatting, script hosting infrastructure, and utility classes.
+| Area | Primary files |
+| --- | --- |
+| Comparison | `Core/Comparison/ProjectDataComparisonEngine.cs`, `ChangeTreeBuilder.cs`, `KnownLimitationPolicy.cs` |
+| Sessions | `Core/Comparison/ComparisonSession.cs`, `ComparisonSessionBuilder.cs` |
+| TOML | `Core/SnapshotTomlSerializer.cs`, `SnapshotTomlDeserializer.cs` |
+| Scripts (infra) | `Core/Scripts/AutexScript.cs`, `AutexScriptContext.cs`, `AutexScriptRegistry.cs` |
+
+See [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots) for the user-facing feature map.
 
 <Info>
-Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:core-services`).
+Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:core-services`). Re-export JSON with `mintlify/scripts/export-architecture-layers.py` when the graph changes.
 </Info>
 
 ## Components
+
+Filter 227 indexed file nodes by name, path, or summary.
 
 <ArchitectureLayerTable layer="core-services" />
 
 ## Key relationships
 
-Up to 25 internal edges (source, relationship, target), sorted deterministically.
+Sample of internal graph edges (up to 25). The comparison cluster (`ChangeTreeBuilder` → `ComparisonReportModelBuilder` → `ProjectDataComparisonEngine`) is the densest subgraph — follow these links when debugging compare reports or parity gates.
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -57,6 +72,7 @@ Up to 25 internal edges (source, relationship, target), sorted deterministically
 
 ## Related
 
+- [Data Models](/driveworks/plugins/toolkit/architecture/data-models) — `ProjectData` / `GroupData` compared here
+- [Scripts](/driveworks/plugins/toolkit/architecture/scripts) — concrete script implementations
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
+- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)

@@ -6,26 +6,40 @@ description: Plugin bootstrap, presenter, and DriveWorks SDK interface. The entr
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+Start here when tracing how **Autex Toolkit** loads inside **DriveWorks Administrator**. This layer covers plugin registration, the **Autex Tools** presenter, and the **DriveWorks SDK** boundary scripts call through.
 
+## In this layer
 
+- **Plugin bootstrap** — `AutexToolkitPlugin` registers commands, context menus, and view lifecycle hooks.
+- **Presenter** — `AutexToolsPresenter` wires the script registry to run, abort, export, and cache refresh.
+- **SDK gateway** — `DriveWorksInterface` and `ScriptHelpers` centralize Group/Project access for scripts and UI.
 
-Plugin bootstrap, presenter, and DriveWorks SDK interface. The entry point for the Autex Toolkit plugin loaded by DriveWorks Administrator. This page lists 19 indexed components from the Understand-Anything graph for that layer.
+Boundary: host integration and shared helpers live here; comparison logic, data models, and script implementations live in other layers.
 
-## Overview
+## Start here
 
-Plugin bootstrap, presenter, and DriveWorks SDK interface. The entry point for the Autex Toolkit plugin loaded by DriveWorks Administrator.
+| File | Role |
+| --- | --- |
+| `DWPlugin/Plugin/ToolkitPlugin.cs` | Main `IApplicationPlugin` entry |
+| `DWPlugin/AutexToolsPresenter.cs` | Script run lifecycle and merged results |
+| `DWPlugin/Infrastructure/DriveWorks/DriveWorksInterface.cs` | SDK singleton and mode detection |
+| `DWPlugin/Infrastructure/DriveWorks/ScriptHelpers/ScriptHelpers.cs` | Primary script API surface |
+
+Follow the [suggested reading order](/driveworks/plugins/toolkit/architecture#suggested-reading-order) on the architecture index before diving into leaf files.
 
 <Info>
-Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:plugin-entry`).
+Component list and summaries are generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:plugin-entry`). Re-export with `mintlify/scripts/export-architecture-layers.py` after graph updates.
 </Info>
 
 ## Components
+
+Use the filter below to search by name, path, or summary. The table lists 19 indexed file nodes in this layer.
 
 <ArchitectureLayerTable layer="plugin-entry" />
 
 ## Key relationships
 
-Up to 15 internal edges (source, relationship, target), sorted deterministically.
+Internal edges from the knowledge graph (up to 15), sorted deterministically. Useful for seeing which entry types contain or depend on which neighbors — for example how `ToolkitPlugin` reaches `AutexToolsPresenter` and how `ScriptHelpers.RoleComposition` fans out to role-specific helper classes.
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -47,6 +61,8 @@ Up to 15 internal edges (source, relationship, target), sorted deterministically
 
 ## Related
 
+- [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views) — main window and shell views the presenter hosts
+- [Scripts](/driveworks/plugins/toolkit/architecture/scripts) — script classes the registry discovers
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
+- [Injection guides](/driveworks/plugins/toolkit/injection)
 - [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

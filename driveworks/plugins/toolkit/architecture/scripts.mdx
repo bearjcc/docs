@@ -1,19 +1,35 @@
 ---
 title: Scripts
 sidebarTitle: Scripts
-description: "\"DriveWorks scripts organized by maturity: Release (production), Dev (exploratory), Test (validation), WIP (in-progress), and Version Control (git-based workflows).\""
+description: "DriveWorks scripts organized by maturity: Release (production), Dev (exploratory), Test (validation), WIP (in-progress), and Version Control (git-based workflows)."
 ---
 
 import { ArchitectureLayerTable } from '/snippets/toolkit/ArchitectureLayerTable.jsx';
 
+Concrete **Autex Toolkit** script implementations — the operations users pick in **Autex Tools**. Folders encode maturity and support expectations.
 
+## In this layer
 
+| Folder | Purpose |
+| --- | --- |
+| `Scripts/Release/` | Production scripts shipped to users; documented in the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) |
+| `Scripts/Dev/` | Exploratory probes and one-off diagnostics |
+| `Scripts/Test/` | Validation and parity harnesses |
+| `Scripts/WIP/` | In-progress work not ready for Release |
+| `Scripts/VersionControl/` | Git/TOML export, import, and pre-push validation |
 
-DriveWorks scripts organized by maturity: Release (production), Dev (exploratory), Test (validation), WIP (in-progress), and Version Control (git-based workflows). This page lists 109 indexed components from the Understand-Anything graph for that layer.
+Boundary: script base types, registry, and context live in [Core Services](/driveworks/plugins/toolkit/architecture/core-services); the Autex Tools UI that lists and runs scripts spans [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views) and [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui).
 
-## Overview
+## Start here
 
-DriveWorks scripts organized by maturity: Release (production), Dev (exploratory), Test (validation), WIP (in-progress), and Version Control (git-based workflows).
+| File | Role |
+| --- | --- |
+| `Core/Scripts/IAutexScript.cs` | Script contract (with `AutexScript` base in Core Services) |
+| `Scripts/Release/CompareProjectsScript.cs` | Flagship compare workflow |
+| `Scripts/VersionControl/ExportToGitFolderTomlScript.cs` | Snapshot export to git folder |
+| `Scripts/VersionControl/PrePushValidationScript.cs` | Pre-push gate tied to export |
+
+User-facing script docs: [Scripts hub](/driveworks/plugins/toolkit/scripts) and [Release catalog](/driveworks/plugins/toolkit/scripts-release-catalog).
 
 <Info>
 Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:scripts`).
@@ -21,11 +37,13 @@ Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer 
 
 ## Components
 
+Filter 109 indexed file nodes. Prefer folder prefix when searching (`Scripts/Release/`, `Scripts/Dev/`, etc.).
+
 <ArchitectureLayerTable layer="scripts" />
 
 ## Key relationships
 
-Up to 8 internal edges (source, relationship, target), sorted deterministically.
+Version Control scripts share export/import edges — several depend on or relate to `ExportToGitFolderTomlScript.cs`.
 
 | Source | Relationship | Target |
 | --- | --- | --- |
@@ -40,6 +58,7 @@ Up to 8 internal edges (source, relationship, target), sorted deterministically.
 
 ## Related
 
+- [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry) — presenter and registry wiring
+- [Core Services](/driveworks/plugins/toolkit/architecture/core-services) — script infrastructure
+- [Scripts hub](/driveworks/plugins/toolkit/scripts)
 - [Architecture index](/driveworks/plugins/toolkit/architecture)
-- [Autex Toolkit hub](/driveworks/plugins/toolkit)
-- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
