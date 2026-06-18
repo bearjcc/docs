@@ -1,0 +1,116 @@
+---
+title: AutexNowLocal
+sidebarTitle: AutexNowLocal
+description: Reference for the AutexNowLocal custom function and Autex Now Local task—local date and time from DriveWorks team membership and Windows time zones.
+---
+
+
+
+`AutexNowLocal` returns the current local date and time for a DriveWorks user as a formatted string. Region comes from **team membership** in the **Group** security model, not from a **Project Constant**.
+
+Use it when you need a timestamp in the user's regional clock in **Rule Builder** or **Specification Flow**, without hard-coding time zones in every **Project**.
+
+## Syntax and why to use it
+
+Use this syntax in **Rule Builder**:
+
+```text
+AutexNowLocal()
+```
+
+For a specific user:
+
+```text
+AutexNowLocal("jane.smith")
+```
+
+Use this function when:
+
+- You need "now" in the user's local time zone across NZ, AU, US, and UK teams.
+- You want the same result from Rules and the **Autex Now Local** task.
+- You do not want to maintain per-region time zone **Rules** in each **Project**.
+
+> **Note**
+> This function does **not** read `DWConstantLoginGroup`. Country from that **Constant** is documented on [User country and region](/driveworks/plugins/autexcustom/user-country-and-region).
+
+## Parameters and output
+
+### Parameters
+
+- **No arguments:** uses the signed-in user (current **Group** context).
+- **`username` (String):** login name of the user whose regional clock to use. Blank or missing username on the two-argument overload returns `#INVALIDINPUT! Username is required.`
+
+### Output
+
+- **Type:** String
+- **Format:** `dd MMM yyyy HH:mm` (for example `11 Jun 2026 14:30`)
+- **Source clock:** `DateTime.UtcNow` converted with a Windows time zone inferred from the user's teams.
+
+## Specification Flow task
+
+- **Picker name:** **Autex Now Local**
+- **Category:** Autex Custom Functions
+- **Inputs:**
+  - `username` (optional String; blank = current user)
+  - **Constant Name** (optional; Project Constant picker, same pattern as **Drive Constant Value**)
+- **Outputs:** **Local Time** (String; optional when wired to a downstream task)
+
+Use the **Constant Name**, the **Local Time** output, or both. If neither is configured, the task completes with a warning and does not store a value. When **Constant Name** is set but the constant does not exist, the task fails.
+
+Task behavior matches the **custom functions**. On success the task message is `Local time: {value}`. On exception the task fails and the output is empty.
+
+## How region and time zone are resolved
+
+`AutexNowLocal` resolves region **only** via DriveWorks security team lookup (shared `TimezoneHelper` in AutexCustom).
+
+### Current user
+
+1. Read `Group.CurrentUserTeams` (cached for the process).
+2. If that list is empty, look up teams for `Group.CurrentUser.LoginName` via `Group.Security.GetTeamsForUser`.
+3. Scan team names for region codes **NZ**, **AU**, **US**, or **UK** (prefix match, then word-boundary match inside the name).
+4. If several region codes apply, use stable priority: **NZ**, then **AU**, then **US**, then **UK** (not collection iteration order).
+5. If no region is found, default to **NZ**.
+
+### Named user
+
+1. `Group.Security.TryGetUser(username)` then `GetTeamsForUser`.
+2. Same region inference and priority as above.
+3. Default **NZ** when no region is inferred.
+
+### Region to Windows time zone
+
+| Region code | Windows time zone ID      |
+| ----------- | ------------------------- |
+| NZ          | New Zealand Standard Time |
+| AU          | AUS Eastern Standard Time |
+| US          | Pacific Standard Time     |
+| UK          | GMT Standard Time         |
+
+The function converts UTC to that zone and formats the result. It does not return a time zone name or offset.
+
+> **Warning**
+> In some hosts (for example **DriveWorks Live** under IIS), `CurrentUserTeams` can be empty when security context is not fully loaded. The code retries via `GetTeamsForUser` for the current login name. If both paths fail, the result uses the **NZ** default.
+
+## Errors and validation
+
+| Situation                                 | Rule Builder                           | Task                                           |
+| ----------------------------------------- | -------------------------------------- | ---------------------------------------------- |
+| Blank `username` on two-argument overload | `#INVALIDINPUT! Username is required.` | N/A (optional property; blank = current user)  |
+| No Constant Name and no output connection | N/A                                    | Successful with warnings; value not stored     |
+| Constant Name set but constant missing    | N/A                                    | Failed; `Constant not found: {name}`           |
+| Unhandled exception                       | Propagates from extender               | Failed state; empty output; `Error: {message}` |
+
+There is no `#ERROR!` path for "user not found" on the named-user overload: missing teams fall through to the **NZ** default.
+
+## Limitations and assumptions
+
+- Output is a **display string**, not a DriveWorks date serial or `DateTime` object.
+- **US** maps to **Pacific Standard Time**, not the user's US state or office.
+- **AU** maps to **AUS Eastern Standard Time**, not state-specific zones (use [AutexGetUserState](/driveworks/plugins/autexcustom/user-country-and-region) for Australian state codes from teams).
+- Team names must encode region (for example `NZ Sales`, `AU-Engineering`). Arbitrary team names with no NZ/AU/US/UK token do not resolve a region.
+- Cached team and login data lives for the host process lifetime; team changes may not appear until the host restarts.
+
+## Related
+
+- [User country and region](/driveworks/plugins/autexcustom/user-country-and-region) — `AutexGetUserCountry`, `DWConstantLoginGroup`, and shared team inference
+- [AutexCustom plugin reference](/driveworks/plugins/autexcustom)

@@ -1,0 +1,51 @@
+---
+title: Autex Toolkit — Copy selected project data
+sidebarTitle: Copy selected project data
+description: Copy selected Project data rows from one source Project to an open destination or multiple Projects in the Group via Autex Tools.
+---
+
+
+## Copy selected project data
+
+This Release script builds a merged listing (same filtering model as **List data**) from the **Project** open when you **Run**. You tick rows and copy them either into whichever **Project** is open when you apply, or into several **Projects** chosen from the **Group**. Rows include a **Data type** column so mixed-type copies stay explicit.
+
+Implementation reference: `Autex Toolkit/DWPlugin/Scripts/Release/CopySelectedProjectDataScript.cs`.
+
+## How to open and run
+
+1. Open **DriveWorks Administrator**, connect to the **Group**, and open the **source Project** first.
+2. Open **Autex Tools** ( **Autex Toolkit** / **DW Tools** ) and choose **Copy selected project data**.
+3. Set **Data type** (`All` or one supported type). Use the same filters as **List data** (name/rule/value filters; **Form Controls** exposes control type filtering when relevant).
+4. Choose **Run** to build the merged table from the currently open source **Project**.
+5. Tick the rows to copy:
+   - **Copy to open project**: open the **destination Project** (not the source), tick rows, then apply. Destination must differ from source.
+   - **Copy to selected projects**: picks a **Project** grid; tick destinations, then **Copy to ticked projects**. **Back to data selection** returns to row selection.
+
+Secondary button labels mirror `SelectAndContinueOptions` in source (including **Copy to ticked projects** on the destination picker step).
+
+## Prerequisites
+
+- **Project** context only: a **Project** must be open to **Run** (the open **Project** is the copy source).
+- **Group** membership must stay the same between **Run** and **Apply**; the script rejects apply if the **Group** changed.
+- **Override existing** must be enabled when you intend to replace matching items that already exist on a destination.
+
+The script skips these data types entirely: Special Variables, Specification Settings, Rules, Model Rules, Calc Tables, Form Control Properties (see `ExcludedFromScan` in source).
+
+## Safety
+
+Danger level: **preview then apply copy/save**. Apply opens destination **Project(s)**, runs captured create/update operations, and **saves** each destination. Batch mode opens, saves, and closes each **Project** in turn.
+
+<Warning>
+Treat copy as production-impacting. Prefer a disposable **Group** or **Project** copy until you trust filters and ticked rows.
+</Warning>
+
+## Verify labels in build
+
+Confirm display name **Copy selected project data** and actions **Copy to open project**, **Copy to selected projects**, **Copy to ticked projects**, **Back to data selection** in **Autex Tools** match `CopySelectedProjectDataScript` strings.
+
+## Related
+
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)
+- [Release scripts index](/driveworks/plugins/toolkit/scripts-release)
+- [Scripts overview](/driveworks/plugins/toolkit/scripts)
+- **List data** shares the same filter inputs; see its row in the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog).

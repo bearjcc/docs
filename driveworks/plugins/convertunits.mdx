@@ -1,0 +1,243 @@
+---
+title: ConvertUnits (AutexConvertUnits)
+sidebarTitle: ConvertUnits
+description: Custom functions for length, area, time, and mass unit conversion inside DriveWorks Rules, with optional rounding and common shortcuts (mm/in, kg/lb).
+---
+
+
+## ConvertUnits
+
+### Overview
+
+**ConvertUnits** adds **custom functions** you can call from **Rules** in **Rule Builder** to convert numeric values between named units of length, area, time, and mass. Pass the value plus `fromUnit` and `toUnit` strings (literals, **Variables**, or other rule results). Generic converters support optional rounding to a step; shortcut functions cover common mm/inch and kg/lb cases without unit arguments.
+
+### Where to find it
+
+In **DriveWorks Administrator** (or another module hosting **Rule Builder**), open **Functions** and the category **`Autex Unit Conversions`**. Each entry is a **custom function** registered by the extender.
+
+### Deploy and registration
+
+Output assembly: **`AutexConvertUnits.dll`**. Extender type: **`Autex.Units.AutexUnitsExtender`** (**Shared Project Extender**). Build with **`ConvertUnits\Build.ps1`** (local Debug) or **`ConvertUnits\Build-Release.ps1`** (production plugin shares). Register the extender in your **Project** per **`ConvertUnits/README.md`**.
+
+### Behavior
+
+- Unit names are **case-insensitive** and accept aliases (singular, plural, symbols) defined per dimension in source (`ConvertUnits/Convert.cs`).
+- Unknown `fromUnit` or `toUnit` returns a **`#ERROR!`** string with the list of accepted aliases for that dimension (use **`IsError(...)`** before numeric use). Generic converters return **`object`** (number or error string).
+- Optional **`roundTo`**: values **≤ 0** mean no rounding; otherwise results round to the nearest increment (**AwayFromZero**).
+- **`AutexConvertTimeFormatted`** rounds the input to whole seconds, returns a readable string, and may write diagnostic lines to **`System.Diagnostics.Debug`** (visible only when a debugger is attached).
+
+### Functions at a glance
+
+| Function | Purpose |
+|----------|---------|
+| [AutexConvertUnitsLength](#autexconvertunitslength) | Length: arbitrary units + optional rounding |
+| [AutexConvertMMToInch](#autexconvertmmtoinch) | Length: millimeters to inches |
+| [AutexConvertInchToMM](#autexconvertinchtomm) | Length: inches to millimeters |
+| [AutexConvertUnitsArea](#autexconvertunitsarea) | Area: arbitrary units + optional rounding |
+| [AutexConvertUnitsTime](#autexconvertunitstime) | Time: arbitrary units + optional rounding |
+| [AutexConvertTimeFormatted](#autexconverttimeformatted) | Time in seconds to a human-readable string |
+| [AutexConvertWeight](#autexconvertweight) | Mass: arbitrary units + optional rounding |
+| [AutexConvertMass](#autexconvertmass) | Same behavior as **AutexConvertWeight** (alternate registration) |
+| [AutexConvertKgToLb](#autexconvertkgtolb) | Mass: kilograms to pounds |
+
+### AutexConvertUnitsLength
+
+**Description:** Converts a length from one unit to another. Case-insensitive; accepts singular, plural, and common abbreviations/symbols.
+
+**Syntax:**
+
+```
+AutexConvertUnitsLength(Length, fromUnit, toUnit)
+AutexConvertUnitsLength(Length, fromUnit, toUnit, roundTo)
+```
+
+**Parameters:**
+
+- **`Length`** (Number): value in `fromUnit`.
+- **`fromUnit`**, **`toUnit`** (String): unit names or aliases.
+- **`roundTo`** (Number, optional): rounding increment; omit or **0** for no rounding.
+
+**Example:**
+
+```text
+AutexConvertUnitsLength(100, "mm", "in")
+AutexConvertUnitsLength(12, "in", "ft", 0.25)
+```
+
+Two overloads are registered (with and without **`roundTo`**) for **Rule Builder** compatibility.
+
+### AutexConvertMMToInch
+
+**Description:** Converts millimeters to inches.
+
+**Syntax:**
+
+```
+AutexConvertMMToInch(Length)
+```
+
+**Parameters:**
+
+- **`Length`** (Number): length in millimeters.
+
+**Example:**
+
+```text
+AutexConvertMMToInch(254)
+```
+
+### AutexConvertInchToMM
+
+**Description:** Converts inches to millimeters.
+
+**Syntax:**
+
+```
+AutexConvertInchToMM(Length)
+```
+
+**Parameters:**
+
+- **`Length`** (Number): length in inches.
+
+**Example:**
+
+```text
+AutexConvertInchToMM(10)
+```
+
+### AutexConvertUnitsArea
+
+**Description:** Converts an area from one unit to another. Case-insensitive; area aliases are derived from length aliases (for example `m2`, `ft2`, `square …`).
+
+**Syntax:**
+
+```
+AutexConvertUnitsArea(Area, fromUnit, toUnit)
+AutexConvertUnitsArea(Area, fromUnit, toUnit, roundTo)
+```
+
+**Parameters:**
+
+- **`Area`** (Number): value in `fromUnit`.
+- **`fromUnit`**, **`toUnit`** (String): area unit names or aliases.
+- **`roundTo`** (Number, optional): rounding increment.
+
+**Example:**
+
+```text
+AutexConvertUnitsArea(100, "m2", "ft2")
+AutexConvertUnitsArea(1, "ft2", "in2", 0.01)
+```
+
+### AutexConvertUnitsTime
+
+**Description:** Converts a time value from one unit to another. Case-insensitive.
+
+**Syntax:**
+
+```
+AutexConvertUnitsTime(Time, fromUnit, toUnit)
+AutexConvertUnitsTime(Time, fromUnit, toUnit, roundTo)
+```
+
+**Parameters:**
+
+- **`Time`** (Number): value in `fromUnit`.
+- **`fromUnit`**, **`toUnit`** (String): time unit names or aliases (for example `sec`, `secs`, `min`, `mins`, `hr`, `hrs`, `day`).
+- **`roundTo`** (Number, optional): rounding increment.
+
+**Example:**
+
+```text
+AutexConvertUnitsTime(60, "min", "hr")
+AutexConvertUnitsTime(3, "sec", "hrs")
+AutexConvertUnitsTime(3600, "sec", "hr", 0.1)
+```
+
+### AutexConvertTimeFormatted
+
+**Description:** Converts time in seconds to a string with hours, minutes, and seconds pieces (for example `1 hr 1 min 5 sec`). Input is rounded to whole seconds first.
+
+**Syntax:**
+
+```
+AutexConvertTimeFormatted(timeInSeconds)
+```
+
+**Parameters:**
+
+- **`timeInSeconds`** (Number): duration in seconds.
+
+**Example:**
+
+```text
+AutexConvertTimeFormatted(3665)
+```
+
+### AutexConvertWeight
+
+**Description:** Converts mass (weight) from one unit to another. Case-insensitive; internal base unit is grams.
+
+**Syntax:**
+
+```
+AutexConvertWeight(Mass, fromUnit, toUnit)
+AutexConvertWeight(Mass, fromUnit, toUnit, roundTo)
+```
+
+**Parameters:**
+
+- **`Mass`** (Number): value in `fromUnit`.
+- **`fromUnit`**, **`toUnit`** (String): mass unit names or aliases (for example `kg`, `lb`, `g`, `oz`).
+- **`roundTo`** (Number, optional): rounding increment.
+
+**Example:**
+
+```text
+AutexConvertWeight(5, "kg", "lb")
+AutexConvertWeight(5, "kg", "lb", 0.1)
+```
+
+### AutexConvertMass
+
+**Description:** Same contract and conversion path as **AutexConvertWeight**; separate **custom function** registration only.
+
+**Syntax:**
+
+```
+AutexConvertMass(Mass, fromUnit, toUnit)
+AutexConvertMass(Mass, fromUnit, toUnit, roundTo)
+```
+
+**Parameters:** Same as **AutexConvertWeight**.
+
+**Example:**
+
+```text
+AutexConvertMass(5, "kg", "lb")
+```
+
+### AutexConvertKgToLb
+
+**Description:** Converts kilograms to pounds.
+
+**Syntax:**
+
+```
+AutexConvertKgToLb(Mass)
+```
+
+**Parameters:**
+
+- **`Mass`** (Number): mass in kilograms.
+
+**Example:**
+
+```text
+AutexConvertKgToLb(5)
+```
+
+## Related
+
+- [Plugins hub](/driveworks/plugins)

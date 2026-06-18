@@ -1,0 +1,88 @@
+---
+title: Autex Toolkit — Spell checker
+sidebarTitle: Spell checker
+description: Spell checking and PascalCase name checks for DriveWorks Rules and Project data in Autex Toolkit.
+---
+
+
+## Spell checker
+
+**Autex Toolkit** adds spelling support to DriveWorks **Rule Builder** and the **Autex Tools** script runner. It helps implementers catch misspelled user-facing words and inconsistent PascalCase names before those names spread through Rules, forms, and reports.
+
+The base dictionary is embedded Hunspell **en-GB**. Custom words, acronym prefixes, and spelling mappings live in the Group content `AutexToolkit` folder so each Group can carry its own product vocabulary.
+
+## Where it appears
+
+### Rule Builder
+
+Open any **Rule Builder** dialog and use the Toolkit **Spell Check** button. The checker reads the current formula, shows misspellings, and lets you apply suggestions, ignore a word for the session, add a word to the dictionary, reload the dictionary, remove custom words, or open the spelling folder.
+
+In string literals, the Rules Builder context menu can also show spelling suggestions, **Ignore**, and **Add to dictionary**. This is intended for text users will see, such as labels or messages inside quoted strings.
+
+### Autex Tools
+
+Open **Autex Tools** and run **Check names (PascalCase & spelling)**. This scans supported DriveWorks item names, suggests corrected names, and applies selected renames only after review.
+
+## What it checks
+
+Rule Builder spell check extracts words from:
+
+- Quoted string content in Rules.
+- PascalCase segments from identifiers in Rules.
+- Rule operands that are not known DriveWorks function names.
+
+The **Check names (PascalCase & spelling)** script checks supported item names, including **Constants**, **Variables**, **Model Rules**, **Specification Macros**, **Specification Properties**, **Simple Tables**, **Calc Tables**, **Group Tables**, **Form Controls**, **Documents**, **Data Documents**, **Generation Tasks**, **3D Documents**, **Drive Apps**, **Teams**, and **Users**.
+
+The script can run PascalCase checks, spelling checks, or both. It does not use spelling-only mode for unsupported sections such as **Forms**.
+
+## Custom dictionaries
+
+Toolkit resolves spelling files from:
+
+```text
+GroupContentFolder\AutexToolkit
+```
+
+Common files:
+
+| File | Purpose |
+|------|---------|
+| `CustomWords.txt` | Accepted words, one per line. |
+| `AcronymPrefixes.txt` | Acronym prefixes allowed in PascalCase names. |
+| `CustomSpellingMappings.csv` | Preferred spelling and typo mappings, for example `Triangle,Tri`. |
+
+When seed files are installed beside the DLL, Toolkit can copy missing defaults into the Group content `AutexToolkit` folder. Hand edits take effect after **Reload dictionary** or after restarting DriveWorks Administrator.
+
+## Regional spelling
+
+The shipped base dictionary is **en-GB**, which matches New Zealand/British spelling for common words such as `colour`. Add local Māori, place names, customer terms, product names, and abbreviations to `CustomWords.txt`.
+
+If your build relies on fallback word lists instead of embedded Hunspell, `BaseWords.txt` and `SupplementaryWords.txt` may be used by maintainers. Most administrators should use the Group folder files above.
+
+## Safe rename workflow
+
+1. Open a development copy of the Group or Project.
+2. Run **Check names (PascalCase & spelling)**.
+3. Review **Suggested Name**, **Invalid segments**, **Suggestion**, **Issue kinds**, **Section**, and **Location**.
+4. Edit suggested names in the preview if needed.
+5. Tick only the rows you want.
+6. Click **Apply renames**.
+7. Re-run the check and test affected Rules or forms.
+
+<Warning>
+Renaming DriveWorks items can affect Rules and references. Use a backup or **Pack and Go** before applying bulk renames.
+</Warning>
+
+## Limits
+
+- Suggestions are best-effort; domain words often need the custom dictionary.
+- **Ignore** is session-only.
+- **Add to dictionary** writes to `CustomWords.txt` for the current Group folder.
+- Some Rules Builder integrations depend on host internals; verify the **Spell Check** button and context menu in your installed build.
+
+## Related
+
+- [Scripts](/driveworks/plugins/toolkit/scripts)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)
+- [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)
+- [Toolkit hub](/driveworks/plugins/toolkit/index)

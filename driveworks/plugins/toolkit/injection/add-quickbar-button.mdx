@@ -1,0 +1,107 @@
+---
+title: Adding a QuickBar Button
+sidebarTitle: Adding a QuickBar Button
+description: How to add a small icon button to the DriveWorks Administrator QuickBar (title bar) using IQuickBarManager and application-scoped commands.
+---
+
+
+
+The **QuickBar** is the row of small icons beside **DriveWorks Administrator** in the window title area (open Group, open Project, Save, Settings, and similar). It is not the per-view **Command Manager** bar below the ribbon.
+
+The Autex Toolkit shipping example is the **Autex Toolkit** icon that opens the same **Autex Tools** window as the Command Manager button (`Autex Toolkit.OpenScripts`).
+
+## When to use this pattern
+
+Use the QuickBar when an action should be reachable from every view without hunting the Command Manager. Prefer the [Command Manager button](/driveworks/plugins/toolkit/injection/add-command-manager-button) when the action belongs with view-specific tooling or needs large icon + text.
+
+<Info>
+QuickBar buttons always render at **small** icon size. Register the command on the **application** `ICommandManager`, not a view `ICommandManager`.
+</Info>
+
+## QuickBar vs Command Manager
+
+| Surface | API | Command manager scope | Typical display |
+| ------- | --- | --------------------- | --------------- |
+| QuickBar (title bar) | `IQuickBarManager.AddCommandButton` | Application `ICommandManager` | Small icon only |
+| Command Manager (per view) | `ICommandBarGroup.AddCommandButton` | View `ICommandManager` (with global fallback) | Large icon + text |
+
+View command bars resolve command names through **CommandResolver**: the global (application) command manager is checked first, then the view-local manager. One application-level registration can back both a QuickBar button and Command Manager buttons that reference the same command name.
+
+## Registration pattern (Toolkit)
+
+Entry points:
+
+- `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.CommandRegistration.cs` — `TryAttachQuickBarCommand`
+- `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.Initialize.cs` — called from `RegisterAdministratorIntegrations`
+
+### 1. Register once at application scope
+
+During plugin `Initialize` (Administrator host only), resolve services and register the command:
+
+```csharp
+var appCmdMgr = application.ServiceManager.GetService<ICommandManager>();
+var quickBarMgr = application.ServiceManager.GetService<IQuickBarManager>();
+
+var cmd = appCmdMgr.RegisterCommand(
+    CommandName,
+    StateFilter.Empty,
+    "Autex Toolkit",
+    GetCommandImageHandle());
+cmd.Invoking += OnAutexToolkitCommandInvoking;
+```
+
+Guard with a one-shot flag (`_quickBarAttached`) so `Initialize` cannot attach twice.
+
+### 2. Add the QuickBar button
+
+```csharp
+quickBarMgr.AddCommandButton(
+    CommandName,
+    commandContext: null,
+    CommandUnavailableBehavior.Hide);
+```
+
+`IQuickBarManager` has no remove API; the button lives for the application session, which matches plugin lifetime.
+
+### 3. Reuse the Command Manager handler
+
+Wire `Invoking` to the same handler used by the Command Manager bar (for Toolkit, `OnAutexToolkitCommandInvoking` → `AutexToolsWindow.ShowOrFocus()`).
+
+Do **not** register `Autex Toolkit.OpenScripts` again on each view's `ICommandManager`. Keep the existing `group.AddCommandButton(..., CommandName, ...)` in `TryAttachCommandsToView`; it resolves the application command via `CommandResolver`.
+
+### 4. Dispose
+
+On plugin dispose, detach `Invoking` and `UnregisterCommand` on the **application** `ICommandManager` instance that registered the command.
+
+### 5. Build and verify
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+In **DriveWorks Administrator**:
+
+1. Confirm the Autex icon appears on the QuickBar after the built-in icons.
+2. Click it — **Autex Tools** opens.
+3. Confirm the Command Manager **Autex Toolkit** button still works on Today and project views.
+
+## Under the hood (DriveWorks SDK)
+
+- **`IQuickBarManager`** (`DriveWorks.Applications`) — `AddCommandButton(string commandName, object commandContext, CommandUnavailableBehavior unavailableBehavior)`. Buttons use `CommandBarDisplayHint.Small` internally.
+- **`QuickBarManager`** — looks up commands on the application `CommandManager` passed at construction.
+- **Main window** — `State_UpdateQuickBar()` reads `GetVisibleButtons()` and builds `CommandBarButton` elements with `CommandButtonBridge` (tag `CommandButtonBridge` in Live Property Explorer).
+
+Plugin load order: `ApplicationPluginManager.Load()` runs before the main window constructor refreshes the QuickBar, so buttons added during `Initialize` appear on first paint.
+
+## Administrator only
+
+`RegisterAdministratorIntegrations` does not run for the SOLIDWORKS add-in host (`TryInitializeSolidWorksAddInHost` returns early). SOLIDWORKS UI patches use different entry points (for example `SolidWorksTaskPaneToolbarInjection`).
+
+## Related
+
+- [Injection guides index](/driveworks/plugins/toolkit/injection)
+- [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)
+- [Creating a Toolkit Window](/driveworks/plugins/toolkit/injection/create-toolkit-window)
+- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)
+- [Plugin entry](/driveworks/plugins/toolkit/architecture/plugin-entry)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

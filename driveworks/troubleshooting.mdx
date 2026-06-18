@@ -1,0 +1,72 @@
+---
+title: DriveWorks Troubleshooting
+sidebarTitle: DriveWorks Troubleshooting
+description: Troubleshooting guide for database, DriveWorks Live UI, Data Management, and model generation issues.
+---
+
+
+
+## Database Issues
+
+Start with Specification Explorer reports and warnings.
+
+### Retrieve Data from Database Failed
+
+1. Open DriveWorks Administrator.
+2. Go to Stage 6: Specification Explorer.
+3. Open the latest specification report.
+4. If data is truncated, update SQL table column types (for example `nvarchar(MAX)`), then re-test.
+
+### Query returns a value instead of a table
+
+- `dbQuery` returns a headered table.
+- `QueryData` returns a single value.
+
+## DriveWorks Live UI Issues
+
+### Bug visible on a form
+
+1. Open DriveWorks Administrator.
+2. Go to Stage 2: User Interface > Form Design.
+3. Select the affected control.
+4. Inspect behavior rules, macro arguments, and visibility rules.
+
+### Form not showing
+
+- Confirm project/macro consistency rules.
+- Confirm specifications and snapshots exist in expected locations.
+- Review related workflow specifications and host-control tasks.
+
+## Data Management Issues
+
+### Pack and Go fails
+
+If packaging fails with large specification sets:
+
+1. Retry with optional additional operations reduced.
+2. Run from the server for better performance.
+3. Re-run with connectors only if needed.
+4. Validate resulting package contents.
+
+## Model Generation Issues
+
+Check these areas in Specification Explorer:
+
+1. Specification reports
+2. Rules profiler
+3. Model generation reports
+4. Model Insight
+
+## Specification Host
+
+### Hosted constant shows only the first table header
+
+**Input Values** passes **strings only**; a table in the **Value** column is reduced to cell (0,0) (often the first header name). Encode as CSV, JSON, or Base64 on the host and decode in the hosted **Project**. See [Specification Host Input Values](/driveworks/how-to/specification-host-input-values).
+
+## Security and Permissions Issues
+
+When projects become unavailable or categories show as unavailable:
+
+1. Validate security users and teams in Stage 1.
+2. Compare Admin-related records with a working environment.
+3. If needed, recreate admin team permissions and copy security settings from a working Group.

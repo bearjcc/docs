@@ -1,0 +1,35 @@
+---
+title: Autex Toolkit tech stack
+sidebarTitle: Autex Toolkit tech stack
+description: Third-party libraries and runtime dependencies used by the Autex Toolkit DriveWorks plugin.
+---
+
+
+
+These pages describe **NuGet and runtime dependencies** referenced by `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`. DriveWorks SDK assemblies are out of scope here; see [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy).
+
+Internal package notes also live under `Documentation/Packages/` in the repository.
+
+## Runtime dependencies
+
+| Library                | Role in Toolkit                                                 | Article                                                                   |
+| ---------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Serilog                | Structured logging via `ToolkitLog`                             | [Serilog](/driveworks/plugins/toolkit/tech-stack/serilog)                 |
+| Scriban                | WebView HTML templates and UI composition                       | [Scriban](/driveworks/plugins/toolkit/tech-stack/scriban)                 |
+| Tomlyn                 | TOML parse and serialize for snapshots and Group Constants      | [Tomlyn](/driveworks/plugins/toolkit/tech-stack/tomlyn)                   |
+| Newtonsoft.Json        | JSON for WebView bridge and diagnostics payloads                | [Newtonsoft.Json](/driveworks/plugins/toolkit/tech-stack/newtonsoft-json) |
+| Microsoft.Web.WebView2 | Chromium host for Script Tools, compare, and Version Control UI | [WebView2](/driveworks/plugins/toolkit/tech-stack/webview2)               |
+| WeCantSpell.Hunspell   | Rules Builder and script spell checking                         | [Hunspell](/driveworks/plugins/toolkit/tech-stack/hunspell)               |
+| Costura.Fody           | Embeds dependency DLLs into `Autex Toolkit.dll`                 | [Costura.Fody](/driveworks/plugins/toolkit/tech-stack/costura-fody)       |
+
+## BCL compatibility packages
+
+Toolkit pins several `System.*` packages for .NET Framework 4.8 compatibility. They are transitive support libraries, not product features:
+
+- `System.Memory`, `System.Collections.Immutable`, `System.Numerics.Vectors`, `System.Runtime.CompilerServices.Unsafe`
+
+## Related
+
+- [Architecture map](/driveworks/plugins/toolkit/architecture)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
+- [Wiki conventions](/reference/wiki-conventions)

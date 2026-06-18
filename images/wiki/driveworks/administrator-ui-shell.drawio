@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" agent="Autex Wiki" version="22.1.0">
+  <diagram id="admin-shell" name="SolidWorksWindow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="win" value="&lt;b&gt;Application window&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;SolidWorksWindow / MainWindow&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#f5f5f5;strokeColor=#333333;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="30" width="1020" height="760" as="geometry" />
+        </mxCell>
+        <mxCell id="title" value="&lt;b&gt;Title bar chrome&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TitleCommandBarBacking&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=6;spacingTop=4;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="win">
+          <mxGeometry x="12" y="28" width="996" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="icon" value="&lt;font style=&quot;font-size:10px&quot;&gt;ApplicationIconButton&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;" vertex="1" parent="title">
+          <mxGeometry x="8" y="22" width="44" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="name" value="&lt;font style=&quot;font-size:10px&quot;&gt;ApplicationName&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;" vertex="1" parent="title">
+          <mxGeometry x="58" y="22" width="140" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="quick" value="&lt;b&gt;QuickBar&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;QuickBar (CommandBar)&lt;br&gt;IQuickBarManager&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="title">
+          <mxGeometry x="210" y="14" width="520" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="winbtns" value="&lt;b&gt;Window buttons&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;WindowsButtonsBar&lt;br&gt;Help / Minimize / MaxRestore / Close&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;" vertex="1" parent="title">
+          <mxGeometry x="748" y="14" width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cmd" value="&lt;b&gt;Command Manager&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;CommandBar&lt;br&gt;ICommandBarManager + IViewCommandBarManager&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="win">
+          <mxGeometry x="12" y="92" width="996" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="body" value="&lt;b&gt;Application body&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;ApplicationBodyGrid&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=6;spacingTop=4;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="win">
+          <mxGeometry x="12" y="152" width="996" height="540" as="geometry" />
+        </mxCell>
+        <mxCell id="todo" value="&lt;b&gt;ToDo tree (left sidebar)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;ToDo (TreeView)&lt;br&gt;ViewTreeViewModel / ViewDefinition&lt;br&gt;IViewManager&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="body">
+          <mxGeometry x="8" y="28" width="220" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="split" value="&lt;font style=&quot;font-size:10px&quot;&gt;TodoSplitter&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="body">
+          <mxGeometry x="232" y="28" width="8" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="content" value="&lt;b&gt;Content host&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;ContentHost (DockPanel)&lt;br&gt;active IView&lt;br&gt;DriveWorksWindowsFormsHost when WinForms&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="body">
+          <mxGeometry x="248" y="28" width="740" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="status" value="&lt;b&gt;Status bar&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;StatusBar / IStatusBarService&lt;br&gt;ReadyStateText, VersionState, BuildStatus, LicenseTypeStatus,&lt;br&gt;GroupStatus, ProjectStatus, UserStatus, ServerStatus&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="win">
+          <mxGeometry x="12" y="700" width="996" height="48" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

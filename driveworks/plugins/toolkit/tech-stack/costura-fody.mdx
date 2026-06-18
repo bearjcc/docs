@@ -1,0 +1,69 @@
+---
+title: Costura.Fody
+sidebarTitle: What it is
+description: MSBuild weaver that embeds Toolkit NuGet dependencies into Autex Toolkit.dll for single-folder DriveWorks plugin deploy.
+---
+
+
+**Costura.Fody** is the MSBuild weaving step that packs managed NuGet assemblies into **`Autex Toolkit.dll`**. Maintainers get a lean plugin folder for **DriveWorks Administrator** deploy; end users do not install Costura or Fody separately.
+
+## What it is
+
+[Costura](https://github.com/Fody/Costura) is a [Fody](https://github.com/Fody/Fody) weaver. At compile time it embeds referenced managed assemblies as resources inside the main output DLL and wires assembly resolution so the host loads them from memory.
+
+Toolkit uses it so Serilog, Scriban, Newtonsoft.Json, and other NuGet libraries ship inside one plugin assembly instead of a scatter of dependency DLLs beside **`Autex Toolkit.dll`**.
+
+## Install
+
+Package references in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
+
+| Package | Version | Notes |
+| --- | --- | --- |
+| Costura.Fody | 5.7.0 | Weaver |
+| Fody | 6.8.2 | MSBuild host for weavers |
+
+Both use `<PrivateAssets>all</PrivateAssets>` so they are build-time only and do not become runtime references.
+
+Weaving runs automatically when maintainers build with **`Build.ps1`** (Debug) or **`Build-Release.ps1`** (Release). Configuration lives in `DWPlugin\FodyWeavers.xml`.
+
+<Info>
+Do not run `dotnet build` on the plugin `.csproj` directly. Use **`Build.ps1`** or **`Build-Release.ps1`**.
+</Info>
+
+## Official links
+
+- [Costura on GitHub](https://github.com/Fody/Costura)
+- [Costura.Fody on NuGet](https://www.nuget.org/packages/Costura.Fody/)
+- [Fody on NuGet](https://www.nuget.org/packages/Fody/)
+
+## Usage in Toolkit
+
+### Embedded NuGet dependencies
+
+After a successful build, managed NuGet outputs (for example Serilog, Scriban, Tomlyn) are embedded in **`Autex Toolkit.dll`**. Other tech-stack pages note this pattern: dependencies are compile-time packages; users receive them inside the single plugin DLL.
+
+### WebView2 stays beside the DLL
+
+`FodyWeavers.xml` excludes WebView2 managed wrappers from embedding:
+
+- `Microsoft.Web.WebView2.Core`
+- `Microsoft.Web.WebView2.Wpf`
+- `Microsoft.Web.WebView2.WinForms`
+
+**WebView2Loader.dll** and related native/runtime layout still copy to the output folder. WebView2 needs loose managed wrappers and the loader next to the plugin, not only in-memory embeds.
+
+### Release deploy
+
+**`Build-Release.ps1`** copies **`Autex Toolkit.dll`** to production plugin shares, then copies any remaining non-DriveWorks dependency DLLs from `bin\Release` only when missing or changed (SHA256 compare). Copy uses per-file retry (default three attempts, two-second delay) when files are locked by a running **DriveWorks** host; locked WebView2 DLLs may be skipped with a warning until clients close.
+
+DriveWorks SDK assemblies (`DriveWorks.*`) are never copied; the host already provides them.
+
+## Why we picked it
+
+- **Deploy shape:** DriveWorks plugins install as one folder under the plugin share. Costura keeps the primary deliverable as **`Autex Toolkit.dll`** plus the few files that cannot be embedded (WebView2, satellites).
+- **Rejected alternative:** [ILRepack](https://github.com/gluck/il-repack) is explicitly deferred in `Documentation/Packages/deferred-not-recommended.md`. Costura already works; IL merge is more brittle with WebView2 and satellite assembly layout.
+
+## Related
+
+- [Autex Toolkit tech stack](/driveworks/plugins/toolkit/tech-stack)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

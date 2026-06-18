@@ -1,0 +1,106 @@
+---
+title: Data Models
+sidebarTitle: Data Models
+description: Data transfer objects and model classes representing projects, groups, forms, controls, rules, specification flows, and other domain entities.
+---
+
+
+
+Data transfer objects and model classes representing projects, groups, forms, controls, rules, specification flows, and other domain entities. This page lists 64 indexed components from the Understand-Anything graph for that layer.
+
+## Overview
+
+Data transfer objects and model classes representing projects, groups, forms, controls, rules, specification flows, and other domain entities.
+
+<Info>
+Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:data-models`).
+</Info>
+
+## Components
+
+| Name | Type | Source path | Summary |
+| --- | --- | --- | --- |
+| CalcTableInfo.cs | file | `Autex Toolkit/DWPlugin/Models/CalcTableInfo.cs` | Data model for calc tables with column definitions, row data, and rule text. Supports column rule extraction and table comparison. |
+| CapturedComponentInfo.cs | file | `Autex Toolkit/DWPlugin/Models/CapturedComponentInfo.cs` | Data model for captured 3D component information including component path and parameter references. |
+| ColumnWidthSpec.cs | file | `Autex Toolkit/DWPlugin/Models/ColumnWidthSpec.cs` | Specification for DataTable column widths used in UI display. Supports fixed and percentage-based widths. |
+| ConstantCategoryInfo.cs | file | `Autex Toolkit/DWPlugin/Models/ConstantCategoryInfo.cs` | Data model for constant category information with name and path. |
+| ConstantInfo.cs | file | `Autex Toolkit/DWPlugin/Models/ConstantInfo.cs` | Data model for a DriveWorks constant with name, value, comment, and category. |
+| DataDocumentInfo.cs | file | `Autex Toolkit/DWPlugin/Models/DataDocumentInfo.cs` | Data model for data document information including document type and file path. |
+| DataTableInfo.cs | file | `Autex Toolkit/DWPlugin/Models/DataTableInfo.cs` | 2D data table model for group tables and lookup tables. Implements IDataTableInfo with derived row/column counts, column names, and rule name computation. |
+| DataTypeOptions.cs | file | `Autex Toolkit/DWPlugin/Models/DataTypeOptions.cs` | Static API for data type display names (Constants, Variables, Tables, etc.) with CRUD operation filtering. Determines which data types are available for each operation. |
+| DocumentInfo.cs | file | `Autex Toolkit/DWPlugin/Models/DocumentInfo.cs` | Data model for document information including type and display name. |
+| DriveAppInfo.cs | file | `Autex Toolkit/DWPlugin/Models/DriveAppInfo.cs` | Data model for DriveApp information including name and configuration. |
+| EnvironmentSettingInfo.cs | file | `Autex Toolkit/DWPlugin/Models/EnvironmentSettingInfo.cs` | Data model for environment setting information with name and value. |
+| FindReplaceResult.cs | file | `Autex Toolkit/DWPlugin/Models/FindReplaceResult.cs` | Data model for find/replace operation results including match location, old text, new text, and success status. |
+| FormControlInfo.cs | file | `Autex Toolkit/DWPlugin/Models/FormControlInfo.cs` | Data model for form control information including name, type, and form reference. |
+| FormControlPropertyDescriptor.cs | file | `Autex Toolkit/DWPlugin/Models/FormControlPropertyDescriptor.cs` | Descriptor for form control properties defining name, category, value kind, and rule support. |
+| FormControlPropertyInfo.cs | file | `Autex Toolkit/DWPlugin/Models/FormControlPropertyInfo.cs` | Data model for form control property info with name, value, rule, comment, and rule-driven flag. |
+| FormInfo.cs | file | `Autex Toolkit/DWPlugin/Models/FormInfo.cs` | Data model for form information including name and control list. |
+| FormMessageInfo.cs | file | `Autex Toolkit/DWPlugin/Models/FormMessageInfo.cs` | Data model for form message information with code and message text. |
+| FunctionInfoDto.cs | file | `Autex Toolkit/DWPlugin/Models/FunctionInfoDto.cs` | DTO for DriveWorks function information including name and parameter count. |
+| GenerationTaskInfo.cs | file | `Autex Toolkit/DWPlugin/Models/GenerationTaskInfo.cs` | Data model for generation task (component task) information including component, location, index, name, and type. |
+| GroupData.cs | file | `Autex Toolkit/DWPlugin/Models/GroupData.cs` | In-memory representation of a theoretical DriveWorks group. Implements IGroupView with all group properties (teams, users, tables, projects). No SDK connection; can be built entirely in memory. |
+| GroupData.MergeDelta.cs | file | `Autex Toolkit/DWPlugin/Models/GroupData.MergeDelta.cs` | Partial class of GroupData handling merge delta operations. Merges sparse delta GroupData into a full snapshot. |
+| GroupOpen.cs | file | `Autex Toolkit/DWPlugin/Models/GroupOpen.cs` | Script-facing view of the currently open DriveWorks group. Implements IGroupView with lazy SDK accessors, sync/async mutation modes, and CopyFrom/Push for batch apply. |
+| InternalRuleItem.cs | file | `Autex Toolkit/DWPlugin/Models/InternalRuleItem.cs` | Internal rule item model for rule collection building. Contains rule name, formula, and section metadata. |
+| IReadOnlySpecificationFlowDefinition.cs | file | `Autex Toolkit/DWPlugin/Models/IReadOnlySpecificationFlowDefinition.cs` | Read-only interface for specification flow definition access. |
+| LoginConstantsMigrationModels.cs | file | `Autex Toolkit/DWPlugin/Models/LoginConstantsMigrationModels.cs` | Models for login constants migration between DriveWorks versions. |
+| ModelRuleInfo.cs | file | `Autex Toolkit/DWPlugin/Models/ModelRuleInfo.cs` | Data model for model rule information including name, type, component, and rule formula. |
+| ProjectComparisonResult.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectComparisonResult.cs` | Result of comparing two ProjectData instances. Contains setting diffs, list diffs per data type, revision metadata, and normalization flags for report generation. |
+| ProjectData.Comparison.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectData.Comparison.cs` | Partial class of ProjectData with comparison helper methods and convenience accessors for diff generation. |
+| ProjectData.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectData.cs` | In-memory representation of a theoretical DriveWorks project. The unified data model for SDK reader, archive reader, TOML, comparison engine, and reports. Implements IProjectView. |
+| ProjectData.MergeDelta.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectData.MergeDelta.cs` | Partial class of ProjectData handling merge delta operations. Merges sparse delta ProjectData and removals into a full snapshot. |
+| ProjectDataList.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectDataList.cs` | Typed list wrapper for named project data items with lookup and enumeration support. |
+| ProjectDetailInfo.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectDetailInfo.cs` | Data model for project detail information including name and metadata. |
+| ProjectOpen.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectOpen.cs` | Script-facing view of the currently open DriveWorks project. Implements IProjectView with lazy SDK accessors, sync/async mutation, DeepCopy, CopyFrom/Push, and form control operations. |
+| ProjectOpenList.cs | file | `Autex Toolkit/DWPlugin/Models/ProjectOpenList.cs` | Collection of ProjectOpen instances for group-level project enumeration. |
+| RuleInfo.cs | file | `Autex Toolkit/DWPlugin/Models/RuleInfo.cs` | Data model for rule information including name, formula, section, and evaluated value. |
+| ScriptDataTypeLists.cs | file | `Autex Toolkit/DWPlugin/Models/ScriptDataTypeLists.cs` | Canonical lists of data type names for each script operation (CRUD, list data, PascalCase check, create data). Central reference for data type filtering. |
+| ScriptToolbarSpec.cs | file | `Autex Toolkit/DWPlugin/Models/ScriptToolbarSpec.cs` | Specification for script toolbar buttons (e.g. CSV export, save report) shown alongside script results. |
+| SnapshotApplyOptions.cs | file | `Autex Toolkit/DWPlugin/Models/SnapshotApplyOptions.cs` | Options for applying snapshots to projects and groups. Controls which data sections to include, merge behavior, and conflict resolution. |
+| SpecialVariableInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecialVariableInfo.cs` | Data model for special variable information (MyNumber, MyName, etc.) with name and value. |
+| SpecificationFlowConditionInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationFlowConditionInfo.cs` | Data model for specification flow conditions with id, type, and property values. |
+| SpecificationFlowDefinitionInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationFlowDefinitionInfo.cs` | Root data model for a specification flow definition containing initial state, states list, and default flag. |
+| SpecificationFlowEventInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationFlowEventInfo.cs` | Data model for specification flow events (OnEnter/OnLeave) containing event name and task list. |
+| SpecificationFlowOperationInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationFlowOperationInfo.cs` | Data model for specification flow operations with id, type, name, and enabled flag. |
+| SpecificationFlowStateInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationFlowStateInfo.cs` | Data model for specification flow states containing id, title, type, events, operations, and transitions. |
+| SpecificationFlowTaskInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationFlowTaskInfo.cs` | Data model for specification flow tasks with id, type, name, and enabled flag. |
+| SpecificationFlowTransitionInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationFlowTransitionInfo.cs` | Data model for specification flow transitions containing source/target state ids, condition, and display label. |
+| SpecificationMacroCategoryInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationMacroCategoryInfo.cs` | Data model for specification macro category information with name and path. |
+| SpecificationMacroClonePayload.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationMacroClonePayload.cs` | Payload model for cloning specification macros including source name and target name. |
+| SpecificationMacroInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationMacroInfo.cs` | Data model for specification macro information including name, category, tasks, and trigger settings. |
+| SpecificationMacroTaskInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationMacroTaskInfo.cs` | Data model for specification macro task information with type and properties. |
+| SpecificationMacroTaskPropertyInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationMacroTaskPropertyInfo.cs` | Data model for specification macro task property information including name, value, and property type. |
+| SpecificationPropertyInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationPropertyInfo.cs` | Data model for specification property information with name, value, and type. |
+| SpecificationSettingInfo.cs | file | `Autex Toolkit/DWPlugin/Models/SpecificationSettingInfo.cs` | Data model for specification setting information with name and value. |
+| TableData.cs | file | `Autex Toolkit/DWPlugin/Models/TableData.cs` | Generic table data model with column names and row values. Used for serializing table data in snapshots and reports. |
+| TeamInfo.cs | file | `Autex Toolkit/DWPlugin/Models/TeamInfo.cs` | Data model for DriveWorks team information including name and privileges. |
+| ThreeDDocumentInfo.cs | file | `Autex Toolkit/DWPlugin/Models/ThreeDDocumentInfo.cs` | Data model for 3D document information including document type and display file. |
+| ThreeDEnvironmentSyncItem.cs | file | `Autex Toolkit/DWPlugin/Models/ThreeDEnvironmentSyncItem.cs` | Data model for 3D environment synchronization items mapping component paths to environment settings. |
+| UserInfo.cs | file | `Autex Toolkit/DWPlugin/Models/UserInfo.cs` | Data model for DriveWorks user information including name and team membership. |
+| VariableCategoryInfo.cs | file | `Autex Toolkit/DWPlugin/Models/VariableCategoryInfo.cs` | Data model for variable category information with name and path. |
+| VariableInfo.cs | file | `Autex Toolkit/DWPlugin/Models/VariableInfo.cs` | Data model for DriveWorks variable information including name, value, rule, and comment. |
+| GroupData | class | `Autex Toolkit/DWPlugin/Models/GroupData.cs` | Sealed partial class representing a theoretical group with all data properties. Implements IGroupView. Used for snapshots, comparison, and TOML serialization. |
+| GroupOpen | class | `Autex Toolkit/DWPlugin/Models/GroupOpen.cs` | Sealed class wrapping the live DriveWorks Group SDK object. Provides lazy property access, sync/async mutation, CopyFrom/Push, and project enumeration. |
+| ProjectData | class | `Autex Toolkit/DWPlugin/Models/ProjectData.cs` | Sealed partial class representing a theoretical project with all data properties (constants, variables, forms, documents, rules, etc.). The central data model for the entire Toolkit. |
+| ProjectOpen | class | `Autex Toolkit/DWPlugin/Models/ProjectOpen.cs` | Sealed class wrapping the live DriveWorks Project SDK object. Provides lazy property access, CRUD operations, form control manipulation, sync/async mutation, and snapshot support. |
+
+## Key relationships
+
+Up to 7 internal edges (source, relationship, target), sorted deterministically.
+
+| Source | Relationship | Target |
+| --- | --- | --- |
+| file:DWPlugin/Models/GroupData.cs | contains | class:DWPlugin/Models/GroupData.cs:GroupData |
+| file:DWPlugin/Models/GroupData.MergeDelta.cs | depends_on | file:DWPlugin/Models/GroupData.cs |
+| file:DWPlugin/Models/GroupOpen.cs | contains | class:DWPlugin/Models/GroupOpen.cs:GroupOpen |
+| file:DWPlugin/Models/ProjectData.Comparison.cs | depends_on | file:DWPlugin/Models/ProjectData.cs |
+| file:DWPlugin/Models/ProjectData.cs | contains | class:DWPlugin/Models/ProjectData.cs:ProjectData |
+| file:DWPlugin/Models/ProjectData.MergeDelta.cs | depends_on | file:DWPlugin/Models/ProjectData.cs |
+| file:DWPlugin/Models/ProjectOpen.cs | contains | class:DWPlugin/Models/ProjectOpen.cs:ProjectOpen |
+
+## Related
+
+- [Architecture index](/driveworks/plugins/toolkit/architecture)
+- [Autex Toolkit hub](/driveworks/plugins/toolkit)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

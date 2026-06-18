@@ -1,0 +1,75 @@
+---
+title: DriveWorks Structure
+sidebarTitle: DriveWorks Structure
+description: Overview of DriveWorks Group, Project, application, and environment structure.
+---
+
+
+
+Reference map: [CPQ Map (FigJam)](https://www.figma.com/board/rYjGwuRq3F7CO5p51CkNv1/CPQ-Map?node-id=0-1&node-type=canvas&t=FFbCoxba5dD9Z6iq-0)
+
+## DriveWorks Groups
+
+### AUTEX GLOBAL
+
+Live DriveWorks Group used by production.
+
+### AUTEX DEV
+
+Development DriveWorks Group used for testing and implementation changes.
+
+## Project Areas
+
+### Custom Order Details
+
+- Generates `OrderNumber` for jobs.
+- Handles order naming and order-level metadata.
+- Pushes order-level data to CPQ tables.
+
+### Custom Fields
+
+- Captures customer and address details.
+- Pushes values from form controls to SQL tables.
+- Supports region-specific terms and conditions.
+
+### Workflow
+
+- Defines Specification Flow states and transitions.
+- Controls document generation and release operations.
+- Coordinates macros for pricing, quoting, and status progression.
+
+### Product Projects
+
+- Product-specific projects hold form behavior and model/document macros.
+- Item data is pushed to CPQ databases through project macros.
+- Add-to-Quote operations and updates are coordinated through SQL-backed processes.
+
+## Applications and Services
+
+### DriveWorks Administrator
+
+- Authoring module for Projects, rules, forms, outputs, and Specification Flow.
+- Primary location for project development and maintenance.
+
+### DriveWorks Autopilot
+
+- Unattended execution for model generation and document/email processing.
+- Runs against designated Group configurations.
+
+### DriveWorks Live
+
+- Runtime web experience for users.
+- Integrated with IIS-hosted static front-end assets in this implementation.
+
+### SQL Server
+
+- Stores Group-related and CPQ-related databases.
+- Includes region-specific quote and CPQ databases.
+
+## Related Procedures
+
+- [DriveWorks How To](/driveworks/how-to)
+- [Data Management](/driveworks/how-to/data-management)
+- [Live and IIS](/driveworks/how-to/live-and-iis)
+- [SQL](/driveworks/how-to/sql)
+- [Autopilot](/driveworks/how-to/autopilot)

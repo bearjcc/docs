@@ -1,0 +1,25 @@
+---
+title: Autopilot
+sidebarTitle: Stop and Start Autopilot
+description: DriveWorks Autopilot operation and restart procedures.
+---
+
+
+## Stop and Start Autopilot
+
+Use when model generation queue stalls or SOLIDWORKS integration is blocked.
+
+1. Click `Stop` and wait for stopped state in logs.
+2. Click `Start` and confirm the model queue resumes.
+3. If needed, restart SOLIDWORKS on the Autopilot host.
+
+## Restart Autopilot Host
+
+Use when Autopilot controls are unavailable or all queues are stalled.
+
+1. Remote desktop to `azdwapp01.autexnz.local`.
+2. Restart Windows.
+3. Log in again and open DriveWorks Autopilot.
+4. Start `AutexGLOBAL`.
+5. Open a second Autopilot session and start `DEVAutexGLOBAL`.
+6. Confirm queues continue from prior state.

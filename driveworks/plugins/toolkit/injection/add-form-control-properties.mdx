@@ -1,0 +1,284 @@
+---
+title: Adding Form Control Properties
+sidebarTitle: Adding Form Control Properties
+description: How the Autex Toolkit registers DynamicProperty values on User Form controls, surfaces them in the Form Designer property grid, and bridges them to CSS for DriveWorks Live.
+---
+
+
+
+This guide explains how the Autex Toolkit adds new **User Form** control properties that appear in the DriveWorks Administrator **Form Designer** property grid, persist on the **Project**, and (when you wire the web layer) affect layout at runtime in **DriveWorks Live**. The canonical shipping example is the **Layout Grid** quartet: **Row**, **Column**, **Row Span**, and **Column Span**.
+
+## When to use this pattern
+
+Use `DynamicProperty.Register` when you need a new slot on a form control (or on `Form`) that behaves like native DriveWorks properties: static literal, dynamic **Rule**, property grid category, save/load, and optional runtime consumption.
+
+Use other injection surfaces when the context is not a control property:
+
+- **Command Manager** for shell-wide commands ([Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)).
+- **Form Designer context menu** for selection-scoped actions ([Adding a Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item)).
+- **Rules Builder toolbar** for rule-editing actions ([Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)).
+
+<Warning>
+Registering a property in Administrator does **not** make DriveWorks Live render it. Properties that should change CSS or HTML at runtime need a deliberate web bridge and Integration Theme assets.
+</Warning>
+
+## Architecture overview
+
+Toolkit splits the work across four layers:
+
+| Layer                    | Responsibility                                                                                 | Key files                                                                                                                        |
+| ------------------------ | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Registration**         | Call `DynamicProperty.Register` once at plugin startup                                         | `DWPlugin/FormDesigner/LayoutGridDynamicPropertyRegistration.cs`, `FormMetadataDynamicPropertyRegistration.cs`                   |
+| **Toolkit metadata**     | Static property lists for scripts, convert-to analysis, and capture without pinging DriveWorks | `DWPlugin/Core/Forms/FormControlTypes.cs` (`FormControl.BasePropertyDescriptors`)                                                |
+| **Administrator bridge** | Property grid hooks, seed Row/Column into Form Designer WebView2                               | `FormDesignerGridPropertyInjection.cs`, `FormDesignerLayoutGridSeedBridge.cs`, `FormDesignerWebLayoutBridgeInjection.cs`         |
+| **Live / web**           | Map property bags to `--dw-property-*` CSS variables; theme CSS consumes them                  | `docs/web/autex-layout-grid-css-bridge.js`, `docs/web/autex-layout-grid-theme.css`, `LayoutGridWebMessageAdapterRegistration.cs` |
+
+**Startup entry point (DEBUG):** `ToolkitPlugin.Initialize` calls `AutexLayoutGridDynamicPropertyRegistration.EnsureRegistered()` and `AutexLayoutGridWebMessageAdapterRegistration.EnsureRegistered(application)` from `ToolkitPlugin.Initialize.cs`.
+
+## The DriveWorks API: DynamicProperty
+
+Form control properties are instances of `DriveWorks.Forms.DataModel.DynamicProperty`. Toolkit registers them with:
+
+```csharp
+DynamicProperty.Register(
+    controlType,
+    storeName: "Row",
+    serializeAs: "Row",
+    displayName: "Row",
+    description: "Grid row line (1-based; 0 = auto).",
+    category: "Layout Grid",
+    defaultValue: 1.0,
+    behavior: PropertyBehavior.StandardOptionDynamicManual,
+    clrType: typeof(int));
+```
+
+| Parameter                   | Role                                                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `controlType`               | Concrete `ControlBase` subclass, or `typeof(Form)` for form-level properties                                 |
+| `storeName` / `serializeAs` | Persistence and **Rule** reference names (keep them aligned unless you have a deliberate alias)              |
+| `displayName` / `category`  | Property grid grouping                                                                                       |
+| `behavior`                  | Static-only vs value/rule toggle (`PropertyBehavior.FlagStaticAllowed`, `StandardOptionDynamicManual`, etc.) |
+| `clrType`                   | Stored value type (`int`, `string`, custom enum)                                                             |
+
+Reads and writes at runtime go through the SDK (`GetValue`, `SetValue`, `GetIsExtended`, `SetFormula`, …). Toolkit facades such as `FormControlRuledProperty` and `FormControlPropertyWrite` wrap those calls for scripts and mutations. See workspace rule **DriveWorks property modes** for static vs dynamic pitfalls.
+
+## All form controls vs a specific type
+
+This is the most important registration decision.
+
+### Register on every concrete control type (Layout Grid pattern)
+
+`AutexLayoutGridDynamicPropertyRegistration` registers **Row**, **Column**, **RowSpan**, and **ColumnSpan** on **each concrete** `ControlBase` subclass, not on `ControlBase` itself and not on `Form`.
+
+```csharp
+foreach (var typeName in FormControl.GetTypes(null)) {
+    var t = FormControlTypeResolver.Resolve(typeName);
+    if (t == null || t.IsAbstract || t == typeof(Form)) continue;
+    TryRegisterLayoutGridProperties(t);
+}
+foreach (var pluginType in FormControls.PluginFormControlRegistration.GetRegisteredControlTypes()) {
+    TryRegisterLayoutGridProperties(pluginType);
+}
+```
+
+**Why not `ControlBase`?** DriveWorks snapshots the per-type property list the first time `DynamicProperty.GetProperties` runs for a type. A late `Register` on `ControlBase` duplicates `SerializeAs` keys when a **Project** opens and does not reliably appear on derived types. The Dev script `DynamicPropertyProbe` (`Scripts/Dev/DynamicPropertyProbe.cs`) demonstrates this ordering trap.
+
+Use this pattern when the property should behave like **Left** / **Top**: every toolbox control gets the same slot.
+
+### Register on one control type (HeadingControl pattern)
+
+`HeadingControl` registers **Text** and **Level** only on `typeof(HeadingControl)`:
+
+```csharp
+public static readonly DynamicProperty TextProperty = DynamicProperty.Register(
+    typeof(HeadingControl),
+    storeName: "Text",
+    serializeAs: "Text",
+    // ...
+    behavior: PropertyBehavior.StandardOptionDynamicDefault,
+    clrType: typeof(string));
+```
+
+Use this when the property is **intrinsic to one control's behaviour** (caption text, heading level, adapter-specific options). Plugin types must still call `PluginFormControlRegistration.Register` so layout-grid follow-up and optional JS bridges run.
+
+### Register on Form only (form-level layout)
+
+Layout Grid also adds form-level properties on `typeof(Form)`:
+
+- **Control Flow** (`AutexControlFlow`) — CSS `display` for the controls container (`grid`, `flex`, `block`, …)
+- **Grid Gap** (`AutexGridGap`) — pixel gap on the form grid
+
+These use `PropertyBehavior.FlagStaticAllowed` because they are form-scoped layout settings, not per-control slots.
+
+### Release vs DEBUG today
+
+| Property set                                                        | Build                        | Notes                                                                          |
+| ------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------ |
+| Layout Grid (Row/Column/RowSpan/ColumnSpan, Control Flow, Grid Gap) | **DEBUG only** (`#if DEBUG`) | Experimental; not in Release DLL                                               |
+| Form **Metadata**                                                   | **All builds**               | `AutexFormMetadataDynamicPropertyRegistration` re-exposes native form metadata |
+
+Maintainer experiments use **`Build.ps1`** (Debug). Production behaviour ships through **`Build-Release.ps1`** only after `#if DEBUG` gates are removed or the feature is promoted.
+
+## Layout Grid example (Row, Column, Row Span, Column Span)
+
+The four control properties share one spec table in `LayoutGridDynamicPropertyRegistration.cs`:
+
+| SerializeAs  | Display name | Meaning                                | Default |
+| ------------ | ------------ | -------------------------------------- | ------- |
+| `Row`        | Row          | Grid row line (1-based; `0` = auto)    | `1`     |
+| `Column`     | Column       | Grid column line (1-based; `0` = auto) | `1`     |
+| `RowSpan`    | Row Span     | Row span (1-based; min 1)              | `1`     |
+| `ColumnSpan` | Column Span  | Column span (1-based; min 1)           | `1`     |
+
+All four use category **Layout Grid**, `clrType: typeof(int)`, and `PropertyBehavior.StandardOptionDynamicManual` so authors can set a literal or bind a **Rule**.
+
+Toolkit also merges them into `FormControl.BasePropertyDescriptors` (DEBUG) so convert-to analysis, metadata export, and scripts see the same names without calling DriveWorks:
+
+```csharp
+#if DEBUG
+var grid = AutexLayoutGridDynamicPropertyRegistration.GetStaticPropertyDescriptors();
+// merged into BasePropertyDescriptors between Layout and Behavior groups
+#endif
+```
+
+When you add properties that scripts should know about, update **both** the `DynamicProperty.Register` path and the static descriptor list (or run `Scripts/Dev/ExportFormControlMetadata.cs` to regenerate per-type maps).
+
+## Making properties emit CSS
+
+DriveWorks web controls already understand a CSS-variable contract. Custom properties map to variables named `--dw-property-{lowercasename}` on the control or form `:host` style tag (for example `--dw-property-row`, `--dw-property-columnspan`).
+
+### 1. Theme CSS (consumer)
+
+`docs/web/autex-layout-grid-theme.css` is the **consumer**. It does not read C#; it only references variables:
+
+```css
+[part="controls"] > *:not([hidden]) {
+  grid-row-start: var(--dw-property-row, 1);
+  grid-row-end: span var(--dw-property-rowspan, 1);
+  grid-column-start: var(--dw-property-column, 1);
+  grid-column-end: span var(--dw-property-columnspan, 1);
+}
+```
+
+Form-level **Control Flow** and **Grid Gap** use `--dw-property-autex-control-flow` and `--dw-property-autex-grid-gap` on the form `:host`.
+
+### 2. Bridge JS (producer)
+
+`docs/web/autex-layout-grid-css-bridge.js` listens for `ControlUpdated` events, reads `controlData.Row` / `Column` / `RowSpan` / `ColumnSpan`, and calls `setStyleProperty` + `updatePropertyStyleTag` on each `dw-*` host so the variables appear in the shadow DOM style tag.
+
+For form properties, the bridge reads augmented form data (`autexControlFlow`, `autexGridGap`) and writes the matching `--dw-property-*` entries on `dw-form`.
+
+**Contract (from the bridge header):**
+
+1. Source: `DynamicProperty` / WebTech `controlData` / host seed → `--dw-property-*`
+2. Consumer: theme CSS inside `dw-form` shadow roots
+3. Avoid fighting native layout with inline `grid-row`, `position`, or `margin` on controls
+
+### 3. Administrator injection
+
+`FormDesignerWebLayoutBridgeInjection` embeds the theme CSS and bridge JS into the **Form Designer** WebView2 when the Form Designer view attaches (DEBUG builds only). `FormDesignerLayoutGridSeedBridge` pushes initial Row/Column values after property grid edits.
+
+`FormDesignerGridPropertyInjection` subscribes to `PropertyValueChanged` and calls the seed bridge when a Layout Grid or form layout property changes.
+
+### 4. Live / Specification WebTech
+
+Administrator injection alone does **not** update customer Live sites. For **DriveWorks Live** you must deploy the same web assets through the **Integration Theme**:
+
+1. Copy or reference `autex-layout-grid-theme.css` and `autex-layout-grid-css-bridge.js` in the theme (load order: layout bridge before the Live client; per-control bridges after the layout bridge).
+2. Ensure `controlData` includes your `SerializeAs` keys (built-in WebTech adapters emit registered `DynamicProperty` values automatically).
+3. For form-level keys not in stock messages, register a WebTech message adapter. Toolkit's `AutexLayoutGridWebMessageAdapterRegistration` augments `FormDataMessage` / `SessionInitializeMessage` with `autexControlFlow` and `autexGridGap` (DEBUG).
+
+Without theme CSS, properties persist in the **Project** and show in Administrator, but Live keeps using absolute **Left** / **Top** positioning.
+
+<Info>
+CSS-first grid and the Form Designer adorner (drag outlines tied to Left/Top) can disagree. Comments in `FormDesignerWebLayoutBridgeInjection` document dead-end JS patches; the supported direction is theme variables plus bridge, not adorner geometry hacks.
+</Info>
+
+## Step-by-step: add a new property
+
+### 1. Choose scope
+
+- **All controls:** loop concrete types (copy `EnsureRegisteredOnConcreteControlTypes`).
+- **One type:** `Register(typeof(MyControl), …)` on the control class or its registration type.
+- **Form only:** `Register(typeof(Form), …)`.
+
+### 2. Pick behavior and CLR type
+
+Match how authors should edit the slot:
+
+- Integer layout values → `typeof(int)`, `StandardOptionDynamicManual`
+- Fixed enum-like choices → custom enum + `FlagStaticAllowed` or manual dynamic
+- String tokens → `typeof(string)`; decide static-only vs rule-driven
+
+### 3. Register idempotently at plugin startup
+
+Follow the `EnsureRegistered` + `HasSerializeAs` guard pattern so reload does not double-register.
+
+Call from `ToolkitPlugin.Initialize` (or a dedicated `*Registration.Register()` invoked there). Register plugin control types **before** layout-grid bulk registration when both apply.
+
+### 4. Add Toolkit static metadata (if scripts need it)
+
+Extend `FormControl.BasePropertyDescriptors` or per-type maps in `FormControlTypes.cs` with a `FormControlPropertyDescriptor` entry (`PropertyName`, `Category`, `ValueKind`, `RuleSupport`).
+
+### 5. Wire Administrator UX (optional)
+
+If the stock property grid is enough, registration alone may suffice. Layout Grid additionally uses `FormDesignerGridPropertyInjection` to push seeds into the designer WebView after edits.
+
+### 6. Wire CSS / Live (when the property affects rendering)
+
+1. Add or extend theme CSS to `var(--dw-property-yourname, fallback)`.
+2. Extend `autex-layout-grid-css-bridge.js` (or a per-control bridge) to map `controlData` → `setStyleProperty`.
+3. Embed assets in `Autex Toolkit.csproj` (`EmbeddedResource` for `docs/web/*`).
+4. Document Integration Theme load order for Live operators.
+5. For form-level or non-standard payloads, add a WebTech `MessageAdapter` (see `LayoutGridWebMessageAdapter.cs`).
+
+### 7. Build and verify
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+**Administrator:** open a **Project**, Form Designer, select a control, confirm the new category/property, set values, save/reopen.
+
+**Live (human):** deploy theme JS/CSS, run a **Specification**, confirm CSS variables in DevTools and visible layout.
+
+**Dev aids:** `DynamicPropertyProbe`, `ExportFormControlMetadata`, `CustomFormControlTypeProbe` (plugin controls).
+
+## Existing examples in DWPlugin
+
+### Layout Grid (all controls + form layout)
+
+**Files:** `LayoutGridDynamicPropertyRegistration.cs`, `FormDesignerWebLayoutBridgeInjection.cs`, `FormDesignerLayoutGridSeedBridge.cs`, `docs/web/autex-layout-grid-*.css/js`.
+
+**Administrator:** Row/Column/RowSpan/ColumnSpan on every concrete control; Control Flow and Grid Gap on `Form`; DEBUG WebView bridge and seed push.
+
+**Live:** Theme must load bridge + theme CSS; message adapter augments form session data for Control Flow / Grid Gap.
+
+### Form Metadata (Form only, Release)
+
+**File:** `FormMetadataDynamicPropertyRegistration.cs`.
+
+Re-registers **Metadata** on `Form` so the stock property grid can edit Integration Theme class tokens. Static string only. No layout bridge required for basic persistence.
+
+### HeadingControl (single plugin type, DEBUG)
+
+**Files:** `FormControls/HeadingControl.cs`, `HeadingControlRegistration.cs`, `docs/web/autex-heading-control-bridge.js`.
+
+Demonstrates per-type `DynamicProperty.Register`, `PluginFormControlRegistration.Register`, and a dedicated `dw-heading-control` custom element bridge. Layout grid properties are applied automatically via the shared registration loop.
+
+## Under the hood (DriveWorks internals)
+
+- **`DynamicProperty.GetProperties(Type)`** returns the cached per-type list. Registration timing matters.
+- **WebTech `ControlAdapterBase.GetControlData`** serializes registered properties into the `controlData` bag sent to the browser. Custom adapters should include new keys if they override `GetControlData`.
+- **`setStyleProperty` / `updatePropertyStyleTag`** on `dw-*` elements are DriveWorks client APIs that maintain `--dw-property-*` in shadow `:host` styles.
+- **Transactions** for mutations from Toolkit scripts use `CreateTxChangeFormControlPropertyValues` / `CreateTxChangeFormControlPropertyRulesAndValues`; see `FormControlPropertyWrite` and `PropertyModesProbeScript` for mode pitfalls.
+
+Because WebTech adapters and Form Designer internals are not fully public, message adapter and WebView injection code uses reflection and version-sensitive type names. Keep registration and web contracts explicit so drift is diagnosable (Serilog / `ToolkitLog`).
+
+## Related
+
+- [Adding a Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item)
+- [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools)
+- [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass) — CSS via **Metadata**, a different path from `DynamicProperty`
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)
+- Maintainer doc: `Autex Toolkit/docs/custom-form-control-plugin-pattern.md` (plugin control checklist and Live theme load order)

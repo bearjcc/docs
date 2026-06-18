@@ -1,0 +1,68 @@
+---
+title: Autex Toolkit — Project comparison and snapshots
+sidebarTitle: Project comparison and snapshots
+description: Compare DriveWorks Projects and export reviewable TOML snapshots with Autex Toolkit.
+---
+
+
+## Project comparison and snapshots
+
+Autex Toolkit helps implementers review DriveWorks **Project** changes outside normal DriveWorks dialogs. **Export Snapshots** writes readable TOML files; **Compare projects** turns two sources into an HTML diff report.
+
+Use these tools before merge, import, release, or risky cleanup work.
+
+## Export snapshots
+
+Run **Export Snapshots** from **Autex Tools** when you want a text snapshot of the current **Group** and Projects.
+
+Output files are written to:
+
+```text
+GroupContentFolder\AutexToolkit
+```
+
+Common files:
+
+| File | Meaning |
+|------|---------|
+| `GroupInfo.toml` | Group-level data snapshot. |
+| `Project_<Name>.toml` | One Project snapshot per Project. |
+| `base_commit.txt` | Current Git commit when the export folder is inside a Git repo. |
+| `_Archive\...` | Previous files archived by timestamp before overwrite. |
+
+Optional inputs in the current script include delta export and a baseline folder.
+
+## Compare Projects
+
+Run **Compare projects** when you want to compare a newer source with an older source.
+
+Supported source choices:
+
+| Source type | Notes |
+|-------------|-------|
+| **Current project** | Reads the open Project from DriveWorks Administrator. |
+| `.toml` file | Full Toolkit snapshot file. |
+| `.driveprojx` file | Reads data available from the DriveWorks archive XML. |
+
+The report is an HTML side-by-side comparison. It is intended for reviewing what changed, not for applying changes.
+
+## Expectations
+
+TOML snapshots are the best comparison source for Toolkit workflows because they are designed for review and version control.
+
+`.driveprojx` comparisons are useful when you only have an exported Project file, but archive XML does not represent every live evaluated value in the same way as the SDK. Treat archive comparison differences as review prompts, not automatic proof of a defect.
+
+## Safe workflow
+
+1. Export snapshots before a major change.
+2. Make the change in DriveWorks Administrator.
+3. Export snapshots again.
+4. Run **Compare projects** with the newer source first and the older source second.
+5. Review the HTML report before release or promotion.
+
+## Related
+
+- [Scripts](/driveworks/plugins/toolkit/scripts)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)
+- [Group Constants](/driveworks/plugins/toolkit/group-constants)
+- [Toolkit hub](/driveworks/plugins/toolkit/index)

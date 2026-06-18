@@ -1,0 +1,215 @@
+---
+title: Adding a Form Designer Context Menu Item
+sidebarTitle: Adding a Form Designer Context Menu Item
+description: How to inject right-click menu items into DriveWorks Form Designer through the Autex Toolkit plugin, with examples for Inspect, Create Metaclass, and Add Metaclass.
+---
+
+
+
+This guide explains how the Autex Toolkit plugin adds items to the DriveWorks Administrator **Form Designer** right-click menu. Use this pattern when a feature should run against the current form control selection in the designer surface, such as inspecting the WebView, creating CSS metaclasses, or applying an existing metaclass token to control **Metadata**.
+
+## When to use this pattern
+
+Use Form Designer context menu injection when your action depends on:
+
+- the active **Form Designer** view
+- one or more selected form controls (`ControlBase` via `ISelectionSite`)
+- optional WebView2 access for the designer preview surface
+
+Use other injection surfaces when the context differs:
+
+- **Command Manager** registration for shell-wide commands (see [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)).
+- **Rules Builder** toolbar injection for rule-editing actions (see [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)).
+
+<Info>
+DriveWorks does not expose `DesignerContextMenu` on a public SDK API. Toolkit finds it by reflection and injects WPF `MenuItem` instances on each menu open.
+</Info>
+
+## Architecture overview
+
+The integration spans several partial-class files on `AutexToolkitPlugin`:
+
+| File                                                                          | Responsibility                                                                                      |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.FormDesignerContextMenu.cs`      | Attach to the menu, `Opened` / `Closed` handlers, Convert submenu injection, Create Metaclass entry |
+| `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.FormDesignerInspectCdp.cs`       | Inspect menu item, WebView2 resolution, CDP inspect click path                                      |
+| `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.FormDesignerAddMetaclassMenu.cs` | Add Metaclass submenu, picker, leaf items, metadata writes                                          |
+
+**Attach entry point:** when the Form Designer view is activated, `TryAttachCommandsToView` calls `TryAttachFormDesignerGridInjectionOnce`, which calls `TryAttachFormDesignerContextMenu(view)` (`ToolkitPlugin.CommandRegistration.cs`, `ToolkitPlugin.ViewLifecycle.cs`).
+
+**Discovery:** `FindDesignerContextMenuAndConvertItem` walks the view object graph (depth-limited reflection) until it finds a type declaring `DesignerContextMenu` and optionally `ConvertMenuItem`.
+
+**Runtime injection:** on `ContextMenu.Opened`, Toolkit builds menu items for the current selection and inserts them. On `ContextMenu.Closed`, it removes injected items and unsubscribes click handlers so reopening does not duplicate entries.
+
+**Disposal:** `DisposeFormDesignerContextMenuIntegration` unsubscribes `Opened` / `Closed`, detaches WebView2 right-click capture, and clears attached-view tracking.
+
+## Core injection pattern
+
+### 1. Attach once per Form Designer view
+
+`TryAttachFormDesignerContextMenu` guards with `_formDesignerContextMenuAttachedViews`, finds the menu via reflection, then subscribes:
+
+```csharp
+contextMenu.Opened += openedHandler;
+contextMenu.Closed += closedHandler;
+```
+
+The `Opened` handler typically calls a dedicated method (for example `OnFormDesignerContextMenuOpenedForDevTools`) that removes stale injected items, evaluates selection state, creates `MenuItem` instances, and inserts them at a stable index.
+
+The `Closed` handler removes injected items and detaches click handlers.
+
+### 2. Tag injected items for idempotent cleanup
+
+Every injected item carries a unique `Tag` string or `Tuple<string, …>` so `Closed` can find and remove Toolkit-owned entries without touching DriveWorks menu items.
+
+Examples from the shipping code:
+
+- `InjectedInspectMenuTag` — `"AutexToolkit.InspectMenuItem"`
+- `InjectedCreateMetaclassCommandTag` — `"AutexToolkit.CreateMetaclassMenuItem"` (stored as `Tuple` Item1)
+- `InjectedAddMetaclassTag` — `"AutexToolkit.AddMetaclassMenuItem"`
+
+Always remove handlers before removing items from `contextMenu.Items`.
+
+### 3. Route instance handlers through static routers
+
+WPF event handlers need a stable delegate target. Toolkit uses static routers that forward to `s_instance`:
+
+```csharp
+private static void OnFormDesignerCreateMetaclassMenuClickStaticRouter(object sender, RoutedEventArgs e) {
+    var plugin = s_instance;
+    if (plugin != null)
+        plugin.CreateMetaClassFromSelectedItem(sender, e);
+}
+```
+
+This avoids capturing the plugin instance in a delegate that outlives disposal.
+
+### 4. Read selection from `ISelectionSite`
+
+Form Designer features gate on the active view selection:
+
+- **Single control** (`TryGetSingleSelectedFormDesignerControl`): exactly one `ControlBase` that is not the root `DriveWorks.Forms.Form`. Used by **Create Metaclass** and Convert.
+- **One or more controls** (`TryGetSelectedFormDesignerControls`): all selected non-root controls. Used by **Add Metaclass**.
+
+Disable or relabel menu headers when prerequisites fail, for example `"Create Metaclass (select one control)"`.
+
+### 5. Respect WebView2 airspace
+
+Do not subscribe to `CoreWebView2` or run heavy WebView work synchronously inside `ContextMenu.Opened`. Toolkit defers WebView resolve and `ContextMenuRequested` capture to `DispatcherPriority.Background` or `ApplicationIdle` so the WPF context menu can open without airspace conflicts.
+
+Inspect resolves the WebView on menu open but runs CDP work only on click (`PrepareAndInjectFormDesignerInspectMenu` documents this constraint).
+
+## Step-by-step: add a new menu item
+
+### 1. Choose a partial-class home
+
+Add logic to an existing Form Designer partial when it fits the same concern, or add a new `ToolkitPlugin.FormDesigner*.cs` partial if the feature is self-contained (follow the Add Metaclass split).
+
+### 2. Define tag constants
+
+```csharp
+private const string InjectedMyFeatureTag = "AutexToolkit.MyFeatureMenuItem";
+```
+
+### 3. Inject on menu open
+
+In your `Opened` handler (or a method it calls):
+
+1. Call a `RemoveInjectedMyFeatureMenuItems(contextMenu)` guard first.
+2. Evaluate selection and Project state.
+3. Create the `MenuItem` with `Tag`, `Header`, `IsEnabled`, and a static-router `Click` handler.
+4. Insert at a stable position (Inspect uses index `0`; Create Metaclass uses index `2`; Add Metaclass inserts after Create Metaclass).
+
+### 4. Remove on menu close
+
+Mirror the Add Metaclass / Inspect pattern: walk `contextMenu.Items` from the end, match `Tag`, unsubscribe `Click`, then `RemoveAt`.
+
+### 5. Implement the click handler
+
+Typical flow:
+
+1. Validate `sender` is your injected `MenuItem` and `Tag` matches.
+2. Re-read `ISelectionSite` on click (selection may have changed since open).
+3. Resolve `DriveWorksInterface.GetActiveProject()` and guard `project.IsOpen`.
+4. Open a WPF window, run a transaction, or call a `Core` helper.
+5. Log failures with `LogPluginError` and Serilog boundaries.
+
+### 6. Build and verify
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+Open DriveWorks Administrator, open a **Project**, open **Form Designer**, right-click a control, and confirm the item appears once per open, enables/disables correctly, and cleans up after the menu closes.
+
+## Existing examples
+
+### Inspect
+
+**Files:** `ToolkitPlugin.FormDesignerInspectCdp.cs`, attach helpers in `ToolkitPlugin.FormDesignerContextMenu.cs`.
+
+**Menu:** `Inspect` at the top of the context menu (with a tagged separator below it).
+
+**Enablement:** enabled when Toolkit resolves the Form Designer `WebView2`, or when it can invoke the host's reflective `WebViewDebugInspectCommand_Executed` fallback.
+
+**Click behavior:** uses Chrome DevTools Protocol against the designer WebView to inspect the element under the last right-click location. Toolkit captures coordinates from:
+
+- `CoreWebView2.ContextMenuRequested` (preferred), and
+- `PreviewMouseRightButtonDown` on the WebView (fallback).
+
+**User-facing docs:** [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools) (Inspect section).
+
+### Create Metaclass
+
+**Files:** `ToolkitPlugin.FormDesignerContextMenu.cs`, UI in `Autex Toolkit/DWPlugin/FormDesigner/CreateMetaclassWindow.cs` and `WebAssets/CreateMetaclass/`.
+
+**Menu:** `Create Metaclass` inserted at index `2`.
+
+**Enablement:** exactly one selected non-root form control; disabled with `"Create Metaclass (select one control)"` otherwise.
+
+**Click behavior:** opens `CreateMetaclassWindow` for the selected control, proposes CSS from control properties, and writes accepted blocks to `ProjectStyles.css` under the Project base directory.
+
+**Tag payload:** `Tuple.Create(InjectedCreateMetaclassCommandTag, controlName)` captures the control name at menu open for diagnostics; click re-validates live selection.
+
+**User-facing docs:** [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass).
+
+### Add Metaclass
+
+**Files:** `ToolkitPlugin.FormDesignerAddMetaclassMenu.cs`, shared picker `MetaclassWebPickerWindow`, writes via `FormControlMetadataMutator.AddMetaclassToken`.
+
+**Menu:** `Add Metaclass` submenu inserted immediately after **Create Metaclass**.
+
+**Enablement:** one or more selected controls, open Project with resolvable base directory, and at least one metaclass token parsed from `ProjectStyles.css`. Disabled headers explain missing selection or tokens.
+
+**Structure:**
+
+- `Pick metaclass...` opens `MetaclassWebPickerWindow` for a searchable token list.
+- When tokens exist, grouped flyout submenus (by CSS `@group` / `@subgroup` metadata) offer one-click apply.
+- Leaf items carry `Tuple.Create(InjectedAddMetaclassLeafTag, token)`.
+
+**Click behavior:** `ApplyMetaclassTokenToSelectedControls` creates Project transactions through `FormControlMetadataMutator.AddMetaclassToken` for each selected control and saves on success.
+
+<Warning>
+Add Metaclass mutates control **Metadata** through supported transactions. Create Metaclass writes CSS to disk. Keep write paths separate.
+</Warning>
+
+## Under the hood (DriveWorks internals)
+
+Toolkit relies on undocumented Administrator types:
+
+- **`DesignerContextMenu`** — WPF `ContextMenu` on the Form Designer host; found by reflection on fields or properties named `DesignerContextMenu`.
+- **`ConvertMenuItem`** — optional existing submenu Toolkit extends with convertible target types.
+- **`ISelectionSite.SelectedItems`** — current designer selection; entries are `ControlBase` instances.
+- **WebView2 host graph** — internal Web Form Designer surface; resolved through conservative tree walks (`TryGetWebFormDesignerWebViewConservative`, `FindObjectWithDesignerContextMenu`).
+
+Because these are internal, menu placement and host type names can change between DriveWorks versions. Tag-based inject/remove and guarded reflection contain the drift risk.
+
+## Related
+
+- [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools) — operator guide for Convert, Inspect, and Create Metaclass
+- [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass) — metaclass workflow and `ProjectStyles.css` conventions
+- [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views) — Toolkit window patterns (`CreateMetaclassWindow`, pickers)
+- [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) — embedded WebAssets and WebView2 hosting
+- [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)
+- [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

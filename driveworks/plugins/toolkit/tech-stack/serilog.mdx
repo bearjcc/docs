@@ -1,0 +1,83 @@
+---
+title: Serilog
+sidebarTitle: What it is
+description: Structured logging library for the Autex Toolkit plugin; powers ToolkitLog for machine-readable diagnostics and triage.
+---
+
+
+**Serilog** is the structured logging stack for .NET used by Autex Toolkit. It gives maintainers compact, searchable log files and consistent exception detail when debugging inside **DriveWorks Administrator** and related hosts.
+
+## What it is
+
+[Serilog](https://serilog.net/) is a structured logging library for .NET. Events carry named properties (not plain strings), which makes filtering, correlation, and post-mortem triage practical without attaching a debugger.
+
+Toolkit wraps Serilog behind **`ToolkitLog`** so feature code logs through one pipeline instead of ad hoc `Debug.WriteLine` or host-specific APIs.
+
+## Install
+
+Packages are declared in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
+
+| Package | Version |
+| --- | --- |
+| Serilog | 4.3.1 |
+| Serilog.Exceptions | 8.4.0 |
+| Serilog.Formatting.Compact | 3.0.0 |
+| Serilog.Sinks.Debug | 3.0.0 |
+| Serilog.Sinks.File | 7.0.0 |
+
+Maintainers restore and build with **`Build.ps1`** (or **`Build-Release.ps1`** for production). End users do not install NuGet packages; they receive the embedded dependency inside **`Autex Toolkit.dll`** (via Costura.Fody).
+
+<Info>
+Do not run `dotnet restore` or `dotnet build` on the plugin `.csproj` directly. Use the project build scripts.
+</Info>
+
+## Official links
+
+- [Serilog — structured logging for .NET](https://serilog.net/)
+- [Serilog on NuGet](https://www.nuget.org/packages/Serilog/)
+- [Serilog.Sinks.File on NuGet](https://www.nuget.org/packages/Serilog.Sinks.File/)
+- [Serilog.Formatting.Compact on NuGet](https://www.nuget.org/packages/Serilog.Formatting.Compact/)
+
+## Usage in Autex Toolkit
+
+Implementation lives in **`Autex Toolkit/DWPlugin/Infrastructure/Diagnostics/ToolkitLog.cs`**.
+
+### Startup and shutdown
+
+`ToolkitLog.Initialize()` runs early in plugin startup (`ToolkitPlugin.Initialize` → `BeginPluginHost`). `Shutdown()` flushes and closes the pipeline on unload.
+
+### Sinks and format
+
+When logging is enabled, ToolkitLog configures Serilog to:
+
+- Write **compact JSON lines** (`RenderedCompactJsonFormatter`) to rolling daily files under `%LOCALAPPDATA%\AutexToolkit\Logs` (pattern `autex-toolkit-.jsonl`, 14-day retention).
+- Enrich events with exception details (`Serilog.Exceptions`), process/thread IDs, machine name, and assembly version.
+- Mirror **`System.Diagnostics.Debug`** and **`Trace`** output into the same pipeline via trace listeners (useful when attached to Visual Studio).
+
+Default enablement is **Debug builds on**; Release builds stay quiet unless logging is explicitly turned on (see environment variables documented in the source).
+
+### Area-based loggers
+
+Call sites use **`ToolkitLog.ForArea("AreaName")`** or the convenience methods `Debug`, `Information`, `Warning`, and `Error` with an area string. Areas group logs by feature (for example `Bootstrap`, `Runtime`, script or WebView surfaces).
+
+```csharp
+ToolkitLog.Error("WebView", ex, "Navigation failed for {Url}", url);
+```
+
+<Info>
+Feature code should call **`ToolkitLog`**, not Serilog types directly. See `Documentation/Toolkit/best-practices.md` (logging and exception boundaries).
+</Info>
+
+Runtime exception hooks (unhandled, dispatcher, unobserved task, optional first-chance) also log through `ToolkitLog` under areas such as `Runtime`.
+
+## Why we picked it
+
+- **Workspace policy:** `.cursor/rules/Directives.mdc` requires Serilog for code traceability; log meaningful events at boundaries and errors, avoid hot-path spam.
+- **Rejected alternative:** [Microsoft.Extensions.Logging](https://www.nuget.org/packages/Microsoft.Extensions.Logging/) is deferred/not recommended (`Documentation/Packages/deferred-not-recommended.md`) — DriveWorks hosts have no ASP.NET-style composition root, and **`ToolkitLog`** already centralizes Serilog.
+- **Host-free structured logs:** JSONL files and property enrichment support triage and test-script diagnostics without depending on a specific logging host or UI.
+
+## Related
+
+- [Autex Toolkit tech stack](/driveworks/plugins/toolkit/tech-stack)
+- [Core Services](/driveworks/plugins/toolkit/architecture/core-services) — includes `ToolkitLog` and diagnostics infrastructure
+- [Plugin entry](/driveworks/plugins/toolkit/architecture/plugin-entry) — startup path that initializes logging

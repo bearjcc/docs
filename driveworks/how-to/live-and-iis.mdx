@@ -1,0 +1,51 @@
+---
+title: Live and IIS
+sidebarTitle: IIS Websites
+description: Procedures for DriveWorks Live web delivery and IIS-hosted integration theme configuration.
+---
+
+
+## IIS Websites
+
+Current websites:
+
+- `AutexGlobalLive` (front end)
+- `AutexGlobalDev` (front end)
+- `AutexDriveWorksMain` (backend integration theme)
+
+After changes:
+
+1. Verify `https` bindings and SSL certificates.
+2. Verify static file root paths.
+3. Restart website/application pool if required.
+4. Validate with hard refresh (`Ctrl+F5`) in browser.
+
+## Static File Locations
+
+- Dev: `C:\DriveWorks\StaticFiles\Autex\AutexGlobalDev`
+- Live: `C:\DriveWorks\StaticFiles\Autex\AutexGlobalLive`
+- Main: `C:\ProgramData\DriveWorks\22\Live\Themes\Integration`
+
+## Configuration Files
+
+### Backend
+
+- `DriveWorksConfigUser.xml` in integration theme folder
+- Defines Group and backend connection context
+
+### Frontend
+
+- `config.js` in each static site folder
+- Defines DriveApp aliases and front-end runtime settings
+
+## Server Topology Notes
+
+- Administrator and Live are hosted on `AZDWLIVE01`.
+- Autopilot runs on a server with SOLIDWORKS installed (`AZDWAPP01` in current setup).
+- Separate hosts reduce operational risk and simplify troubleshooting boundaries.
+
+## Troubleshooting Entry Points
+
+- If login page loads but content does not, verify backend alias mapping.
+- If users report stale assets, use browser hard refresh and confirm deployed static file timestamps.
+- If creating a new test environment, duplicate static site folder and update both backend and frontend config files consistently.

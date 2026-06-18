@@ -1,0 +1,80 @@
+---
+title: Administrator
+sidebarTitle: DriveWorks Administrator Scope
+description: DriveWorks Administrator procedures for project configuration, forms, macros, and table updates.
+---
+
+
+## DriveWorks Administrator Scope
+
+This page focuses on project-level work in DriveWorks Administrator.
+
+- Group copy and package operations are documented in [Data Management](/driveworks/how-to/data-management).
+- Live web and IIS operations are documented in [Live and IIS](/driveworks/how-to/live-and-iis).
+- Access setup is documented in [Permissions](/driveworks/how-to/permissions).
+- License operations are documented in [Licensing](/driveworks/how-to/licensing).
+
+## Push DEV Changes to LIVE
+
+Before pushing:
+
+1. Reset form defaults in all changed projects.
+2. Validate teams and user permissions.
+3. Save a backup of the current LIVE Group.
+4. Close open projects in DriveWorks Administrator.
+
+Then follow the Group copy procedure in [Data Management](/driveworks/how-to/data-management#copy-group-dev-to-live).
+
+## Form and Rule Maintenance
+
+### Form Control Image Size
+
+Use image assets near 2x intended display size for quality/performance balance.
+
+### Form Control Return Values
+
+1. Create a display table (for example `XXXTableDisplay`).
+2. Export document data to that table.
+3. Bind form controls to returned values.
+
+### Add New Data Field
+
+To add a new field (for example an address line):
+
+1. Add the form control in the project.
+2. Add a corresponding column in the calculation table.
+3. Add the matching column in SQL with appropriate data type.
+
+## Group Table Updates
+
+For pricing/material updates:
+
+1. Update the region spreadsheet source.
+2. Refresh macro-generated table output.
+3. Copy final values into Group tables in Stage 1.
+
+## Project-Level Macro Reuse
+
+When copying macro behavior between projects:
+
+1. Open source and target projects in separate sessions.
+2. Copy required macros, then related variables/constants.
+3. Recreate required Specification Flow operations/triggers.
+4. Test in DriveWorks Live and validate SQL outcomes.
+
+## Quality and Diagnostics
+
+### Throw Error on Colour TBC
+
+Use a boolean/table flag to:
+
+- disable draft generation controls
+- notify users that unresolved colour selections remain
+
+### Change Unit System
+
+Generation tasks can change drawing unit systems. Validate positional properties against the unit system at task execution time.
+
+### Verbose Specification Explorer Logging
+
+Enable project logging through project settings when deeper diagnostics are needed.

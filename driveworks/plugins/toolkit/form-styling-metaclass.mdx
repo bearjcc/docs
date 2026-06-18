@@ -1,0 +1,109 @@
+---
+title: Autex Toolkit — Form styling and metaclasses
+sidebarTitle: Form styling and metaclasses
+description: Using Autex Toolkit metaclass tools to move DriveWorks User Form styling toward ProjectStyles.css.
+---
+
+
+## Form styling and metaclasses
+
+**Metaclasses** are CSS-style metadata tokens used by Autex Toolkit to style DriveWorks **User Form** controls through `ProjectStyles.css`. The Toolkit tools help implementers create tokens from existing control styling and reuse known tokens when editing a form control **Metadata** Rule.
+
+This is a migration path away from one-off per-control styling and toward reusable styling names that can be reviewed in one CSS file.
+
+## When to use
+
+Use metaclasses when:
+
+- Several controls need the same visual treatment.
+- A styling choice should be named and reused, such as `button-primary`, `panel-warning`, or a grid/layout token.
+- You want to move styling decisions into `ProjectStyles.css` instead of repeating control property values.
+- You need to tag controls with an existing metaclass token without opening Rule Builder (**Add Metaclass** in Form Designer).
+- You are working on DriveWorks Live / web-style form presentation where metadata tokens drive CSS selectors.
+
+Avoid creating a metaclass for a one-off control unless the style is likely to be reused.
+
+## ProjectStyles.css
+
+Toolkit looks for:
+
+```text
+ProjectBaseDirectory\ProjectStyles.css
+```
+
+The metaclass picker reads CSS selectors such as:
+
+```css
+[data-metadata~="button-primary"] {
+  background-color: var(--brand-primary);
+}
+```
+
+The picker can group metaclasses from CSS `#region` comments and can read optional comments such as `@description`, `@group`, `@subgroup`, and `@compatible-controls` where they exist.
+
+## Create a metaclass from a control
+
+1. Open the **Project** in DriveWorks Administrator.
+2. Open **Form Designer**.
+3. Select exactly one form control.
+4. Right-click the control and choose **Create Metaclass**.
+5. Review the proposed CSS properties and any existing metadata tokens found for the control.
+6. Enter a metaclass name, group, subgroup, and optional description.
+7. Apply the change to write a new block into `ProjectStyles.css`.
+
+Toolkit refuses a metaclass name that already exists in `ProjectStyles.css`.
+
+<Warning>
+This writes to `ProjectStyles.css`, not to a DriveWorks Rule. Review the CSS file and test the User Form after creating or changing metaclasses.
+</Warning>
+
+## Apply a metaclass from Form Designer
+
+Use this when the CSS token already exists and you want it on one or more controls without opening Rule Builder.
+
+1. Open the **Project** in DriveWorks Administrator.
+2. Open **Form Designer**.
+3. Select one or more form controls (not the root form).
+4. Right-click and open **Add Metaclass**.
+5. Choose a token from a group flyout, or choose **Pick metaclass...** for the full searchable list.
+6. Toolkit appends the token to each selected control's **Metadata** and saves the Project.
+
+For static **Metadata**, tokens are whitespace-separated. For rule-driven **Metadata**, Toolkit merges the token into the existing formula (for example appending with `& "token"` when needed). Tokens already present on a control are not duplicated.
+
+If **Add Metaclass** is disabled, check that controls are selected, the Project is open, and `ProjectStyles.css` contains tokens Toolkit can parse. See [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools).
+
+## Use a metaclass in Rule Builder
+
+When Rule Builder is editing a form control **Metadata** property, Toolkit can show a **Metaclass** button.
+
+1. Open the control's **Metadata** property in Rule Builder.
+2. Choose **Metaclass**.
+3. Pick a token from `ProjectStyles.css`.
+4. Toolkit inserts the selected token into the Rule Builder editor.
+
+If no tokens are found, Toolkit shows the expected `ProjectStyles.css` path.
+
+## Relationship to DriveWorks styling
+
+DriveWorks form control properties still exist and still matter. The metaclass approach gives you a shared styling vocabulary for web-facing presentation, while DriveWorks control properties continue to define behaviour, layout, input values, and Rule-driven state.
+
+Good practice:
+
+- Keep token names about intent, not one exact visual value.
+- Prefer a small set of reusable tokens.
+- Keep CSS comments useful for implementers choosing from the picker.
+- Test the form where users will see it, especially in DriveWorks Live.
+
+## Limits
+
+- **Create Metaclass** needs exactly one selected form control.
+- **Add Metaclass** needs at least one selected form control and tokens in `ProjectStyles.css`.
+- The feature depends on a resolvable Project base directory.
+- The picker only shows tokens it can parse from `ProjectStyles.css`.
+- CSS changes are outside DriveWorks transactions; use source control or backup before large styling changes.
+
+## Related
+
+- [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools)
+- [Getting started](/driveworks/plugins/toolkit/getting-started)
+- [Toolkit hub](/driveworks/plugins/toolkit/index)

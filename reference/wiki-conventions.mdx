@@ -1,0 +1,74 @@
+---
+title: Wiki Conventions
+sidebarTitle: Page Metadata
+description: Authoring conventions for organizing pages, links, headings, and frontmatter in this Wiki.js repository.
+---
+
+
+## Page Metadata
+
+Every page should start with YAML frontmatter:
+
+- `title`
+- `description`
+- `published: true`
+- `date` (ISO 8601)
+- `tags:` comma-separated plain string (e.g. `DriveWorks, Administrator, Autex`); not a YAML `[...]` list
+- `editor: markdown`
+- `dateCreated` (ISO 8601)
+
+## Folder Routing
+
+Wiki.js opens folder indexes as sibling files:
+
+- `/driveworks/` resolves to `/driveworks.md`
+- `/driveworks/how-to/` resolves to `/driveworks/how-to.md`
+
+Keep one sibling index page for every folder.
+
+## Headings
+
+- YAML `title` is the page title metadata.
+- Multiple `#` sections are allowed and preferred for primary sections.
+- Use `##` and `###` under each primary section as needed.
+
+## Links and Paths
+
+- Use absolute internal links without file extensions, for example `/driveworks/how-to/sql`.
+- Use `/images/wiki/...` for wiki-hosted images.
+- Prefer descriptive link text.
+
+## Wiki.js Syntax
+
+- Use tabsets for preview/source or alternative views.
+- Use styled blockquotes (`{.is-info}`, `{.is-warning}`, `{.is-danger}`) for callouts.
+- Use `<details>` for archived or optional sections.
+
+See [Markdown Tips](/reference/markdown-tips) for examples.
+
+## Custom function examples
+
+Every **custom function** documented for **Rule Builder** should include a copy-pasteable example in a fenced block tagged `driveworks`.
+
+- Place the example after the function’s parameter and output description. On plugin reference pages such as [AutexCustom](/driveworks/plugins/autexcustom), use `### Example` under each function `##` heading. On pages that already use `**Example:**`, keep that label but use `driveworks` fences.
+- One primary call per section; add a second fenced line only when a second overload is meaningfully different (for example optional `roundTo` or `settingsTable`).
+- Prefer realistic DriveWorks references (`DWLookup…`, `DWVariable…`, `DWConstant…`) where a table or project symbol is required; use literals for strings and numbers when that is clearer.
+- Format calls compactly for Rules (no spaces after commas), for example `AutexSlabPackingImage(DwLookupNested,1,DWLookupSlabPackingSettings,TRUE)`.
+- Do not add UDF example blocks for **Specification Flow** tasks, **ProjectDocument** types, or task-only sections.
+
+## DriveWorks Terminology
+
+When documenting DriveWorks content, prefer canonical terms:
+
+- DriveWorks Group
+- Project
+- Specification
+- Specification Flow
+- DriveWorks Administrator
+- DriveWorks Data Management Tool
+- DriveWorks Autopilot
+- DriveWorks Live
+
+## External References
+
+- [Wiki.js Docs](https://docs.requarks.io/)

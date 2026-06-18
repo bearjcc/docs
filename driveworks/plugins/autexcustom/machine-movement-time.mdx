@@ -1,0 +1,143 @@
+---
+title: AutexMachineMovementTime
+sidebarTitle: AutexMachineMovementTime
+description: Reference for the AutexMachineMovementTime custom function and task, including syntax, parameter rules, error behavior, and kinematic assumptions.
+---
+
+
+
+`AutexMachineMovementTime` returns machine movement time in seconds using a trapezoidal velocity profile (acceleration, optional cruise, deceleration) plus dwell at the start and end of each move. Use it when you need consistent cycle-time estimates in Rule Builder or a Specification Flow task.
+
+The function is fast, deterministic, and explicit about assumptions. It models ideal acceleration changes with no jerk curve and treats each operation independently.
+
+## Syntax and why to use it
+
+Use this syntax in Rule Builder:
+
+```text
+AutexMachineMovementTime(distance,maxVelocity,acceleration,dwellTime,quantity)
+```
+
+Example:
+
+```text
+AutexMachineMovementTime(1000,500,100,0.5,2)
+```
+
+Use this function when:
+
+- You need one formula for repeated move-time estimates.
+- You want dwell and quantity included automatically.
+- You want matching behavior between Rule Builder and the `Autex Machine Movement Time` task.
+
+## Parameters and output
+
+### Parameters
+
+- `distance` (Number): Travel distance per operation. Must be zero or greater.
+- `maxVelocity` (Number): Peak velocity cap. Must be greater than zero.
+- `acceleration` (Number): Acceleration rate. Must be greater than zero.
+- `dwellTime` (Number): Dwell time added at both start and end of each operation. Must be zero or greater.
+- `quantity` (Number): Number of operations to apply. Must be greater than zero.
+
+Use consistent units:
+
+- `distance` in a distance unit (for example mm)
+- `maxVelocity` in distance per second (for example mm/s)
+- `acceleration` in distance per second squared (for example mm/s^2)
+- `dwellTime` in seconds
+
+### Output
+
+- Returns total time in seconds.
+- Per operation: \(t_\{\text\{op\}\} = t_\{\text\{motion\}\} + 2 t_\{\text\{dwell\}\}\).
+- Final result: \(t_\{\text\{total\}\} = n \cdot t_\{\text\{op\}\}\).
+
+## Errors and validation behavior
+
+Function and task inputs are validated before calculation.
+
+Validation rules:
+
+- `distance < 0`: invalid
+- `maxVelocity <= 0`: invalid
+- `acceleration <= 0`: invalid
+- `dwellTime < 0`: invalid
+- `quantity <= 0`: invalid
+
+Error behavior:
+
+- In Rule Builder, the function returns `#ERROR!` with a message.
+- In Specification Flow, the task sets failed state and returns `0` on output.
+
+## Derivation and model
+
+Symbols: distance \(d\), max velocity \(v_\{\max\}\), acceleration \(a\), deceleration \(a_d\) (the public function sets \(a_d = a\)), dwell \(t_\{\text\{dwell\}\}\), quantity \(n\).
+
+For one move, velocity rises from zero, may cruise at \(v_\{\max\}\), then falls to zero. Two cases apply.
+
+### Case 1: Full trapezoid (reaches max velocity)
+
+Distance used while accelerating to \(v_\{\max\}\):
+
+$$
+s_a = \frac\{v_\{\max\}^2\}\{2a\}
+$$
+
+Distance used while decelerating from \(v_\{\max\}\):
+
+$$
+s_d = \frac\{v_\{\max\}^2\}\{2 a_d\}
+$$
+
+When \(d \ge s_a + s_d\), the move reaches \(v_\{\max\}\) and includes a cruise segment:
+
+$$
+t_a = \frac\{v_\{\max\}\}\{a\}, \qquad
+t_d = \frac\{v_\{\max\}\}\{a_d\}, \qquad
+s_c = d - s_a - s_d, \qquad
+t_c = \frac\{s_c\}\{v_\{\max\}\}
+$$
+
+Motion time:
+
+$$
+t_\{\text\{motion\}\} = t_a + t_c + t_d
+$$
+
+### Case 2: Triangular profile (cannot reach max velocity)
+
+When \(d < s_a + s_d\), peak velocity \(v_p < v_\{\max\}\) is found from distance:
+
+$$
+v_p = \sqrt\{\frac\{d\}\{\dfrac\{1\}\{2a\} + \dfrac\{1\}\{2 a_d\}\}\}
+$$
+
+Motion time:
+
+$$
+t_\{\text\{motion\}\} = \frac\{v_p\}\{a\} + \frac\{v_p\}\{a_d\}
+$$
+
+### Total for one operation
+
+$$
+t_\{\text\{op\}\} = t_\{\text\{motion\}\} + 2 t_\{\text\{dwell\}\}
+$$
+
+Total for all operations:
+
+$$
+t_\{\text\{total\}\} = n \cdot t_\{\text\{op\}\}
+$$
+
+## Limitations and assumptions
+
+- Idealized kinematics: no jerk-limited S-curve behavior.
+- Instant transitions between acceleration phases.
+- Public function path uses symmetric acceleration and deceleration values.
+- The function models one-axis move timing; coordinated XY feed splitting is handled by internal cut-estimate helpers, not this interface.
+
+## Related
+
+- [AutexCustom plugin reference](/driveworks/plugins/autexcustom)

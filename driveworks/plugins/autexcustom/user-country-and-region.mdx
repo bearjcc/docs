@@ -1,0 +1,143 @@
+---
+title: User country and region (AutexCustom)
+sidebarTitle: User country and region
+description: How AutexCustom resolves NZ, AU, US, and UK from DriveWorks team membership, DWConstantLoginGroup, and related custom functions and tasks.
+---
+
+
+
+AutexCustom exposes country and state helpers for **Rule Builder** and **Specification Flow**. They answer "which Autex region is this user in?" for localization, unit conversion, CPQ routing, and related **Rules**.
+
+Region codes are two-letter strings: **NZ**, **AU**, **US**, **UK**. Resolution uses **Group** security team membership first. Some paths also read the **Project Constant** `DWConstantLoginGroup`.
+
+## AutexGetUserCountry
+
+`AutexGetUserCountry` returns the current user's country code.
+
+### Syntax
+
+```text
+AutexGetUserCountry()
+```
+
+### Output
+
+- **Type:** String (`NZ`, `AU`, `US`, or `UK`)
+- On unexpected error in the extender, returns `"NZ"`.
+
+### Specification Flow task
+
+- **Picker name:** **Autex User Country**
+- **Inputs:** none (uses **Specification** context)
+- **Outputs:** **Country** (String)
+
+## AutexGetUserState
+
+`AutexGetUserState` returns a state or region code for a given country. Today only **Australia** is implemented.
+
+### Syntax
+
+```text
+AutexGetUserState("AU")
+```
+
+### Output
+
+- **Type:** String
+- For `country = "AU"`, scans the **current user's** team names for tokens: **WA**, **NSW**, **QLD**, **VIC**, **TAS**, **SA**, **ACT**, **NT**
+- For other countries, returns an empty string from this **custom function**
+
+### Specification Flow task
+
+- **Picker name:** **Autex Get User State**
+- **Inputs:** none
+- **Outputs:** **State** (String)
+
+The task resolves country via `GetUserCountry` on the **Specification** context, then state from teams. It does not take a country argument (unlike the **custom function** overload).
+
+## How country is resolved
+
+Resolution order for `GetUserCountry` (used by `AutexGetUserCountry`, the **Autex User Country** task, **Autex Get User State**, `AutexGetLocalised`, and several unit-conversion helpers):
+
+1. **Team membership (always first)** — infer region from the current user's DriveWorks teams (see below).
+2. **`DWConstantLoginGroup` (Administrator only)** — if teams yield no region **and** the host is **DriveWorks Administrator**, read the **Project Constant** `DWConstantLoginGroup`. Value must be a known region code (NZ, AU, US, UK).
+3. **Default** — **NZ**
+
+> **Info**
+> In **DriveWorks Live**, specifications, and macros, Autex does **not** rely on `DWConstantLoginGroup` for country when team lookup fails. Configure team membership for runtime users.
+
+### Team lookup (shared logic)
+
+`TimezoneHelper` in AutexCustom loads teams from DriveWorks security:
+
+| Context                     | API                                                                          |
+| --------------------------- | ---------------------------------------------------------------------------- |
+| Current user                | `Group.CurrentUserTeams`; if empty, `GetTeamsForUser(CurrentUser.LoginName)` |
+| Named user (other features) | `Security.TryGetUser` + `GetTeamsForUser`                                    |
+
+Results are cached per **Group** (and per user for named lookups) for the host process lifetime.
+
+#### Inferring region from team names
+
+For each team name:
+
+1. **Prefix match** on **NZ**, **AU**, **US**, **UK** (case-insensitive), checked in priority order NZ → AU → US → UK.
+2. If no prefix match, **word-boundary** regex for those codes anywhere in the name.
+
+If the user belongs to teams implying more than one region, the same priority applies: **NZ**, then **AU**, then **US**, then **UK**.
+
+Examples:
+
+| Team name        | Inferred region                              |
+| ---------------- | -------------------------------------------- |
+| `NZ Sales`       | NZ                                           |
+| `AU-Engineering` | AU                                           |
+| `Support UK`     | UK                                           |
+| `Random Team`    | (none; falls through to constant or default) |
+
+## DWConstantLoginGroup
+
+- **Constant name in Rules:** `DWConstantLoginGroup`
+- **Purpose:** Administrator override when testing **Projects** without full team setup, and explicit region for some CPQ paths
+- **Valid values:** `NZ`, `AU`, `US`, `UK` (other values are ignored)
+
+#### Where the constant is used
+
+| API / feature                                  | Constant behavior                                                                                         |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `AutexGetUserCountry` / **Autex User Country** | Second choice after teams; **Administrator only**                                                         |
+| `GetCountryForCpqGroupTables`                  | **Constant first**, then `GetUserCountry` (matches `DWVariableComponentPricingLookupTable` style routing) |
+| `AutexNowLocal`                                | **Not used** — teams only ([Now Local reference](/driveworks/plugins/autexcustom/now-local))              |
+
+## Region to Windows time zone
+
+Country codes map to Windows time zones for [AutexNowLocal](/driveworks/plugins/autexcustom/now-local) and internal helpers:
+
+| Region | Windows time zone ID      |
+| ------ | ------------------------- |
+| NZ     | New Zealand Standard Time |
+| AU     | AUS Eastern Standard Time |
+| US     | Pacific Standard Time     |
+| UK     | GMT Standard Time         |
+
+This is a coarse mapping (one zone per country), not per-state US or AU zones.
+
+## Related custom functions
+
+These use the same team-based country resolution (via `GetUserCountry` or `TimezoneHelper`):
+
+- **`AutexGetLocalised(key)`** / **`AutexGetLocalised(key, region)`** — **Group Table** `TextStrings` / `DWGroupTableTextStrings`
+- **`AutexConvertLinearToMM`** / **`AutexConvertMMToLinear`** — US users treated as inches; others as mm
+- **`AutexIsUserIn`** / **`AutexIsCurrentUserIn`** — team membership checks (country code = team name prefix; otherwise substring on team name)
+
+## Limitations
+
+- Team-based inference depends on naming conventions in **Group** security teams.
+- **Live** and service hosts may not expose `CurrentUserTeams`; fallback uses `GetTeamsForUser` where possible.
+- `AutexGetUserState` only extracts Australian states from team names, not from a **Constant**.
+- Process-level caches may delay visibility of team changes until the DriveWorks host restarts.
+
+## Related
+
+- [AutexNowLocal](/driveworks/plugins/autexcustom/now-local) — local date and time (teams only, no constant)
+- [AutexCustom plugin reference](/driveworks/plugins/autexcustom)

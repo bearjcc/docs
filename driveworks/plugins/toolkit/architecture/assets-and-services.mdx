@@ -1,0 +1,56 @@
+---
+title: "Assets & Services"
+sidebarTitle: "Assets & Services"
+description: Icon loading, semantic icon maps, theme resources, spelling dictionaries, CSV export, rule service, and other shared assets.
+---
+
+
+
+Icon loading, semantic icon maps, theme resources, spelling dictionaries, CSV export, rule service, and other shared assets. This page lists 15 indexed components from the Understand-Anything graph for that layer.
+
+## Overview
+
+Icon loading, semantic icon maps, theme resources, spelling dictionaries, CSV export, rule service, and other shared assets.
+
+<Info>
+Generated from `Autex Toolkit/.understand-anything/knowledge-graph.json` (layer `layer:assets-and-services`).
+</Info>
+
+## Components
+
+| Name | Type | Source path | Summary |
+| --- | --- | --- | --- |
+| AcronymPrefixes.txt | document | `Autex Toolkit/DWPlugin/Resources/SpellingSeeds/AcronymPrefixes.txt` | List of leading acronym prefixes (SQL, DB, DW, DWG, DXF, UOM, BOM, PDF, CAD, ID, CPQ, SKU) used by PascalCase name validation to recognize composite acronym segments. |
+| CustomSpellingMappings.csv | document | `Autex Toolkit/DWPlugin/Resources/SpellingSeeds/CustomSpellingMappings.csv` | CSV mapping correct spellings to known typo variants (e.g. Tri->Triangle, Rect->Rectangle) used by the spell checker to suggest corrections for abbreviated PascalCase segments. |
+| CustomWords.txt | document | `Autex Toolkit/DWPlugin/Resources/SpellingSeeds/CustomWords.txt` | Custom dictionary of domain-specific words (product names, engineering/CAD terms, file extensions, technical acronyms) that the spell checker should accept. ALL-CAPS entries also serve as acronym prefixes for PascalCase validation. |
+| SemanticIconMap.json | config | `Autex Toolkit/DWPlugin/Assets/SemanticIconMap.json` | JSON mapping of semantic icon keys to ordered lists of PNG/SVG resource stems, defining icon resolution priority for the UI 3.0 design system. |
+| process_disabled_icons.py | file | `Autex Toolkit/DWPlugin/Assets/Icons/process_disabled_icons.py` | Python script that converts white pixels to transparency in icon PNGs, producing disabled-state icon variants for the toolbar. |
+| ToolkitIconLoader.cs | file | `Autex Toolkit/DWPlugin/Assets/ToolkitIconLoader.cs` | Static utility class that loads toolbar and script icons from embedded PNG/SVG resources, with semantic key resolution via ToolkitSemanticIconMap and data URI generation for WebView surfaces. |
+| ToolkitIconLoader.Wpf.cs | file | `Autex Toolkit/DWPlugin/Assets/ToolkitIconLoader.Wpf.cs` | WPF-specific icon loading methods providing BitmapImage and BitmapSource conversions from the shared ToolkitIconLoader resource system. |
+| ToolkitSemanticIconMap.cs | file | `Autex Toolkit/DWPlugin/Assets/ToolkitSemanticIconMap.cs` | Semantic icon resolution engine that maps abstract icon keys (e.g. 'play', 'source-branch') to ordered candidate resource stems loaded from SemanticIconMap.json, with validation and candidate inspection. |
+| ToolkitTheme.xaml | file | `Autex Toolkit/DWPlugin/Assets/ToolkitTheme.xaml` | WPF resource dictionary defining the Autex Toolkit theme with colors, brushes, fonts, and control styles aligned with the UI 3.0 design token system. |
+| en_GB.aff | file | `Autex Toolkit/DWPlugin/Resources/en_GB.aff` | Hunspell affix file for British English spelling dictionary. Defines affix rules, flag types, and compound patterns used by the spell checker. |
+| en_GB.dic | file | `Autex Toolkit/DWPlugin/Resources/en_GB.dic` | British English dictionary file used by the spelling checker. Contains 87k+ word entries for spell-check and suggestion lookups. |
+| CsvExportService.cs | file | `Autex Toolkit/DWPlugin/Services/CsvExportService.cs` | Static service for building CSV filenames and writing DataTables to CSV files in RFC 4180 format with UTF-8 BOM encoding. |
+| RuleService.cs | file | `Autex Toolkit/DWPlugin/Services/RuleService.cs` | Service for DriveWorks rule operations including formatting, parsing, and validation. |
+| ToolkitIconLoader | class | `Autex Toolkit/DWPlugin/Assets/ToolkitIconLoader.cs` | Static class providing icon loading from embedded resources with semantic key resolution, white transparency processing, and data URI generation for WebView2 surfaces. |
+| CsvExportService | class | `Autex Toolkit/DWPlugin/Services/CsvExportService.cs` | Static class providing CSV filename generation and DataTable-to-CSV writing with proper escaping and UTF-8 BOM. |
+
+## Key relationships
+
+Up to 6 internal edges (source, relationship, target), sorted deterministically.
+
+| Source | Relationship | Target |
+| --- | --- | --- |
+| file:DWPlugin/Assets/ToolkitIconLoader.cs | contains | class:DWPlugin/Assets/ToolkitIconLoader.cs:ToolkitIconLoader |
+| file:DWPlugin/Assets/ToolkitIconLoader.cs | depends_on | file:DWPlugin/Assets/ToolkitSemanticIconMap.cs |
+| file:DWPlugin/Assets/ToolkitSemanticIconMap.cs | depends_on | file:DWPlugin/Assets/SemanticIconMap.json |
+| file:DWPlugin/Resources/SpellingSeeds/AcronymPrefixes.txt | related | file:DWPlugin/Resources/SpellingSeeds/CustomWords.txt |
+| file:DWPlugin/Resources/SpellingSeeds/CustomSpellingMappings.csv | related | file:DWPlugin/Resources/SpellingSeeds/CustomWords.txt |
+| file:DWPlugin/Services/CsvExportService.cs | contains | class:DWPlugin/Services/CsvExportService.cs:CsvExportService |
+
+## Related
+
+- [Architecture index](/driveworks/plugins/toolkit/architecture)
+- [Autex Toolkit hub](/driveworks/plugins/toolkit)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

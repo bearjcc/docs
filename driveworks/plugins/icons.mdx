@@ -1,0 +1,177 @@
+---
+title: Icons (AutexIcons)
+sidebarTitle: Icons
+description: Custom functions that resolve embedded SVG/PNG icons to Base64 data URIs for picture-capable Rules, plus list and search helpers.
+---
+
+
+## Icons
+
+### Overview
+
+**AutexIcons** adds **custom functions** in **Rule Builder** so **Rules** can return ready-to-use **image data URIs** (`data:image/...;base64,...`) from icon packs shipped as **embedded resources** (logical layout `src\<pack>\<name>.svg` or `.png`). Use them on surfaces that accept an image from a string (for example **Picture Box** and similar controls). Optional **colour** tints **SVG** icons; **PNG** icons are returned unchanged when colour or template text is supplied. A small **progress bar** helper returns SVG the same way.
+
+### Where to find it
+
+In **Rule Builder**, open **Functions** and the category **`Autex Dynamic Icons`**.
+
+### Deploy and registration
+
+**Assembly:** `AutexIcons.dll`. **Class:** `Autex.Icons.AutexIconsExtender` (**Shared Project Extender**). Build output from **`Icons/Build.ps1`**. Exact DriveWorks host folder and registration steps for your version are **TBD** — treat like other **Shared Project Extender** DLLs for your environment.
+
+**SvgCompressor** (`Icons/SvgCompressor/`) is a separate **build-time** console tool; authors only need it if your pipeline compresses SVG before embedding.
+
+### Behavior
+
+- Pack and icon resolution is **case- and punctuation-insensitive**.
+- Many failures return a string starting with **`#ERROR!`** (missing pack or icon, invalid colour, and so on) rather than throwing, so check rule results when troubleshooting.
+- **`dynamicText`:** for icons named `*_Template`, replaces placeholder text; also supports numbered-icon compatibility (see parameter help in source `Icons/Icons.cs`).
+- **`AutexIconSearchAll`** is marked **`[Udf(false)]`** in source: it may **not** appear in the standard **Functions** list like the other entries. Confirm in **Rule Builder** before relying on it.
+
+### Functions at a glance
+
+| Function | Purpose |
+|----------|---------|
+| [AutexIcon](#autexicon) | Load an icon by pack and name as a data URI |
+| [AutexProgressBar](#autexprogressbar) | SVG progress bar as a data URI |
+| [AutexIconPacksList](#autexiconpackslist) | Pipe-delimited list of pack names |
+| [AutexIconsList](#autexiconslist) | Pipe-delimited list of icon names in one pack |
+| [AutexIconSearch](#autexiconsearch) | First icon matching a search string across all packs |
+| [AutexIconSearchAll](#autexiconsearchall) | All `Pack.Icon` matches as a pipe-delimited list (may be non-UDF) |
+
+### AutexIcon
+
+**Description:** Returns an SVG or PNG as a Base64 **data URI** from a pack and icon file stem. Pack and icon names are case- and punctuation-insensitive. Colour is optional for SVG (hex, named, RGB/RGBA, HSL/HSLA); leave blank or use overloads without colour to follow the **colour** overload path described in source.
+
+**Syntax:**
+
+```
+AutexIcon(iconPack, iconName)
+AutexIcon(iconPack, iconName, colour)
+AutexIcon(iconPack, iconName, colour, dynamicText)
+```
+
+**Parameters:**
+
+- **`iconPack`** (String): pack folder under embedded `src` (for example `DriveWorks`).
+- **`iconName`** (String): file name without `.svg` or `.png`.
+- **`colour`** (String, optional): SVG tint; ignored for PNG.
+- **`dynamicText`** (String, optional): template / numbered-icon substitution (see **Behavior**).
+
+**Example:**
+
+```text
+AutexIcon("DriveWorks", "arrow-right")
+AutexIcon("DriveWorks", "arrow-right", "#2196F3")
+```
+
+**Note:** The two-parameter overload does not take `colour`; the implementation forwards a fixed default into the same pipeline (see `Icons/Icons.cs`).
+
+### AutexProgressBar
+
+**Description:** Returns a horizontal **progress bar** as an SVG **data URI**. **Progress** is **0** to **1**. Optional **colour** for the fill (default `#2196F3` in source).
+
+**Syntax:**
+
+```
+AutexProgressBar(progress)
+AutexProgressBar(progress, colour)
+```
+
+**Parameters:**
+
+- **`progress`** (Number): fraction complete (**0**–**1**).
+- **`colour`** (String, optional): fill colour (same formats as **AutexIcon**); invalid colour yields `#ERROR!`.
+
+**Example:**
+
+```text
+AutexProgressBar(0.75)
+AutexProgressBar(0.5, "#4CAF50")
+```
+
+### AutexIconPacksList
+
+**Description:** Returns all available icon pack names joined by **`|`** (pipe).
+
+**Syntax:**
+
+```
+AutexIconPacksList()
+```
+
+**Parameters:** none.
+
+**Example:**
+
+```text
+AutexIconPacksList()
+```
+
+### AutexIconsList
+
+**Description:** Returns icon names (file stems) in one pack, joined by **`|`**, or **`#ERROR!`** if the pack is missing.
+
+**Syntax:**
+
+```
+AutexIconsList(iconPack)
+```
+
+**Parameters:**
+
+- **`iconPack`** (String): pack name.
+
+**Example:**
+
+```text
+AutexIconsList("DriveWorks")
+```
+
+### AutexIconSearch
+
+**Description:** Returns the **first** icon whose key matches the search string anywhere in **any** pack, as a **data URI**. Search is case- and punctuation-insensitive. Optional **colour** and **dynamicText** match **AutexIcon** semantics. *(In the assembly, the first parameter’s Rule Builder name is **`iconName`**; it behaves as a search fragment.)*
+
+**Syntax:**
+
+```
+AutexIconSearch(iconName)
+AutexIconSearch(iconName, colour)
+AutexIconSearch(iconName, colour, dynamicText)
+```
+
+**Parameters:**
+
+- **`iconName`** (String): substring to match (normalized the same way as pack/icon keys).
+- **`colour`**, **`dynamicText`** (String, optional): same as **AutexIcon**.
+
+**Example:**
+
+```text
+AutexIconSearch("arrow")
+AutexIconSearch("home", "#FFFFFF")
+```
+
+### AutexIconSearchAll
+
+**Description:** Returns every match as **`Pack.Icon`** strings joined by **`|`**, sorted. Search is case- and punctuation-insensitive. Marked **`[Udf(false)]`** in `Icons/Icons.cs` — it may not be listed as a normal **custom function** in **Rule Builder**; verify in your build.
+
+**Syntax:**
+
+```
+AutexIconSearchAll(iconName)
+```
+
+**Parameters:**
+
+- **`iconName`** (String): search fragment (same host naming caveat as **AutexIconSearch**).
+
+**Example:**
+
+```text
+AutexIconSearchAll("arrow")
+```
+
+## Related
+
+- [Plugins hub](/driveworks/plugins)

@@ -1,0 +1,27 @@
+---
+title: Licensing
+sidebarTitle: License Model
+description: DriveWorks license management and service restart procedure for floating licenses.
+---
+
+
+## License Model
+
+- One DriveWorks Administrator license per user session.
+- Live concurrent usage is controlled by available licensing capacity.
+
+## No License Available (Floating License)
+
+If DriveWorks Administrator reports no license availability:
+
+1. Confirm the license has not expired.
+2. Confirm another user is not currently consuming the floating license.
+3. Restart the network license service.
+
+## Restart Network License Service
+
+1. Open DriveWorks License Manager.
+2. Go to the `Network License Server` tab.
+3. Click `Stop Service`.
+4. Click `Start Service`.
+5. Retry opening DriveWorks Administrator.

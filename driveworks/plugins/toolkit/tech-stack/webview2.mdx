@@ -1,0 +1,79 @@
+---
+title: WebView2
+sidebarTitle: What it is
+description: Microsoft Edge WebView2 control that hosts Toolkit 3.0 HTML/CSS/JS UI inside DriveWorks Administrator.
+---
+
+
+**Microsoft.Web.WebView2** embeds a Chromium-based browser control in WPF so Autex Toolkit can render modern WebView UI inside **DriveWorks Administrator**. C# hosts the control; HTML, CSS, and JavaScript (often Scriban-rendered) supply the surface.
+
+## What it is
+
+[WebView2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) is Microsoft's control for embedding the Edge (Chromium) engine in desktop apps. Toolkit uses the **WPF WebView2** package to host UI3 surfaces: script tools, compare reports, Version Control, and pickers.
+
+The NuGet package is a managed wrapper plus native loader. Rendering still depends on the **WebView2 Runtime** installed on the machine (see Install).
+
+## Install
+
+Package reference in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
+
+| Package | Version |
+| --- | --- |
+| Microsoft.Web.WebView2 | 1.0.3800.47 |
+
+**End-user machines** must have the [WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) (typically **Evergreen**). Without it, WebView features fail at init. Maintainers build with **`Build.ps1`**; do not use `dotnet build` on the plugin `.csproj`.
+
+<Info>
+**AutexPdfExport** also references WebView2 for print-to-PDF. That is a separate plugin; Toolkit's WebView2 usage is for Administrator UI, not PDF generation.
+</Info>
+
+## Official links
+
+- [Microsoft WebView2 documentation](https://learn.microsoft.com/en-us/microsoft-edge/webview2/)
+- [Microsoft.Web.WebView2 on NuGet](https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.3800.47)
+- [WebView2 Runtime distribution](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+
+## Usage in Autex Toolkit
+
+### Host and bridge
+
+| Type | Role |
+| --- | --- |
+| `ToolkitWebViewHostControl` | WPF control that owns the WebView2 instance, asset loading, and lifecycle. |
+| `ToolkitWpfWebView2Helper` | Init, virtual host mapping, navigation helpers. |
+| `WebView2BridgeV1` | C# side of the v1 `postMessage` contract (`version`, `action`, `payload`). |
+| `WebViewAssetLoader` | Loads embedded `WebAssets` from `Autex Toolkit.dll`. |
+
+JavaScript uses `_shared/bridge.v1.js` (and feature `*.app.js`) to call bridge actions registered in `ToolkitWebBridgeActions` and feature-specific handlers (for example `ScriptToolsBridgeActions`).
+
+### Virtual host and assets
+
+Production loads **embedded** `DWPlugin\WebAssets\` via virtual host **`https://toolkit.webassets/`** (`WebResourceRequested`), not loose files beside the DLL. Page builders under `DWPlugin/WebView/` compose Scriban HTML and navigate temp files or mapped URLs as documented in `Documentation/Toolkit/webview2-conventions.md`.
+
+### Major surfaces
+
+WebView2 drives Toolkit 3.0 UI including:
+
+- **Script Tools** — script browser, configure/review/results workflow.
+- **Project Comparison** — unified compare tree and detail panes.
+- **Version Control** — changes, branches, history, and commit workflow.
+- **Pickers and dialogs** — Metaclass Picker, Group Constant Picker, Icon Picker, Group Constants, Rule Analysis, Spell Check, Create Metaclass.
+
+See [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) for the full component map.
+
+<Warning>
+Toolkit WebView2 is **not** the primary PDF path. **AutexPdfExport** owns print-to-PDF via its own WebView2 host (`BrowserPdfExporter`).
+</Warning>
+
+## Why we picked it
+
+- **Modern UI in a desktop host:** HTML, CSS, and JavaScript give layout and interaction density that WPF alone would be costly to maintain for UI3 (trees, filters, diff views, workflow strips).
+- **Scriban-rendered surfaces:** Server-style templates render in-process; C# page builders stay thin while markup lives in `WebAssets`.
+- **Stable Microsoft stack:** Chromium engine with a supported WPF control and Evergreen runtime updates on user machines.
+- **Clear seam from PDF:** Administrator UI and PDF export share the package version ecosystem but separate hosts and responsibilities.
+
+## Related
+
+- [Autex Toolkit tech stack](/driveworks/plugins/toolkit/tech-stack)
+- [Scriban](/driveworks/plugins/toolkit/tech-stack/scriban)
+- [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui)

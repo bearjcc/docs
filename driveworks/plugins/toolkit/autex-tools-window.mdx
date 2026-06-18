@@ -1,0 +1,46 @@
+---
+title: Autex Tools window
+sidebarTitle: Autex Tools window
+description: Script runner in Autex Toolkit for DriveWorks Administrator operators and implementers.
+---
+
+
+
+The **Autex Tools** window is the main Autex Toolkit script runner inside DriveWorks Administrator. Use it to run Release scripts for inspection, cleanup, migration, comparison, and export work.
+
+## Main areas
+
+- **Script list:** choose a Release script.
+- **Inputs:** set script-specific options before running.
+- **Results:** review tables, HTML reports, or status text.
+- **Session output:** read progress and diagnostic messages from the run.
+- **Actions:** run, run on Project, run on Group, apply selected rows, or return to a previous step when the script supports it.
+
+## Preview and apply
+
+Many mutating scripts use a review step:
+
+1. **Run** builds a preview.
+2. You tick rows or edit editable preview columns.
+3. **Apply selected** writes the chosen changes.
+4. Results show what happened.
+
+Some scripts write during **Run**. The [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) marks those as **Writes on Run**.
+
+## Group mode
+
+When a Group is open, some scripts can run across Projects. Group mode can produce a merged table with a **Project** column, then apply selected rows back into the relevant Projects.
+
+Before using Group mode:
+
+- Confirm the correct Group is open.
+- Close Projects that should not be locked.
+- Expect the script to open, save, and close Projects when applying Group-wide changes.
+- Keep a current backup.
+
+## Related
+
+- [Scripts](/driveworks/plugins/toolkit/scripts)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)
+- [Getting started](/driveworks/plugins/toolkit/getting-started)
+- [Toolkit hub](/driveworks/plugins/toolkit/index)

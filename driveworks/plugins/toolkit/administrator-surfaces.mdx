@@ -1,0 +1,66 @@
+---
+title: Autex Toolkit — Administrator surfaces
+sidebarTitle: Administrator surfaces
+description: Where Autex Toolkit appears in DriveWorks Administrator.
+---
+
+
+## Administrator surfaces
+
+Autex Toolkit appears in DriveWorks Administrator as left sidebar links, command buttons, Rule Builder toolbar buttons, and Form Designer context tools. Availability depends on the active view and the installed Toolkit build.
+
+## Left sidebar
+
+Toolkit registers custom views in the Administrator left tree (ToDo / content host). These appear when a **Group** is loaded unless noted otherwise.
+
+| Link                | Location                                     | Opens                                                                   |
+| ------------------- | -------------------------------------------- | ----------------------------------------------------------------------- |
+| **Group Constants** | Under **Group Setup** (after **Drive Apps**) | WebView editor for file-backed Group Constants (`GroupConstants.toml`). |
+
+See [Group Constants](/driveworks/plugins/toolkit/group-constants) for the operator workflow.
+
+## Command group
+
+Look for the **Autex Toolkit** / **DW Tools** command group.
+
+| Command             | Opens                                                       | Availability                                                         |
+| ------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Autex Toolkit**   | **Autex Tools** script runner.                              | Views with a command bar                                             |
+| **Version Control** | Team Git/version-control surface where configured.          | Views with a command bar                                             |
+| **Macro triggers**  | Trigger locations for the selected **Specification Macro**. | **Specification Macros** view only; enabled when a macro is selected |
+
+## Rule Builder
+
+Toolkit can add toolbar buttons to **Rule Builder**:
+
+| Button          | Purpose                                                                                                                                                         |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Format**      | Formats the current Rule.                                                                                                                                       |
+| **Spell Check** | Checks spelling in the current Rule.                                                                                                                            |
+| **Analyze**     | Analyzes the current Rule for parsing, functions, references, and value detail.                                                                                 |
+| **Metaclass**   | Appears when editing a form control **Metadata** Rule; inserts a metaclass token from `ProjectStyles.css`.                                                      |
+| **Group const** | Opens a picker to insert `AutexGroupConstant("…")` from the active Group Constants file; **Manage** in the picker can open the floating Group Constants window. |
+| **Autex Icon**  | Appears in picture/icon contexts; inserts an `AutexIcon` call from icon thumbnails.                                                                             |
+
+## Form Designer
+
+Toolkit can add:
+
+- **Convert** command bar or right-click options for supported form control conversions.
+- **Create Metaclass** on the right-click menu for one selected control.
+- **Inspect** on the right-click menu for advanced HTML/CSS inspection when the Form Designer WebView can be resolved.
+
+See [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools).
+
+## Related
+
+- [Administrator UI region map](/driveworks/plugins/toolkit/injection/administrator-ui-map) — shell and view region names for injection
+- [Injection guides index](/driveworks/plugins/toolkit/injection) — maintainer guides for all injection patterns
+- [Adding a Left Sidebar Menu Item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item) — sidebar registration
+- [Adding a View-Scoped Command Button](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button) — Macro triggers registration
+- [Getting started](/driveworks/plugins/toolkit/getting-started)
+- [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)
+- [Group Constants](/driveworks/plugins/toolkit/group-constants)
+- [Spell checker](/driveworks/plugins/toolkit/spell-checker)
+- [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass)
+- [Toolkit hub](/driveworks/plugins/toolkit/index)

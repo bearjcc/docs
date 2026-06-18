@@ -1,0 +1,66 @@
+---
+title: Autex Toolkit — Administrator injection guides
+sidebarTitle: Administrator injection guides
+description: Maintainer index for injecting UI into DriveWorks Administrator through the Autex Toolkit plugin (SDK and reflection patterns).
+---
+
+
+## Administrator injection guides
+
+These pages document how the Autex Toolkit plugin extends **DriveWorks Administrator**: command bars, sidebar, Rules Builder, Form Designer, property grid, and floating windows. Each guide names the shipping example, entry files under `Autex Toolkit/DWPlugin/`, and verification steps.
+
+Operator-facing "where does Toolkit appear?" lives in [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces).
+
+Maintainer-facing **region names and injection targets**: [Administrator UI region map](/driveworks/plugins/toolkit/injection/administrator-ui-map).
+
+## Documented patterns
+
+| Guide                                                                                                                 | Surface                                          | Mechanism                                      | Shipping example                         |
+| --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ---------------------------------------------- | ---------------------------------------- |
+| [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)                   | Command bar (all views with a bar)               | SDK `ICommandManager` + `ICommandBarGroup`     | Autex Toolkit, Version Control           |
+| [Adding a QuickBar Button](/driveworks/plugins/toolkit/injection/add-quickbar-button)                                 | Title-bar QuickBar (global)                      | SDK `IQuickBarManager` + app `ICommandManager` | Autex Toolkit (open Autex Tools)         |
+| [Adding a View-Scoped Command Button](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button)           | Command bar on one view + dynamic enablement     | SDK commands + reflection selection probe      | Macro triggers                           |
+| [Adding a Virtual Split Command Button](/driveworks/plugins/toolkit/injection/add-virtual-split-command-button)       | Command bar dropdown                             | SDK `IVirtualSplitCommandButton`               | Form Designer Convert                    |
+| [Adding a Left Sidebar Menu Item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item)                        | Left ToDo tree / content host                    | Reflection `InsertControlViewAfter`            | Group Constants                          |
+| [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)               | Rules Builder command bar                        | Reflection on `RulesBuilderFormWpf`            | Spell Check, Metaclass, Analyze          |
+| [Adding a Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) | Form Designer right-click                        | Reflection WPF `ContextMenu`                   | Inspect, Create Metaclass, Add Metaclass |
+| [Adding Form Control Properties](/driveworks/plugins/toolkit/injection/add-form-control-properties)                   | Property grid + optional WebView bridge          | `DynamicProperty.Register` + grid wrap         | Layout Grid, Metadata                    |
+| [Creating a Toolkit Window](/driveworks/plugins/toolkit/injection/create-toolkit-window)                              | Floating / modal windows opened from injected UI | WPF `Window`, WinForms WebView chrome          | Autex Tools, pickers                     |
+
+## Patterns not yet documented here
+
+Use this list when choosing the next injection article. Operator docs may exist elsewhere; these rows are maintainer how-tos only.
+
+| Topic                                              | Code entry points                                                                                                                               | Suggested article                        |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Rules Builder editor context menu + squiggles      | `RulesBuilderSpellingContextMenu.cs`, `RulesBuilderSpellingTaggerRegistration.cs`, `RulesBuilderEditorAccess.cs`                                | Adding a Rules Builder context menu item |
+| Custom User Form toolbox control                   | `PluginFormControlRegistration.cs`, `HeadingControl.cs`, `HeadingControlAdapter.cs`                                                             | Registering a plugin form control        |
+| Form Designer WebView JS/CSS injection             | `FormDesignerWebLayoutBridgeInjection.cs`                                                                                                       | Injecting Form Designer WebView scripts  |
+| Property grid custom editors                       | `AutexGridUIProviderTypeDescriptor.cs`, `AutexFormMetadataPropertyDescriptor.cs`                                                                | Custom property grid editors             |
+| Live web message adapter                           | `LayoutGridWebMessageAdapterRegistration.cs`                                                                                                    | Registering a web message adapter        |
+| Native UI reflection patches (standalone drawings) | `ModelRulesStandaloneDrawingSelectionPatch.cs`, `AddProjectComponentDialogStandaloneDrawingPatch.cs`, `GenerateModelsStandaloneDrawingPatch.cs` | Patching native Administrator dialogs    |
+| SOLIDWORKS add-in UI                               | `SolidWorksTaskPaneToolbarInjection.cs`, `CaptureAssistantStandaloneDrawingPatch.cs`                                                            | SOLIDWORKS integration UI patches        |
+
+## Choose a pattern
+
+Not sure which chrome region to extend? Start with the [Administrator UI region map](/driveworks/plugins/toolkit/injection/administrator-ui-map).
+
+| Your feature needs…                                           | Start here                                                                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| A small icon in the title-bar QuickBar (always visible)       | [QuickBar Button](/driveworks/plugins/toolkit/injection/add-quickbar-button)                                 |
+| A toolbar button everywhere Administrator shows a command bar | [Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)                   |
+| A button on one view, enabled only with valid selection       | [View-Scoped Command Button](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button)           |
+| A toolbar dropdown whose items depend on selection            | [Virtual Split Command Button](/driveworks/plugins/toolkit/injection/add-virtual-split-command-button)       |
+| A persistent pane in the left tree                            | [Sidebar Menu Item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item)                             |
+| An action while editing a Rule                                | [Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)               |
+| An action on selected form controls in the designer           | [Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) |
+| A new persisted slot on a control in the property grid        | [Form Control Properties](/driveworks/plugins/toolkit/injection/add-form-control-properties)                 |
+| A new window or modal dialog                                  | [Toolkit Window](/driveworks/plugins/toolkit/injection/create-toolkit-window)                                |
+
+## Related
+
+- [Administrator UI region map](/driveworks/plugins/toolkit/injection/administrator-ui-map)
+- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)
+- [Architecture map](/driveworks/plugins/toolkit/architecture)
+- [Plugin entry](/driveworks/plugins/toolkit/architecture/plugin-entry)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

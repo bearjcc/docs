@@ -1,0 +1,60 @@
+---
+title: Newtonsoft.Json
+sidebarTitle: What it is
+description: Json.NET serialization library used by Autex Toolkit for WebView2 bridge payloads, diagnostics JSONL, and script result interchange.
+---
+
+
+**Newtonsoft.Json** (Json.NET) is the JSON stack for Autex Toolkit on .NET Framework 4.8. C# code serializes and parses structured data for WebView2 UI, diagnostics files, and script tooling without a separate web host.
+
+## What it is
+
+[Json.NET](https://www.newtonsoft.com/json) is a mature JSON library for .NET. Toolkit uses `JsonConvert` for object graphs and `JObject` / `JToken` for loosely typed bridge envelopes and patches.
+
+The NuGet package is compile-time only. End users receive it embedded in **`Autex Toolkit.dll`** (via Costura.Fody).
+
+## Install
+
+Package reference in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
+
+| Package | Version |
+| --- | --- |
+| Newtonsoft.Json | 13.0.3 |
+
+Restore and build with **`Build.ps1`** (or **`Build-Release.ps1`** for production). Do not run `dotnet build` on the plugin `.csproj` directly.
+
+<Info>
+Align versions if other packages add transitive Newtonsoft dependencies.
+</Info>
+
+## Official links
+
+- [Json.NET documentation](https://www.newtonsoft.com/json)
+- [Newtonsoft.Json on NuGet](https://www.nuget.org/packages/Newtonsoft.Json/13.0.3)
+
+## Usage in Toolkit
+
+Search `Autex Toolkit/DWPlugin` for `Newtonsoft.Json` and `JsonConvert` to find call sites. Typical areas:
+
+| Area | Role |
+| --- | --- |
+| **WebView2 bridge** | `WebView2BridgeV1`, `BridgeReply`, `ToolkitWebBridgeActions`, and shell routers build and parse `JObject` envelopes for host ↔ WebView messages. Page builders (`ScriptToolsWebViewPageBuilder`, `ProjectComparisonWebViewPageBuilder`, `VersionControlWebViewPageBuilder`, pickers) embed serialized state in inline scripts. |
+| **Diagnostics JSONL** | `AgentDebugLogger` writes one JSON object per line via `JsonConvert.SerializeObject`. Hosted test and triage workflows consume similar line-oriented payloads. |
+| **Script results** | `ScriptShellView` state sync serializes review, cache, and run outcome objects (`JObject.FromObject`) for the Script Tools WebView surface. |
+
+Other uses include snapshot export (`SnapshotJsonSerialization`), Group Constants TOML/JSON interchange, version-control vocabulary, and form/comparison helpers.
+
+```csharp
+var json = JsonConvert.SerializeObject(state, jsonSettings);
+```
+
+## Why picked
+
+- **Mature .NET Framework stack:** Json.NET predates `System.Text.Json` on full framework and handles the shapes Toolkit already models (camelCase resolvers, `JToken` trees, flexible parsing).
+- **Widely used:** Large ecosystem, stable 13.x line, and predictable behavior across DriveWorks hosts (Administrator, Autopilot) without ASP.NET-style hosting.
+
+Keep the pinned **13.0.3** version consistent across Toolkit dependencies.
+
+## Related
+
+- [Autex Toolkit tech stack](/driveworks/plugins/toolkit/tech-stack)

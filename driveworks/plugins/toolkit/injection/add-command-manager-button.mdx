@@ -1,0 +1,106 @@
+---
+title: Adding a Command Manager Button
+sidebarTitle: Adding a Command Manager Button
+description: How to add a new command bar button to DriveWorks Administrator using the Autex Toolkit plugin.
+---
+
+
+
+This guide explains how to add a new command bar button to the DriveWorks Administrator Command Manager using the Autex Toolkit plugin. It covers the standard Toolkit registration pattern and explains how the underlying DriveWorks SDK is called under the hood.
+
+## Registration Pattern (Toolkit)
+
+All command bar button registrations are centralized in the partial class file `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.CommandRegistration.cs`.
+
+To add a new button, follow these steps:
+
+### 1. Define Command Name Constants
+Add a unique command name constant and a display title at the top of the partial class.
+
+```csharp
+private const string MyNewCommandName = "Autex Toolkit.MyNewFeature";
+```
+
+### 2. Load the Icon
+Implement an icon loader method or reuse an existing one. Icons are loaded via `ToolkitIconLoader.TryLoadSemantic` or `ToolkitIconLoader.Load`.
+
+```csharp
+private static ImageHandle GetMyNewFeatureImageHandle() {
+    return GetSemanticCommandImageHandle("Toolbar.MyNewFeature", "GetMyNewFeatureImageHandle");
+}
+```
+
+### 3. Register the Command
+Register the command and subscribe to `Invoking`.
+
+For commands that also appear on the [QuickBar](/driveworks/plugins/toolkit/injection/add-quickbar-button), register **once** on the application `ICommandManager` in `TryAttachQuickBarCommand` and skip per-view `RegisterCommand` for that name. View command bar buttons still call `group.AddCommandButton` with the same command name; `CommandResolver` finds the application command.
+
+For view-only commands (for example **Version Control**), register in `TryAttachCommandsToView(IView view)` with the view's `ICommandManager`:
+
+```csharp
+var myNewCmd = viewCmdMgr.RegisterCommand(MyNewCommandName, StateFilter.Empty, "My Feature Title", myNewImageHandle);
+myNewCmd.Invoking += OnMyNewCommandInvoking;
+
+lock (_viewCommands) {
+    _viewCommands.Add(myNewCmd);
+}
+```
+
+### 4. Add Button to Command Bar Group
+In the same `TryAttachCommandsToView` method, add the command button to the command bar group.
+
+```csharp
+group.AddCommandButton(
+    commandContext: null,
+    commandName: MyNewCommandName,
+    displayHint: CommandBarDisplayHint.LargeAndText,
+    unavailableBehavior: CommandUnavailableBehavior.Hide);
+```
+
+### 5. Implement the Invoking Handler
+Define the event handler that executes your feature (e.g., opening a WPF window or running a script).
+
+```csharp
+private void OnMyNewCommandInvoking(object sender, CommandInvokeEventArgs e) {
+    try {
+        MyNewWindow.ShowOrFocus();
+    } catch (Exception ex) {
+        LogPluginError("Failed to open My New Window.", ex);
+    }
+}
+```
+
+### 6. Clean Up on Dispose
+In `DisposeCommandRegistration()`, unsubscribe from the `Invoking` event to prevent memory leaks.
+
+```csharp
+myNewCmd.Invoking -= OnMyNewCommandInvoking;
+```
+
+### 7. Build and Verify
+Run the build script from the repository root to compile and deploy the plugin:
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+Open DriveWorks Administrator and verify that your button appears in the command bar when a group is open.
+
+## Under the Hood (DriveWorks SDK)
+
+The Toolkit's registration pattern wraps the native DriveWorks SDK extensibility APIs. Under the hood, the following SDK interfaces and methods are utilized:
+
+- **Command Registration**: `IView.ViewEnvironment.CommandManager.RegisterCommand(string name, StateFilter stateFilter, string title, ImageHandle icon)` registers the command within the active view's command manager.
+- **Group Creation**: `ICommandBarManager.AddGroup(string title)` creates a new command group (or returns the existing one) on the command bar.
+- **Button Injection**: `ICommandBarGroup.AddCommandButton(object commandContext, string commandName, CommandBarDisplayHint displayHint, CommandUnavailableBehavior unavailableBehavior)` adds the registered command as a button to the specified group.
+
+## Related
+
+- [Injection guides index](/driveworks/plugins/toolkit/injection) — all Administrator injection patterns
+- [Adding a QuickBar Button](/driveworks/plugins/toolkit/injection/add-quickbar-button) — title-bar icon (application-scoped command)
+- [Adding a View-Scoped Command Button](/driveworks/plugins/toolkit/injection/add-view-scoped-command-button) — one view only, selection-driven `IsEnabled` (Macro triggers)
+- [Adding a Virtual Split Command Button](/driveworks/plugins/toolkit/injection/add-virtual-split-command-button) — dynamic dropdown (Form Designer Convert)
+- [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry) — plugin bootstrap and lifecycle
+- [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views) — floating window surfaces
+- [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder) — Rules Builder extensions
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy) — build and deploy the plugin

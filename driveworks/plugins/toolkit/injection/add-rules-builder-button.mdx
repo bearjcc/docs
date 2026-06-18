@@ -1,0 +1,157 @@
+---
+title: Adding a Rules Builder Toolbar Button
+sidebarTitle: Adding a Rules Builder Toolbar Button
+description: How to add a custom button to the DriveWorks Rules Builder toolbar in the Autex Toolkit plugin, with examples for Spell Check, Metaclass picker, and Autex Icon picker.
+---
+
+
+
+This guide explains how to add a custom toolbar button inside the DriveWorks Rules Builder window through the Autex Toolkit plugin. Use this pattern when a feature should run directly in a rule-editing context, such as spell checking, metaclass token insertion, or function insertion.
+
+## When to use this pattern
+
+Use Rules Builder toolbar injection when your action depends on the active rule editor and should feel native in the Rules Builder workflow.
+
+Use Command Manager registration instead when your action belongs to the wider DriveWorks Administrator shell.
+
+<Info>
+Rules Builder buttons are injected into the `RulesBuilderFormWpf` command bar via WPF and reflection, not via `ICommandManager`.
+</Info>
+
+## Architecture overview
+
+The integration has two layers:
+
+1. **Feature registration layer** in `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.RulesBuilderIntegration.cs`.
+2. **Injection/runtime layer** in `Autex Toolkit/DWPlugin/RulesBuilder/RulesBuilderButtonInjection.cs`.
+
+At startup, the plugin calls `RegisterRulesBuilderToolbarButtons(IApplication application)`. That method registers each toolbar action by calling `RulesBuilderButtonInjection.RegisterButton(...)`.
+
+`RulesBuilderButtonInjection.Initialize(...)` registers a class handler for `Window.Loaded`. When a `RulesBuilderFormWpf` window loads, Toolkit:
+
+- resolves `MainCommandBar` by reflection
+- gets its `Items` collection
+- adds button controls for every registered button definition
+- avoids duplicates using a `Tag` prefix
+- optionally runs deferred injection for buttons that depend on context becoming available
+
+## Step-by-step: add a new button
+
+### 1. Create an entry point class
+
+Add a new file under `Autex Toolkit/DWPlugin/RulesBuilder/`, for example:
+
+`RulesBuilderMyFeatureEntryPoint.cs`
+
+Recommended shape:
+
+```csharp
+internal static class RulesBuilderMyFeatureEntryPoint {
+    public static bool ShouldShowToolbarButton(Window window) {
+        // Optional: return false to hide in non-applicable contexts.
+        return true;
+    }
+
+    public static void Run(Window rulesBuilderWindow = null) {
+        var window = rulesBuilderWindow ?? RulesBuilderFormatterEntryPoint.TryGetActiveRulesBuilderWindow();
+        if (window == null)
+            return;
+
+        // Execute feature logic here.
+    }
+}
+```
+
+### 2. Register the button in plugin integration
+
+In `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.RulesBuilderIntegration.cs`, add another `RulesBuilderButtonInjection.RegisterButton(...)` call inside `RegisterRulesBuilderToolbarButtons(...)`.
+
+```csharp
+RulesBuilderButtonInjection.RegisterButton(
+    text: "My Feature",
+    onClick: w => {
+        try {
+            RulesBuilderMyFeatureEntryPoint.Run(w);
+        } catch (Exception ex) {
+            LogPluginError("RulesBuilder My Feature button click failed.", ex);
+        }
+    },
+    semanticIconKey: "Toolbar.MyFeature",
+    shouldInject: RulesBuilderMyFeatureEntryPoint.ShouldShowToolbarButton,
+    toolTip: "Run My Feature in the active Rules Builder");
+```
+
+### 3. Pick icon strategy
+
+`RulesBuilderButtonInjection` supports three icon paths, in this order:
+
+1. `semanticIconKey` (preferred)
+2. `iconName` legacy asset lookup
+3. default Autex logo fallback
+
+Use semantic keys for consistency with current Toolkit toolbar icon mapping.
+
+### 4. Add conditional visibility when needed
+
+Use `shouldInject` when a button only makes sense in specific rule contexts.
+
+- **Metaclass** button uses `RulesBuilderMetaclassEntryPoint.ShouldShowToolbarButton(...)` to target Metadata-style contexts.
+- **Autex Icon** button uses `RulesBuilderAutexIconEntryPoint.ShouldShowToolbarButton(...)` backed by picture-context detection.
+
+If `shouldInject` returns false, the button is not added to that Rules Builder window.
+
+## Existing examples
+
+### Spell Check
+
+- Registered in `ToolkitPlugin.RulesBuilderIntegration.cs` as text `Spell Check`.
+- Executes `RulesBuilderSpellCheckEntryPoint.Run(...)`.
+- Reads the current `Formula` value from the active Rules Builder window and opens results UI (`SpellCheckResultsWindow`).
+- Uses semantic icon key `Toolbar.RulesBuilderSpellCheck`.
+
+### Metaclass picker
+
+- Registered as text `Metaclass`.
+- Executes `RulesBuilderMetaclassEntryPoint.Run(...)`.
+- Conditional visibility via `ShouldShowToolbarButton(...)`.
+- Loads metaclass tokens from `ProjectStyles.css` and inserts selected token into the editor.
+
+### Autex Icon picker
+
+- Registered as text `Autex Icon`.
+- Executes `RulesBuilderAutexIconEntryPoint.Run(...)`.
+- Conditional visibility via `ShouldShowToolbarButton(...)` (picture/property context).
+- Builds an `AutexIcon(...)` function call from picker output and inserts it into the rule.
+
+## Rule editor insertion APIs
+
+Rules Builder features commonly need to insert content at the caret. There are two important insertion methods on the reflected `RuleEditor` object:
+
+- `InsertString(string)` - string-literal style insertion (used by metaclass token insertion).
+- `InsertValue(string)` - raw formula insertion (used by function-call insertion such as `AutexIcon(...)` and Group constant formulas).
+
+If you are inserting executable formula/function text, use `InsertValue(...)`.
+
+<Warning>
+Choosing the wrong insertion API can produce quoted text when you intended a formula call.
+</Warning>
+
+## Verification
+
+1. Run Toolkit build from repo root:
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+2. Open DriveWorks Administrator.
+3. Open a Project and launch Rules Builder.
+4. Confirm the button appears where expected.
+5. Confirm the click handler works in both valid and invalid contexts (for conditional buttons).
+
+## Related
+
+- [Adding a Command Manager Button](/driveworks/plugins/toolkit/architecture/add-command-manager-button)
+- [Rules Builder Integration](/driveworks/plugins/toolkit/architecture/rules-builder)
+- [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

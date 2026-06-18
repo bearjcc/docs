@@ -1,0 +1,93 @@
+---
+title: Autex Toolkit — Form Designer tools
+sidebarTitle: Form Designer tools
+description: Right-click and in-form tools added by Autex Toolkit in DriveWorks Administrator Form Designer.
+---
+
+
+## Form Designer tools
+
+**Autex Toolkit** adds small tools to DriveWorks Administrator **Form Designer** for selected controls. These tools help implementers inspect web rendering, create and apply CSS metaclasses, and convert compatible form control types without leaving Administrator.
+
+The tools are context-sensitive. If the current view, selection, or build does not support a command, Toolkit hides or disables it.
+
+## Convert control type
+
+Toolkit adds **Convert** options for eligible single-control selections.
+
+Where to look:
+
+- **Form Designer** command bar: **Convert** split button where the host exposes a command bar.
+- Right-click menu: DriveWorks **Convert** submenu, or a Toolkit **Convert to...** submenu when needed.
+
+Supported targets come from the Toolkit conversion graph. Current display names include **Text Box**, **Numeric Text Box**, **Spin Button**, **Measurement Text Box**, **Combo Box**, **Check Box**, **Toggle Switch**, **Option Button**, **Macro Button**, **Check Box Group**, **Option Group**, and **Picture Box**, but the actual list depends on the selected source control.
+
+What happens on apply:
+
+1. Toolkit captures supported properties from the selected control.
+2. It deletes the old control.
+3. It creates a new control with the same name.
+4. It reapplies compatible layout, value, Rule, and comment data.
+5. It saves the Project when conversion succeeds.
+
+<Warning>
+Conversion changes the Project immediately and replaces the selected control. Use a backup or development Project before converting production forms.
+</Warning>
+
+## Create Metaclass
+
+Right-click one selected form control and choose **Create Metaclass**. Toolkit opens a window that proposes CSS from the selected control and writes the accepted block to `ProjectStyles.css`.
+
+Use this when moving repeated visual styling into named metadata tokens. See [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass).
+
+## Add Metaclass
+
+Right-click one or more form controls and choose **Add Metaclass** to apply an existing token from `ProjectStyles.css` to each control's **Metadata** property.
+
+Where to look:
+
+- **Add Metaclass** submenu on the Form Designer right-click menu (below **Create Metaclass**).
+- **Pick metaclass...** opens a searchable picker when you need the full token list.
+- Grouped flyout items when `ProjectStyles.css` defines `@group` / `@subgroup` metadata on metaclass blocks.
+
+What happens on apply:
+
+1. Toolkit reads tokens from `ProjectBaseDirectory\ProjectStyles.css`.
+2. You pick a token (from a flyout item or the picker).
+3. Toolkit appends the token to each selected control's **Metadata** (static whitespace-delimited tokens, or merged into an existing **Metadata** Rule).
+4. It saves the Project when at least one control changes.
+
+Toolkit skips a token that is already present on a control. Duplicate apply is safe.
+
+<Info>
+**Add Metaclass** changes the Project immediately. **Create Metaclass** writes CSS to disk. Use **Add Metaclass** when the token already exists in `ProjectStyles.css`.
+</Info>
+
+The menu is disabled when no controls are selected, the Project path cannot be resolved, or no tokens are found in `ProjectStyles.css`.
+
+## Inspect
+
+Right-click in Form Designer and choose **Inspect** to open WebView developer tools for the form designer surface when Toolkit can resolve the underlying WebView. This is mainly for advanced implementers diagnosing CSS and layout issues.
+
+Inspect can help answer:
+
+- Which HTML element represents the selected form area?
+- Which CSS rules apply?
+- Which metadata token is present on a control?
+
+Do not use Inspect as a normal authoring surface. Make changes in DriveWorks Administrator, Rules, or `ProjectStyles.css`.
+
+## Limits
+
+- These tools depend on DriveWorks Administrator internals and may vary by DriveWorks version.
+- **Inspect** can be unavailable if the WebView cannot be resolved.
+- **Create Metaclass** requires one selected control and a writable `ProjectStyles.css` path.
+- **Add Metaclass** requires at least one selected control, an open Project, and parseable tokens in `ProjectStyles.css`.
+- Convert is intentionally limited to supported source and target pairs.
+
+## Related
+
+- [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass)
+- [Adding a Form Designer context menu item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) — maintainer guide for context menu injection
+- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)
+- [Getting started](/driveworks/plugins/toolkit/getting-started)

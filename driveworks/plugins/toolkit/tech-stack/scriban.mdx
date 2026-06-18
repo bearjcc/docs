@@ -1,0 +1,92 @@
+---
+title: Scriban
+sidebarTitle: What it is
+description: .NET templating engine used by Autex Toolkit to compose WebView2 HTML from embedded templates and partials.
+---
+
+
+**Scriban** is the .NET templating engine behind Toolkit 3.0 WebView UI. C# page builders pass models into `*.scriban.html` templates; the rendered HTML ships inside **`Autex Toolkit.dll`** as embedded resources, not loose files beside the plugin.
+
+## What it is
+
+[Scriban](https://scriban.github.io/) is a fast, lightweight text templating engine for .NET. Toolkit uses it for HTML composition: `{{ include 'partial' }}`, variables, and `capture` blocks replace large C# string builders for WebView surfaces.
+
+The NuGet package is a compile-time dependency only. End users receive it embedded in **`Autex Toolkit.dll`** (via Costura.Fody), same as other Toolkit libraries.
+
+## Install
+
+Package reference in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
+
+| Package | Version |
+| --- | --- |
+| Scriban | 7.2.0 |
+
+**WebAssets** under `DWPlugin\WebAssets\` are **`EmbeddedResource`** items in the same csproj (`WebAssets\**\*` with excludes for `node_modules`, npm lockfiles, and ESLint config). Production hosts load templates from the assembly via **`WebViewAssetLoader`** and `https://toolkit.webassets/…`, not from a folder next to the DLL.
+
+**Build validation:**
+
+- **`Build.ps1`** (default **Debug**): after a successful MSBuild, runs `build\ScribanWebAssetsValidator` against `DWPlugin\WebAssets` (skip with `-SkipScribanValidation`).
+- **csproj**: `ValidateWebAssetsScriban` runs the same validator before `CoreCompile` unless `SkipScribanWebAssetsValidation=true` (Build.ps1 sets this during MSBuild so validation does not run twice in one pass).
+
+<Info>
+Do not run `dotnet build` on the plugin `.csproj` directly. Use **`Build.ps1`** or **`Build-Release.ps1`**.
+</Info>
+
+## Official links
+
+- [Scriban documentation](https://scriban.github.io/)
+- [Scriban on NuGet](https://www.nuget.org/packages/Scriban/7.2.0)
+
+## Usage in Autex Toolkit
+
+### Templates and folders
+
+- Feature bodies: `WebAssets/{Feature}/*.body.scriban.html` (for example `ScriptTools`, `ProjectComparison`, `VersionControl`).
+- Feature partials: `WebAssets/{Feature}/partials/*.scriban.html`.
+- Shared atoms: `WebAssets/_shared/partials/*.scriban.html` and document shell `WebAssets/_shared/templates/document.scriban.html`.
+
+`{{ include 'name' }}` resolves feature partials first, then `_shared/partials` (`name.scriban.html`).
+
+### C# rendering pipeline
+
+| Type | Role |
+| --- | --- |
+| `ScribanUiRenderer` | Parses and renders template text; loads includes from embedded WebAssets. |
+| `WebViewPageRenderer` | Wraps `ScribanUiRenderer`; inlines CSS/JS and renders the document shell. |
+| `*WebViewPageBuilder.cs` | Builds `WebViewPageModel`, loads assets via `WebViewAssetLoader`, calls `WebViewPageRenderer`. |
+
+Page builders live under `Autex Toolkit/DWPlugin/WebView/`, including `ScriptToolsWebViewPageBuilder`, `ProjectComparisonWebViewPageBuilder`, and `VersionControlWebViewPageBuilder`.
+
+### Surfaces
+
+Scriban drives the main Toolkit 3.0 WebView surfaces:
+
+- **Script Tools** — script browser, configure/review/results chrome, in-document result mounts.
+- **Project Comparison** — unified compare report and filter UI.
+- **Version Control** — branches, changes, diff, and workflow views.
+- **Pickers and dialogs** — Metaclass Picker, Group Constant Picker, Icon Picker, Create Metaclass, Group Constants, Rule Analysis, Spell Check.
+
+Templates are **embedded resources**, not loose `WebAssets` beside the DLL at runtime. See `.cursor/rules/Autex-Toolkit-Embedded-Assets.mdc`.
+
+```scriban
+{{ include 'button' text: 'Run' variant: 'primary' }}
+```
+
+<Info>
+Do not concatenate HTML with `+` from `include` output. Use `capture` blocks (see `Documentation/Toolkit/webview2-conventions.md`).
+</Info>
+
+## Why we picked it
+
+- **Separation of concerns:** HTML layout and copy live in Scriban templates; C# owns data, bridge actions, and navigation. Page builders stay thin.
+- **Composable UI3:** Wireframes and Figma-style atoms map to partials (`_shared/partials`, feature `partials/`) instead of duplicated markup in one body file.
+- **Build-time safety:** `ScribanWebAssetsValidator` parses every `*.scriban.html` and smoke-renders each `*.body.scriban.html` before ship, catching broken includes early.
+- **Governance:** Layout and density rules are documented in `Documentation/Toolkit/ui3-design-spec.md` and `Documentation/Toolkit/webview2-conventions.md` (WebView composition, token picker shells, session strip).
+
+Razor and server-side ASP.NET templates were a poor fit: Toolkit runs inside **DriveWorks Administrator** on .NET Framework 4.8 with no web host. Scriban renders strings in-process with a small dependency surface.
+
+## Related
+
+- [Autex Toolkit tech stack](/driveworks/plugins/toolkit/tech-stack)
+- [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui)
+- [WebView2](/driveworks/plugins/toolkit/tech-stack/webview2)

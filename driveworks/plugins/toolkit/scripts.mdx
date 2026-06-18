@@ -1,0 +1,75 @@
+---
+title: Autex Toolkit — Scripts
+sidebarTitle: Scripts
+description: How DriveWorks Administrator users run Autex Tools scripts safely.
+---
+
+
+## Scripts
+
+**Autex Tools** is the script runner in Autex Toolkit. It gives DriveWorks Administrator implementers a controlled place to run bulk operations, consistency checks, migration helpers, reports, and snapshot exports without writing code.
+
+Scripts are useful when a task is too repetitive or risky to do manually, but still needs an implementer to review what will change.
+
+## Why scripts exist
+
+Use Toolkit scripts to:
+
+- Find and fix repeated Rule text.
+- Review naming and spelling before release.
+- Export readable snapshots for review.
+- Compare Projects or exported files.
+- Create, copy, or delete DriveWorks data with a consistent workflow.
+- Run Group-wide maintenance across many Projects.
+
+Scripts are not a replacement for understanding the Project. They make the work visible and repeatable.
+
+## Open Autex Tools
+
+1. Open **DriveWorks Administrator**.
+2. Connect to the **Group**.
+3. Open a **Project** if the script is Project-scoped.
+4. Choose **Autex Toolkit** / **DW Tools** → **Autex Toolkit** to open **Autex Tools**.
+5. Pick a Release script, set inputs, then choose the available run command.
+
+Depending on context, the window may offer **Run**, **Run on Project**, or **Run on Group**.
+
+## Safe operating model
+
+Most mutating Release scripts follow:
+
+1. **Configure**: choose script inputs.
+2. **Review**: run the script and inspect the preview table.
+3. **Apply**: tick rows and apply selected changes.
+4. **Results**: review what changed and re-run checks if needed.
+
+<Warning>
+Treat **Run** as read-only only when the script page or catalog says it previews first. Some scripts intentionally write during **Run**.
+</Warning>
+
+Before mutating scripts:
+
+- Prefer a development copy of the Group or Project.
+- Make a **Pack and Go** or approved backup.
+- Read the script description and danger level.
+- Start with a narrow data type or one Project when possible.
+- Keep DriveWorks Administrator responsive; cancel long runs if the context is wrong.
+
+## Release, Dev, Test, and WIP
+
+Release builds are intended to expose **Release** scripts to end users. Debug builds can also show **Dev**, **Test**, and **WIP** categories.
+
+<Danger>
+Do not use **Dev**, **Test**, or **WIP** scripts as production workflows unless a maintainer explicitly asks you to verify that build. They may be probes, test harnesses, or unfinished migrations.
+</Danger>
+
+## Release scripts
+
+Use the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) for the current shipped script list, purpose, common inputs, and danger level. Short standalone guides live under [Release script pages](/driveworks/plugins/toolkit/scripts-release).
+
+## Related
+
+- [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)
+- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)
+- [Getting started](/driveworks/plugins/toolkit/getting-started)

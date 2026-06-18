@@ -1,0 +1,53 @@
+---
+title: Autex Toolkit
+sidebarTitle: Autex Toolkit
+description: End-user hub for Autex Toolkit in DriveWorks Administrator.
+---
+
+
+
+**Autex Toolkit** is the main Autex plugin for DriveWorks Administrator. It adds the **Autex Toolkit** / **DW Tools** command group, **Autex Tools** scripts, a **Group Constants** sidebar under **Group Setup**, Rule Builder helpers, Form Designer tools, and Project comparison workflows.
+
+Use this hub if you operate or implement DriveWorks Projects with Toolkit installed. Programmer and build details are kept behind the advanced page.
+
+## Start here
+
+| Page                                                                           | Use it for                                                              |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| [Getting started](/driveworks/plugins/toolkit/getting-started)                 | Find Toolkit in DriveWorks Administrator and choose the right workflow. |
+| [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)   | See where Toolkit appears: command group, Rule Builder, Form Designer.  |
+| [Autex Tools window](/driveworks/plugins/toolkit/autex-tools-window)           | Understand script inputs, results, preview, apply, and Group mode.      |
+| [Scripts](/driveworks/plugins/toolkit/scripts)                                 | Learn how to run scripts safely.                                        |
+| [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog) | See every Release script, purpose, inputs, and danger level.            |
+| [Release script pages](/driveworks/plugins/toolkit/scripts-release)            | Short guides for selected Release scripts (see index for list).         |
+
+## Feature guides
+
+| Page                                                                                          | Use it for                                                       |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [Group Constants](/driveworks/plugins/toolkit/group-constants)                                | Manage Group-level literal values in `GroupConstants.toml`.      |
+| [Spell checker](/driveworks/plugins/toolkit/spell-checker)                                    | Check Rule text, names, PascalCase, and custom dictionary words. |
+| [Form styling and metaclasses](/driveworks/plugins/toolkit/form-styling-metaclass)            | Create and reuse CSS metadata tokens from `ProjectStyles.css`.   |
+| [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools)                        | Convert controls, create metaclasses, and inspect HTML/CSS.      |
+| [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots) | Export TOML snapshots and compare Project versions.              |
+
+## Safety rules
+
+- Work in a development Group or Project for bulk changes.
+- Make a **Pack and Go** or approved backup before applying mutating scripts.
+- Read script danger levels before using **Run**.
+- Remember that **Constants**, **Group Constants**, **Simple Tables**, and **Group Tables** store literal data, not Rule Builder formulas.
+- Verify user-facing forms, Rules, and generated outputs after changes.
+
+## Advanced
+
+- [Tech stack](/driveworks/plugins/toolkit/tech-stack) — Serilog, Scriban, WebView2, and other NuGet dependencies.
+- [Architecture map](/driveworks/plugins/toolkit/architecture) explains Toolkit code layers (generated from Understand-Anything).
+- [Administrator injection guides](/driveworks/plugins/toolkit/injection) — how Toolkit extends DriveWorks Administrator UI (maintainers).
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy) is for IT or maintainers installing the DLL.
+
+## Related plugins
+
+- [AutexCustom](/driveworks/plugins/autexcustom) provides custom functions, Specification Flow tasks, and document types.
+- [Icons](/driveworks/plugins/icons) provides icon-returning custom functions for Rule Builder.
+- [Plugins hub](/driveworks/plugins)

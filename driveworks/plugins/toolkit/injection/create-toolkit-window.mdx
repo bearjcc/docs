@@ -1,0 +1,267 @@
+---
+title: Creating a Toolkit Window
+sidebarTitle: Creating a Toolkit Window
+description: How to add a new floating window or modal dialog in DriveWorks Administrator through the Autex Toolkit plugin, with patterns from Autex Tools, Version Control, and the Autex Icon picker.
+---
+
+
+
+This guide explains how the Autex Toolkit plugin creates **floating windows** and **modal dialogs** inside DriveWorks Administrator. It covers the two host patterns Toolkit actually ships (WPF workflow windows and WinForms WebView pickers), how to wire a window to an injected button, and where shared chrome and WebView infrastructure live.
+
+Use a **sidebar view** instead when the feature should stay in the left Administrator tree (see [Adding a Left Sidebar Menu Item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item)).
+
+## When to use which pattern
+
+| Goal                                                 | Pattern                                              | Shipping example                                               |
+| ---------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------- |
+| Persistent tool the user keeps open while working    | WPF `Window` + `ShowOrFocus()` singleton             | `AutexToolsWindow`, `VersionControlWindow`                     |
+| Contextual picker that returns a value to the caller | WinForms `ToolkitWebViewChromeForm` + `ShowDialog()` | `AutexIconPickerWindow`                                        |
+| Short-lived modal tied to one parent window          | WPF `Window` + `ShowDialog()`                        | `SpellCheckResultsWindow`                                      |
+| Same UI in sidebar and floating window               | Shared surface host behind both hosts                | `GroupConstantsSurfaceHost` (sidebar + `GroupConstantsWindow`) |
+
+<Info>
+DriveWorks Administrator is a WPF host. Toolkit windows must marshal onto `Application.Current.Dispatcher` (or the parent window dispatcher) before creating or showing UI.
+</Info>
+
+## Tech stack (reference)
+
+Toolkit windows are built from layers already documented elsewhere. Read these before adding a new surface:
+
+| Layer                  | Role in windows                                                                           | Reference                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **WPF**                | Outer `Window`, shell `UserControl`, design tokens                                        | [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views)                             |
+| **WebView2**           | UI3 HTML/CSS/JS inside `ToolkitWebViewHostControl`                                        | [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui)                           |
+| **WinForms**           | Modal chrome for Rules Builder pickers (`ToolkitWebViewChromeForm`)                       | [WinForms WebView chrome](/driveworks/plugins/toolkit/architecture/winforms-webview-chrome) |
+| **Embedded WebAssets** | Scriban templates, `_shared` CSS/JS, virtual host `https://toolkit.webassets/`            | [Embedded assets](/driveworks/plugins/toolkit/architecture/assets-and-services)             |
+| **Bridge**             | `postMessage` actions between web UI and C# (`ToolkitWebBridgeActions`, feature handlers) | [WebView bridge](/driveworks/plugins/toolkit/architecture/webview-bridge)                   |
+| **Icons**              | Semantic keys → embedded PNG via `ToolkitIconLoader` / `ToolkitIconLoaderWpf`             | [Assets and services](/driveworks/plugins/toolkit/architecture/assets-and-services)         |
+
+Scriban page builders (for example `ScriptToolsWebViewPageBuilder`, picker HTML builders) live beside their feature under `Autex Toolkit/DWPlugin/`. Prefer extending an existing builder or partial before adding a parallel template tree.
+
+## Architecture overview
+
+| File / type                                                                            | Responsibility                                                                         |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `Autex Toolkit/DWPlugin/Views/*.xaml` + `*.xaml.cs`                                    | WPF window shells (`AutexToolsWindow`, `VersionControlWindow`, `GroupConstantsWindow`) |
+| `Autex Toolkit/DWPlugin/Views/*ShellView*.xaml.cs`                                     | Feature content inside the shell (`ScriptShellView`, `VcShellView`)                    |
+| `Autex Toolkit/DWPlugin/Presentation/Ui/ToolkitNativeHostShell.cs`                     | Reusable WPF chrome: content slot + optional native status row                         |
+| `Autex Toolkit/DWPlugin/Core/Ui/ToolkitWindowChromeState.cs`                           | Shared title/status model for WPF shell and WinForms chrome                            |
+| `Autex Toolkit/DWPlugin/Views/ToolkitWebViewChromeForm.cs`                             | WinForms outer host for modal WebView pickers                                          |
+| `Autex Toolkit/DWPlugin/WebView/ToolkitWebViewHostControl.cs`                          | WebView2 lifecycle, navigation, `WebMessageReceived`                                   |
+| `Autex Toolkit/DWPlugin/Views/ToolkitWebViewChromeForm.cs` (`ToolkitWin32WindowOwner`) | Win32 owner handle when showing a WinForms dialog over a WPF parent                    |
+
+**WPF workflow window shape:**
+
+```
+Window (XAML)
+  └── ToolkitNativeHostShell
+        └── ShellView UserControl (ScriptShellView, VcShellView, …)
+              └── ToolkitWebViewHostControl (WPF-hosted WebView2)
+```
+
+**WinForms picker shape:**
+
+```
+ToolkitWebViewChromeForm (Form)
+  └── ToolkitWebViewHostControl wrapped in WindowsFormsHost
+```
+
+`ToolkitWebViewHostControl.WrapInWindowsFormsHost` is **only** for WinForms parents. WPF shells host the WPF `ToolkitWebViewHostControl` directly (see comment in `ScriptShellView.WebViewBridge.cs`).
+
+## Opening a window from injected UI
+
+Windows are not self-registering. Something in Administrator must call your `ShowOrFocus()` or `Run()` entry point. Use the injection guide that matches where the user clicks:
+
+| Entry surface              | Guide                                                                                                                 | Toolkit examples                                                                                                                                                                                                                |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Command Manager toolbar    | [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)                   | **Autex Tools** → `AutexToolsWindow.ShowOrFocus()` in `OnAutexToolkitCommandInvoking`; **Version Control** → `VersionControlWindow.ShowOrFocus()` in `OnVersionControlCommandInvoking` (`ToolkitPlugin.CommandRegistration.cs`) |
+| Rules Builder toolbar      | [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)               | **Autex Icon** → `RulesBuilderAutexIconEntryPoint.Run` opens `AutexIconPickerWindow`                                                                                                                                            |
+| Left sidebar               | [Adding a Left Sidebar Menu Item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item)                        | **Group Constants** sidebar; optional `GroupConstantsWindow.ShowOrFocus()` from commands                                                                                                                                        |
+| Form Designer context menu | [Adding a Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) | Metaclass creation flows                                                                                                                                                                                                        |
+
+Typical Command Manager handler:
+
+```csharp
+private void OnMyFeatureCommandInvoking(object sender, CommandInvokeEventArgs e) {
+    try {
+        MyFeatureWindow.ShowOrFocus();
+    } catch (Exception ex) {
+        LogPluginError("Failed to open My Feature window.", ex);
+    }
+}
+```
+
+Typical Rules Builder handler delegates to an entry point that owns dialog lifetime and editor side effects.
+
+## Pattern A: WPF workflow window (singleton)
+
+Use for modeless tools the user may leave open: script browser, version control, group constants.
+
+### Shipping examples
+
+#### Autex Tools (`AutexToolsWindow`)
+
+- **Opens from:** Command Manager **Autex Tools** button.
+- **Shell:** `ScriptShellView` inside `ToolkitNativeHostShell.AttachTo(..., includeNativeStatusChrome: false)` because Script Tools renders its own Scriban status bar.
+- **Presenter:** `AutexToolsPresenter` coordinates script run/cancel on window close.
+- **Context refresh:** `RefreshContextFromDriveWorks()` called from plugin view lifecycle when Group/Project changes.
+
+#### Version Control (`VersionControlWindow`)
+
+- **Opens from:** Command Manager **Version Control** button.
+- **Shell:** `VcShellView` with native status chrome enabled.
+- **Refresh:** `RefreshContext()` on `Activated` and from plugin hooks when git state may have changed.
+
+Both windows share the same `ShowOrFocus()` contract:
+
+```csharp
+public static void ShowOrFocus() {
+    var dispatcher = Application.Current?.Dispatcher
+        ?? System.Windows.Threading.Dispatcher.CurrentDispatcher;
+    if (!dispatcher.CheckAccess()) {
+        dispatcher.BeginInvoke(new Action(ShowOrFocus));
+        return;
+    }
+    if (_instance == null) {
+        _instance = new MyFeatureWindow();
+        _instance.Show();
+    } else {
+        _instance.Activate();
+        _instance.WindowState = WindowState.Normal;
+    }
+}
+```
+
+Clear `_instance` on `Closed` so the next open creates a fresh window if needed.
+
+### Step-by-step: add a WPF workflow window
+
+#### 1. Add XAML window + code-behind
+
+Create `Autex Toolkit/DWPlugin/Views/MyFeatureWindow.xaml` and `MyFeatureWindow.xaml.cs`. Keep the XAML thin: a `ContentControl` named `MainContent` (or match `VersionControlWindow.xaml`).
+
+#### 2. Add a shell view
+
+Create `MyFeatureShellView.xaml` / `.xaml.cs` for feature layout. Initialize `ToolkitWebViewHostControl` in the shell, subscribe to `WebMessageReceived`, and navigate HTML from a page builder.
+
+Wire chrome updates through `ChromeStatePublisher`:
+
+```csharp
+_shellView.ChromeStatePublisher = state => {
+    _nativeShell.ApplyChromeState(state);
+    Title = state.TitleText;
+};
+```
+
+#### 3. Attach `ToolkitNativeHostShell`
+
+```csharp
+_shellView = new MyFeatureShellView();
+var initialChrome = ToolkitWindowChromeState.ForWorkflow("My Feature", string.Empty);
+_nativeShell = ToolkitNativeHostShell.AttachTo(MainContent, _shellView, initialChrome);
+Title = initialChrome.TitleText;
+```
+
+Set `includeNativeStatusChrome: false` when the WebView page already includes `statusbar.scriban.html`.
+
+#### 4. Expose `ShowOrFocus` and optional `Refresh*`
+
+Follow `AutexToolsWindow` / `VersionControlWindow`. Gate on prerequisites (for example `GroupConstantsWindow.ShowOrFocus` requires an open Group).
+
+#### 5. Register the open action
+
+Add a Command Manager command, Rules Builder button, or other injection handler that calls `MyFeatureWindow.ShowOrFocus()` (see table above).
+
+#### 6. Load window icon
+
+```csharp
+Icon = ToolkitIconLoaderWpf.LoadSemantic("Toolbar.MyFeature", 20, 20);
+```
+
+Add the semantic key to `DWPlugin/Assets/SemanticIconMap.json` and embed the PNG.
+
+## Pattern B: WinForms modal WebView picker
+
+Use when the window must block the parent, return `DialogResult`, and sit centered over a WPF Rules Builder window.
+
+### Shipping example: Autex Icon picker (`AutexIconPickerWindow`)
+
+- **Opens from:** Rules Builder **Autex Icon** toolbar button via `RulesBuilderAutexIconEntryPoint.Run`.
+- **Base class:** `ToolkitWebViewChromeForm` with `includeStatusChrome: false` in the constructor (`base(false)`).
+- **WebView:** `ToolkitWebViewHostControl("IconPicker", …)` wrapped with `WrapInWindowsFormsHost`, docked in `WebViewHostPanel`.
+- **Owner:** `dialog.ShowDialog(ToolkitWin32WindowOwner.FromWpfWindowOrNull(rulesBuilderWindow))`.
+- **Result:** read `SelectedPack`, `SelectedIcon`, etc. after `DialogResult.OK`; entry point inserts formula text via `RuleEditor.InsertValue`.
+- **Shutdown:** `FormClosed` sets a shutdown flag and calls `_webViewHost.Shutdown()`.
+
+Title and status use the same model as WPF shells:
+
+```csharp
+var chrome = ToolkitWindowChromeState.ForWorkflow(
+    "Icon Picker",
+    DriveWorksInterface.GetContextDisplayString() ?? string.Empty);
+ApplyToolkitChromeState(chrome);
+ApplyToolkitWindowIcon();
+```
+
+Other pickers (`MetaclassWebPickerWindow`, `GroupConstantWebPickerWindow`) follow the same WinForms chrome pattern.
+
+### Step-by-step: add a modal picker
+
+1. Subclass `ToolkitWebViewChromeForm` (partial class if the HTML builder is large).
+2. In the constructor: size/position, `ApplyToolkitWindowIcon()`, create `ToolkitWebViewHostControl`, wrap for WinForms, handle `WebMessageReceived`.
+3. Build HTML (often Scriban + embedded assets) and navigate on `Shown`.
+4. Expose selected values as properties; set `DialogResult` when the user confirms.
+5. Add a Rules Builder (or other) entry point that creates the dialog, calls `ShowDialog` with the correct owner, then applies the result to DriveWorks (insert rule text, set property, etc.).
+6. Register the entry point from [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button) or the matching injection guide.
+
+<Warning>
+Modal pickers opened from WPF must pass `ToolkitWin32WindowOwner.FromWpfWindowOrNull(parent)` so the dialog stays above the Rules Builder and minimizes with its owner.
+</Warning>
+
+## Shared concerns
+
+### `ToolkitWindowChromeState`
+
+Centralizes product name, workflow name, Group/Project context, and three status slots. `TitleText` becomes the window title. Shell views publish updates; the window applies them to `ToolkitNativeHostShell` or `ToolkitWebViewChromeForm.ApplyToolkitChromeState`.
+
+### WebView lifecycle
+
+- One `ToolkitWebViewHostControl` per host surface; unique `profileSegment` string per feature.
+- Navigate with `NavigateHtmlAsync` / `TryNavigateHtmlAsync` on the UI thread.
+- On close: unsubscribe handlers, call `Shutdown()`, guard async work with a shutdown flag (see `AutexIconPickerWindow`).
+- Assets load from embedded resources via `WebViewAssetLoader` (no loose `WebAssets` folder beside the DLL in production).
+
+### Threading and errors
+
+- Marshal to the WPF dispatcher before `Show`, `ShowDialog`, or control mutations.
+- Log boundary failures with `ToolkitLog` / Serilog; show `MessageBox` with a short user-safe message at entry points (match `OnAutexToolkitCommandInvoking`).
+- Long work belongs off the UI thread; post results back to refresh WebView or status chrome.
+
+### Context refresh
+
+If the window shows Group or Project context, add a static `Refresh*` method and call it from `ToolkitPlugin.ViewLifecycle` / `ContextRefresh` the same way `AutexToolsWindow.RefreshContextFromDriveWorks` and `VersionControlWindow.RefreshContext` are wired.
+
+## Build and verify
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+1. Open DriveWorks Administrator.
+2. Trigger the window from the injection point you added (command bar, Rules Builder, etc.).
+3. Confirm singleton behavior: second click focuses the existing window.
+4. For modals: confirm owner centering, OK/Cancel, and that the parent receives the expected side effect.
+5. Change Group/Project and confirm context/status updates if applicable.
+6. Close and reopen; confirm WebView shuts down without duplicate hosts or log spam.
+
+## Related
+
+- [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)
+- [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)
+- [Adding a Left Sidebar Menu Item](/driveworks/plugins/toolkit/injection/add-sidebar-menu-item)
+- [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views)
+- [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui)
+- [WinForms WebView chrome](/driveworks/plugins/toolkit/architecture/winforms-webview-chrome)
+- [WebView bridge](/driveworks/plugins/toolkit/architecture/webview-bridge)
+- [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

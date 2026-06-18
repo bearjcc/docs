@@ -1,0 +1,72 @@
+---
+title: DriveWorks Training
+sidebarTitle: Debugging
+description: Training notes for debugging and model generation automation.
+---
+
+
+## Debugging
+
+Use Specification Explorer and Model Insight to step through rule evaluation and model generation.
+
+## Automate Model Generation Tasks
+
+### General Rules
+
+- Avoid over-defining assemblies with every possible option.
+- Prefer modular captured models with conditional inclusion.
+- Keep model and data logic separated where possible.
+
+### Generation Task Fundamentals
+
+- Type-specific and model-specific tasks can both run on a component.
+- Type-specific tasks run first, then model-specific tasks.
+- Looping applies to model-level task scopes.
+
+### Conditions
+
+- Specification conditions decide task inclusion.
+- Generation conditions decide task execution.
+
+### Typical Sequence
+
+1. Pre-Copy
+2. Copy
+3. Post-Copy
+4. Preparation
+5. Pre-Drive
+6. Main Drive
+7. Post-Drive
+8. Finish
+9. Post-Close
+
+## Drawing Automation
+
+### Best Practices
+
+- Prefer more drawings with fewer sheets for maintainability.
+- Defer drawing generation when 3D output is prioritized.
+- Capture annotation names and positions clearly for rule-driven updates.
+
+### Recommended Task Timing
+
+- Rescale and position view: Pre-Drive.
+- Set annotation position: Post-Drive.
+- Auto balloon generation: Post-Drive.
+- General table creation before general table drive tasks.
+
+## Robust Project Structure
+
+### Principles
+
+- Modular design
+- Single point of change
+- Data-driven rules and tables
+- Obvious naming and folder structure
+
+### Naming
+
+- Use `Is...` for boolean values.
+- Use `List...` for list values.
+- Use `Table...` for table values.
+- Include units in names where relevant.

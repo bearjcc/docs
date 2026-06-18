@@ -1,0 +1,173 @@
+---
+title: Adding a Virtual Split Command Button
+sidebarTitle: Adding a Virtual Split Command Button
+description: How to add a DriveWorks Administrator command bar split button with a dynamic dropdown, using Form Designer Convert as the Autex Toolkit example.
+---
+
+
+
+This guide explains how the Autex Toolkit plugin adds a **Convert** split button to the **Form Designer** command bar. The dropdown lists compatible target control types for the current single-control selection. Items are built at open time, not declared as static command bar buttons.
+
+Use this pattern when one toolbar affordance should offer several related actions that depend on runtime context (selection, project state, or a computed target list).
+
+## When to use this pattern
+
+Use a virtual split command button when:
+
+- the action set changes per selection (convert targets, export formats, etc.)
+- you want one command bar control with a dropdown, not a row of separate buttons
+- the host view exposes `ICommandBarManager` and `ISelectionSite` (Form Designer does; some views do not)
+
+Use a plain command button when there is a single fixed action (see [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)).
+
+Use a **context menu** when the action belongs on right-click in the designer surface (see [Adding a Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item)). Toolkit ships both Convert toolbar and Convert context menu paths; they share `ChangeFormControlTypeAction`.
+
+<Info>
+Virtual split buttons use the official `IVirtualSplitCommandButton` API. Dropdown population runs in your `DropDownOpening` handler.
+</Info>
+
+## Architecture overview
+
+| Layer                  | Responsibility                                          | Key files                                                                                                  |
+| ---------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Toolbar attach**     | Register command, create split button, subscribe events | `ToolkitPlugin.CommandRegistration.cs` (`TryAttachConvertToolbar`)                                         |
+| **Dropdown items**     | Read selection; build `VirtualItemData[]`               | `OnConvertDropDownOpening`                                                                                 |
+| **Apply action**       | Run conversion on `VirtualItemSelected`                 | `OnConvertVirtualItemSelected`, `ChangeFormControlTypeAction`                                              |
+| **Designer stability** | Clear selection before delete to avoid host crashes     | `ClearFormDesignerSelectionSoViewRefreshes`, conversion event handlers in `ToolkitPlugin.ViewLifecycle.cs` |
+
+**Attach entry point:** `TryAttachCommandsToView` calls `TryAttachConvertToolbar(view)` when `viewName == AdministratorViewNames.FormDesigner` and the view has both `CommandManager` and `CommandBarManager`.
+
+## Step-by-step: add a virtual split button
+
+### 1. Define command name constant
+
+In `ToolkitPlugin.CommandRegistration.cs`:
+
+```csharp
+private const string MySplitCommandName = "Autex Toolkit.MySplitFeature";
+```
+
+### 2. Register the backing command
+
+Virtual split buttons still require an `ICommand` registration:
+
+```csharp
+var cmd = cmdMgr.RegisterCommand(
+    MySplitCommandName,
+    StateFilter.Empty,
+    "My Split",
+    (ImageHandle)null);
+```
+
+The command title is the split button label. Icon can be null if the group supplies imagery.
+
+### 3. Create the split button on a command bar group
+
+```csharp
+var group = barMgr.AddGroup("My Group");
+var splitBtn = group.AddVirtualSplitCommandButton(
+    MySplitCommandName,
+    commandContext: null,
+    displayHint: CommandBarDisplayHint.LargeAndText,
+    unavailableBehavior: CommandUnavailableBehavior.Hide);
+var virtualSplit = splitBtn as IVirtualSplitCommandButton;
+if (virtualSplit == null)
+    return;
+```
+
+Form Designer Convert uses a dedicated **Convert** group rather than the **Autex Toolkit** group so it sits beside native designer commands.
+
+### 4. Handle DropDownOpening
+
+Subscribe to `DropDownOpening` and populate `VirtualItemsRequestEventArgs.Items`:
+
+```csharp
+virtualSplit.DropDownOpening += OnMySplitDropDownOpening;
+
+private void OnMySplitDropDownOpening(object sender, VirtualItemsRequestEventArgs e) {
+    _pendingContext = null;
+    e.Items = Array.Empty<VirtualItemData>();
+
+    var view = _viewManager?.ActiveView;
+    if (!(view is ISelectionSite site))
+        return;
+    // Validate selection, project open, etc.
+    // Build VirtualItemData(displayName, imageHandle, tag) per item
+    e.Items = items.ToArray();
+}
+```
+
+Macro pattern from Convert:
+
+- require exactly one selected `ControlBase`
+- stash control name and type in fields for the click handler
+- set `Tag` on each `VirtualItemData` to the machine value (target type name)
+
+### 5. Handle VirtualItemSelected
+
+```csharp
+virtualSplit.VirtualItemSelected += OnMySplitVirtualItemSelected;
+
+private void OnMySplitVirtualItemSelected(object sender, VirtualItemSelectedEventArgs e) {
+    var tag = e?.Item?.Tag as string;
+    if (string.IsNullOrEmpty(tag) || _pendingContext == null)
+        return;
+    // Run feature using stashed context + tag
+}
+```
+
+### 6. Track handlers for disposal
+
+Store `(IVirtualSplitCommandButton, ICommand, ICommandManager)` tuples in a list. On plugin dispose, unsubscribe `DropDownOpening` and `VirtualItemSelected` from each split button (see `DisposeCommandRegistration` in `ToolkitPlugin.CommandRegistration.cs`).
+
+### 7. Coordinate with host lifecycle quirks
+
+Form control conversion deletes and recreates controls. DriveWorks Form Designer can throw if selection still references the deleted control. Toolkit:
+
+- subscribes to `ChangeFormControlTypeAction.AboutToDeleteFormControl` and clears designer selection on the UI thread before delete
+- clears selection again after conversion completes
+- calls `project.Save()` when conversion succeeds
+
+Apply similar guards when your dropdown action mutates the object the designer still has selected.
+
+### 8. Build and verify
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+Manual checks on **Form Designer**:
+
+1. Select one convertible control (for example **Text Box**).
+2. Open the **Convert** split button; dropdown lists valid targets.
+3. Pick a target; control type changes and the **Project** saves.
+4. Select zero or multiple controls; dropdown is empty or button hides per `CommandUnavailableBehavior`.
+5. Repeat conversion; no duplicate handlers or duplicate toolbar buttons after navigating away and back.
+
+## Shipping example: Form Designer Convert
+
+| Item          | Value                                                                |
+| ------------- | -------------------------------------------------------------------- |
+| Command name  | `Autex Toolkit.ConvertFormControl`                                   |
+| View          | `AdministratorViewNames.FormDesigner`                                |
+| Group title   | Convert                                                              |
+| Item source   | `ChangeFormControlTypeAction.GetConvertibleTargets(currentTypeName)` |
+| Display names | `ChangeFormControlTypeAction.ConvertTypeDisplayNames`                |
+| Apply         | `ChangeFormControlTypeAction.RunConvert(...)`                        |
+
+Supported targets and display names live in `ChangeFormControlTypeAction.cs`. Extend that graph when adding new convert pairs rather than hard-coding types in the toolbar handler.
+
+## Under the hood (DriveWorks SDK)
+
+- `ICommandBarGroup.AddVirtualSplitCommandButton(...)` returns a control implementing `IVirtualSplitCommandButton`.
+- `DropDownOpening` receives `VirtualItemsRequestEventArgs` with an `Items` array of `VirtualItemData`.
+- `VirtualItemSelected` fires when the user picks a dropdown row; `VirtualItemData.Tag` carries opaque context.
+- `ISelectionSite.SelectedItems` supplies Form Designer selection as `ControlBase` instances.
+
+## Related
+
+- [Adding a Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item) — Convert submenu on right-click
+- [Form Designer tools](/driveworks/plugins/toolkit/form-designer-tools) — operator guide for Convert
+- [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button) — fixed single-action buttons
+- [Injection guides index](/driveworks/plugins/toolkit/injection)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

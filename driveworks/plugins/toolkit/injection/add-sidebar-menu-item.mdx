@@ -1,0 +1,203 @@
+---
+title: Adding a Left Sidebar Menu Item
+sidebarTitle: Adding a Left Sidebar Menu Item
+description: How to register a custom view in the DriveWorks Administrator left sidebar (ToDo tree) through the Autex Toolkit plugin, with Group Constants as the shipping example.
+---
+
+
+
+This guide explains how the Autex Toolkit plugin adds links to the **left sidebar** in DriveWorks Administrator (the ToDo tree and its content host). Use this pattern when a feature should live beside native Administrator views such as **Group Setup**, not in the Command Manager or Rules Builder.
+
+The shipping example is **Group Constants**: a sidebar entry under **Group Setup** that hosts the same WebView2 surface as the standalone Group Constants window.
+
+## When to use this pattern
+
+Use Administrator sidebar injection when your feature:
+
+- belongs to a **Group** or **Project** workflow area already represented in the left tree
+- should stay visible while the user navigates other Administrator views in the same section
+- needs a persistent content pane (WinForms `ViewControl`, WPF/WebView2 host, or static HTML)
+
+Use other injection surfaces when the context differs:
+
+- **Command Manager** registration for shell-wide toolbar commands (see [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)).
+- **Rules Builder** toolbar injection for rule-editing actions (see [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)).
+- **Form Designer** context menu injection for designer selection actions (see [Adding a Form Designer Context Menu Item](/driveworks/plugins/toolkit/injection/add-form-designer-context-menu-item)).
+
+<Info>
+Toolkit is an `IApplicationPlugin`. DriveWorks does not expose `IViewRegistrationService` on `ServiceManager` for that host type, so sidebar registration goes through `AdministratorSidebarViewInjection`, which calls `ApplicationViewManager.InsertControlViewAfter` / `InsertHtmlViewAfter` by reflection when the service path is unavailable.
+</Info>
+
+## Architecture overview
+
+| File                                                                  | Responsibility                                                                          |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `Autex Toolkit/DWPlugin/Sidebar/AdministratorSidebarViewInjection.cs` | Central registry, deferred registration, reflection/service fallback, `TryActivateView` |
+| `Autex Toolkit/DWPlugin/Sidebar/GroupConstantsSidebarRegistration.cs` | Declares view name, title, tree placement, icon, and `ViewControl` type                 |
+| `Autex Toolkit/DWPlugin/Sidebar/GroupConstantsSidebarViewControl.cs`  | `ViewControl` host: WebView2, no-group overlay, visibility lifecycle                    |
+| `Autex Toolkit/DWPlugin/GroupConstants/GroupConstantsSurfaceHost.cs`  | Shared WebView state and mutations for sidebar and window hosts                         |
+| `Autex Toolkit/DWPlugin/Plugin/ToolkitPlugin.Initialize.cs`           | Calls `Initialize` once, then each feature `Register()`                                 |
+
+**Bootstrap order** in `RegisterAdministratorIntegrations`:
+
+1. `AdministratorSidebarViewInjection.Initialize(application)`
+2. `Sidebar.GroupConstantsSidebarRegistration.Register()` (and future `*SidebarRegistration.Register()` calls)
+
+`RegisterControlView` / `RegisterHtmlView` are safe to call before or after `Initialize`; queued registrations flush when the view manager is ready.
+
+## Registration API
+
+`AdministratorSidebarViewInjection` exposes two queue methods. Both take:
+
+| Parameter                        | Purpose                                                                                                               |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `viewName`                       | Stable internal name (for example `AutexGroupConstants`). Used by `IViewManager.ActivateView` and idempotency checks. |
+| `title`                          | Label shown in the left sidebar tree.                                                                                 |
+| `parentViewName`                 | Parent section (for example `AdministratorViewNames.GroupSetup`).                                                     |
+| `afterViewName`                  | Existing sibling view to insert after (ordering within the parent).                                                   |
+| `semanticIconKey` or `imageName` | Sidebar icon. Prefer `semanticIconKey` (resolved to `embedded://…` PNG via `ToolkitIconLoader`).                      |
+| `stateFilter`                    | Optional visibility filter. Defaults to `StandardStates.GroupLoadedStateFilter` when omitted.                         |
+
+### Control view (`RegisterControlView`)
+
+Hosts a `DriveWorks.Applications.ViewControl` subclass in the content area. Use this for interactive surfaces (WebView2, WinForms, hybrid WPF hosts).
+
+### HTML view (`RegisterHtmlView`)
+
+Hosts a static HTML file path/URI through DriveWorks `InsertHtmlViewAfter`. Use for simple read-only pages without a custom `ViewControl`. No shipping Toolkit sidebar uses this yet; the API is ready for lightweight panels.
+
+## Step-by-step: add a new sidebar item
+
+### 1. Choose tree placement
+
+Pick `parentViewName` and `afterViewName` from `DriveWorks.Applications.Administrator.Extensibility.AdministratorViewNames` (or the equivalent string literals used elsewhere in Toolkit). Group Constants inserts under **Group Setup** after **Drive App Administration**:
+
+```csharp
+parentViewName: AdministratorViewNames.GroupSetup,
+afterViewName: AdministratorViewNames.DriveAppAdministration,
+```
+
+If the sibling name is wrong or not yet registered when Toolkit runs, registration retries on `Application.Idle` and `IViewManager.ActiveViewChanged` until `ViewExists(viewName)` succeeds or the host gives up logging warnings.
+
+### 2. Add a registration class
+
+Create `Autex Toolkit/DWPlugin/Sidebar/MyFeatureSidebarRegistration.cs`:
+
+```csharp
+using DriveWorks.Applications.Administrator.Extensibility;
+
+namespace Autex.Toolkit.Sidebar {
+    internal static class MyFeatureSidebarRegistration {
+        public const string ViewName = "AutexMyFeature";
+
+        public static void Register() {
+            AdministratorSidebarViewInjection.RegisterControlView(
+                viewName: ViewName,
+                title: "My Feature",
+                parentViewName: AdministratorViewNames.GroupSetup,
+                afterViewName: AdministratorViewNames.DriveAppAdministration,
+                viewControlType: typeof(MyFeatureSidebarViewControl),
+                semanticIconKey: "Toolbar.MyFeature");
+        }
+    }
+}
+```
+
+Export `ViewName` as a `public const` when other code should activate the view programmatically.
+
+### 3. Implement `ViewControl`
+
+Create `MyFeatureSidebarViewControl.cs` beside the registration file. Subclass `ViewControl` and override `InitializeCore()`:
+
+```csharp
+internal sealed class MyFeatureSidebarViewControl : ViewControl {
+    protected override void InitializeCore() {
+        base.InitializeCore();
+        // Build child controls (WinForms host, labels, ToolkitWebViewHostControl, etc.)
+    }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            // Unsubscribe events, dispose WebView/surface hosts
+        }
+        base.Dispose(disposing);
+    }
+}
+```
+
+Match existing hosts: dock child controls, gate on `Visible` / group state, and log boundary failures with `ToolkitLog` rather than throwing into Administrator.
+
+### 4. Wire startup registration
+
+In `ToolkitPlugin.Initialize.cs` → `RegisterAdministratorIntegrations`, after `AdministratorSidebarViewInjection.Initialize(application)`:
+
+```csharp
+Sidebar.MyFeatureSidebarRegistration.Register();
+```
+
+Keep one `Register()` call per feature; do not call `InsertControlViewAfter` directly from plugin code.
+
+### 5. Add sidebar icon mapping
+
+Add a semantic key to `Autex Toolkit/DWPlugin/Assets/SemanticIconMap.json` and embed the PNG under `DWPlugin/Assets/Icons/` (already included as `EmbeddedResource` by the csproj). Sidebar icons resolve through `ToolkitIconLoader.TryResolveSidebarEmbeddedImageName`, which emits DriveWorks `embedded://` image names for the registering module assembly.
+
+### 6. Build and verify
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+Open DriveWorks Administrator, connect to a **Group**, and confirm:
+
+1. The new link appears under the expected parent section at the expected position.
+2. Clicking it loads your content host without duplicate tree entries after restart.
+3. Visibility matches your `stateFilter` (default: requires a loaded Group).
+4. Serilog / Toolkit JSONL shows `AdministratorSidebar` registration success, not repeated reflection warnings.
+
+## Existing example: Group Constants
+
+### Registration
+
+`GroupConstantsSidebarRegistration` registers view name `AutexGroupConstants`, title **Group Constants**, under `AdministratorViewNames.GroupSetup` after `AdministratorViewNames.DriveAppAdministration`, with icon key `Toolbar.GroupConstants`.
+
+### View control host
+
+`GroupConstantsSidebarViewControl`:
+
+- creates `ToolkitWebViewHostControl("GroupConstantsSidebar", …)` wrapped in a WinForms host
+- attaches `GroupConstantsSurfaceHost` (shared with `GroupConstantsWindow`)
+- shows a `_noGroupLabel` overlay when no Group is open
+- on `VisibleChanged`, registers/unregisters the active surface and calls `SetGroup(DriveWorksInterface.GetActiveGroup())`
+
+This keeps sidebar and floating window on one mutation/read path (`GroupConstantsSurfaceHost` + `GroupConstantsStore`), aligned with compute-once doctrine.
+
+### Operator docs
+
+End-user workflow for the feature itself: [Group Constants](/driveworks/plugins/toolkit/group-constants). WebView assets: [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui).
+
+## Activating a view from code
+
+Call `AdministratorSidebarViewInjection.TryActivateView(viewName)` to switch the content host to a registered sidebar view (returns `false` when the view manager is unavailable or the name is unknown). Use the same `viewName` constant as registration.
+
+## Under the hood (DriveWorks SDK)
+
+Toolkit ultimately calls one of:
+
+- **`IViewRegistrationService.InsertControlViewAfter`** / **`InsertHtmlViewAfter`** when the service is present (typical for `IApplicationModule` hosts)
+- **`ApplicationViewManager.InsertControlViewAfter`** / **`InsertHtmlViewAfter`** via reflection for `IApplicationPlugin` (Administrator Toolkit path), passing a lightweight `SidebarRegistrationModule` implementing `IApplicationModule`
+
+After a successful insert, Toolkit calls `RaiseViewsUpdated` (or the module equivalent) so the left tree refreshes.
+
+Parameters mirror DriveWorks placement: module owner, `afterViewName`, new `viewName`, display `title`, `parentViewName`, `imageName`, `stateFilter`, then either `Type` (`ViewControl`) or HTML path.
+
+Because placement APIs are partially internal, parent/sibling view names can shift between DriveWorks versions. Keep registration centralized in `AdministratorSidebarViewInjection` and feature-specific `*SidebarRegistration` types so retries and logging stay consistent.
+
+## Related
+
+- [Group Constants](/driveworks/plugins/toolkit/group-constants) — operator guide for the sidebar example
+- [WebView UI](/driveworks/plugins/toolkit/architecture/webview-ui) — embedded WebAssets and `ToolkitWebViewHostControl`
+- [WPF Views](/driveworks/plugins/toolkit/architecture/wpf-views) — `GroupConstantsWindow` and other Toolkit windows
+- [Plugin Entry](/driveworks/plugins/toolkit/architecture/plugin-entry) — plugin bootstrap and lifecycle
+- [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)
+- [Adding a Rules Builder Toolbar Button](/driveworks/plugins/toolkit/injection/add-rules-builder-button)
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

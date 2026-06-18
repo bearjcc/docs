@@ -1,0 +1,61 @@
+---
+title: WeCantSpell.Hunspell
+sidebarTitle: What it is
+description: Managed Hunspell spell-checker for .NET; powers offline Rules Builder and name-check spelling in Autex Toolkit.
+---
+
+
+**WeCantSpell.Hunspell** is the managed Hunspell implementation Autex Toolkit uses for spell checking inside **DriveWorks Administrator**. It runs in-process with embedded dictionary assets, so spelling does not depend on Microsoft Office or other host APIs.
+
+## What it is
+
+[WeCantSpell.Hunspell](https://www.nuget.org/packages/WeCantSpell.Hunspell) is a .NET library that implements the [Hunspell](https://hunspell.github.io/) dictionary format (`.aff` affix rules plus `.dic` word lists). Toolkit uses it for word lookup, segmentation, and suggestions against an embedded **en-GB** base dictionary.
+
+## Install
+
+Package reference in `Autex Toolkit\DWPlugin\Autex Toolkit.csproj`:
+
+| Package | Version |
+| --- | --- |
+| WeCantSpell.Hunspell | 5.0.1 |
+
+Dictionary assets ship as embedded resources in the same project:
+
+| File | Role |
+| --- | --- |
+| `Resources\en_GB.aff` | Hunspell affix rules |
+| `Resources\en_GB.dic` | Base word list |
+
+Maintainers build with **`Build.ps1`**. End users receive the library and dictionaries inside **`Autex Toolkit.dll`** (via Costura.Fody), not as separate files beside the plugin.
+
+<Info>
+Confirm licensing when adding or changing `.aff` / `.dic` resources.
+</Info>
+
+## Official links
+
+- [WeCantSpell.Hunspell on NuGet](https://www.nuget.org/packages/WeCantSpell.Hunspell)
+- [Hunspell](https://github.com/hunspell/hunspell) — upstream dictionary format and tooling
+
+## Usage in Toolkit
+
+| Area | Entry point |
+| --- | --- |
+| **Rules Builder** | `RulesBuilderSpellCheckEntryPoint` — Spell Check button, context-menu suggestions on string literals |
+| **Spell check core** | `SpellingDictionary` — loads embedded Hunspell, merges Group custom words and mappings |
+| **Autex Tools script** | **Check names (PascalCase & spelling)** (`CheckNames.cs`) — scans item names and Rule operands |
+
+Group-level overrides (`CustomWords.txt`, `AcronymPrefixes.txt`, `CustomSpellingMappings.csv`) live under the Group content `AutexToolkit` folder; see the feature page for workflows and limits.
+
+For administrators: [Autex Toolkit — Spell checker](/driveworks/plugins/toolkit/spell-checker).
+
+## Why we picked it
+
+- **Offline:** Spell check works inside **DriveWorks Administrator** without Word, Outlook, or other Office spell APIs.
+- **Dictionary ecosystem:** Hunspell `.aff` / `.dic` pairs are widely available (for example en-GB), with a clear path to swap or extend base dictionaries.
+- **Small managed surface:** One NuGet dependency fits .NET Framework 4.8 and embeds cleanly with other Toolkit libraries.
+
+## Related
+
+- [Autex Toolkit tech stack](/driveworks/plugins/toolkit/tech-stack)
+- [Autex Toolkit — Spell checker](/driveworks/plugins/toolkit/spell-checker)

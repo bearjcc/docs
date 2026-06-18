@@ -1,0 +1,948 @@
+---
+title: AutexCustom
+sidebarTitle: AutexCustom
+description: Autex assembly adding custom functions for Rules, Specification Flow tasks, and Project output types (DXF, PDF integration) alongside Administrator workflows.
+---
+
+
+
+### Overview
+
+**AutexCustom** extends DriveWorks with **custom functions** for **Rule Builder**, **Specification Flow** tasks (operations, transitions, and related pickers), and extra **ProjectDocument** output types. Typical uses include user and team-aware checks, regional time and country helpers, machine timing helpers, Pantone and RAL color hex lookups, image path resolution for forms, and integrated document generation where the assembly references other Autex deliverables (for example PDF export).
+
+### Where it appears
+
+- **Rules:** **Functions** list in **Rule Builder** (per-function names below).
+- **Specification Flow:** task and condition property pickers (names shown as **As task** where applicable).
+- **Project outputs:** document designers registered by the assembly (see sections below for document types).
+
+### Assembly and deploy
+
+**Assembly:** `AutexCustom.dll`. It is a **separate deployable** from the Autex Toolkit plugin; install and register per your Autex deployment guide and `AutexCustom/Build.ps1` output layout.
+
+### AutexCustomPluginLoaded
+
+- **Availability:** Function
+- **Inputs:** none
+- **Output:** Boolean, always true when the assembly is loaded (sanity flag in Rules).
+
+#### Example
+
+```text
+AutexCustomPluginLoaded()
+```
+
+### AutexIsRunningInAdministrator
+
+- **Availability:** Function
+- **Inputs:** none
+- **Output:** Boolean, true when the host is DriveWorks Administrator (not Live / Live runtime).
+
+#### Example
+
+```text
+AutexIsRunningInAdministrator()
+```
+
+### AutexConvertLinearToMM
+
+- **Availability:** Both
+- **As Function**
+  - **Inputs:** `length` (Number); optional `roundTo` (Number, 0 = no rounding)
+  - **Output:** Number, length in mm. If the current user resolves as US (team-based), treats `length` as inches and converts to mm; otherwise passes mm through. Uses the open Project’s Group for user resolution.
+
+#### Example
+
+```text
+AutexConvertLinearToMM(10,0)
+```
+
+- **As task** (picker: **Autex Convert Linear to mm**)
+  - **Inputs:** Length, RoundTo (task properties)
+  - **Outputs:** Length (Number)
+
+### AutexConvertMMToLinear
+
+- **Availability:** Both
+- **As Function**
+  - **Inputs:** `length` (Number, mm); optional `roundTo` (Number)
+  - **Output:** Number, “linear” units: inches when current user is US; otherwise mm unchanged.
+
+#### Example
+
+```text
+AutexConvertMMToLinear(254,0)
+```
+
+- **As task** (picker: **Autex Convert mm to Linear**)
+  - **Inputs:** Length, RoundTo
+  - **Outputs:** Length (Number)
+
+### AutexIsUserIn
+
+- **Availability:** Both
+- **As Function**
+  - **Inputs:** `username` (String); `criteria1` (String); optional `criteria2` (String). Criteria: two-letter region code treated as team-name prefix (NZ, AU, US, UK per internal map) or arbitrary substring on team name. When `criteria2` is set, both must match.
+  - **Output:** Boolean
+
+#### Example
+
+```text
+AutexIsUserIn("john.doe","US")
+```
+
+- **As task** (picker: **Autex Is User In**)
+  - **Inputs:** Username, Criteria1, Criteria2 (blank Criteria2 allowed)
+  - **Outputs:** Result (Boolean). Blank username or Criteria1 fails the task.
+
+### AutexIsCurrentUserIn
+
+- **Availability:** Both
+- **As Function**
+  - **Inputs:** `criteria1` (String); optional `criteria2` (String). Same matching rules as `AutexIsUserIn`.
+  - **Output:** Boolean
+
+#### Example
+
+```text
+AutexIsCurrentUserIn("US")
+```
+
+- **As task** (picker: **Autex Is Current User In**)
+  - **Inputs:** Criteria1, Criteria2
+  - **Outputs:** Result (Boolean)
+
+### AutexNowLocal
+
+- **Availability:** Both
+- **As Function**
+  - **Inputs:** none, or `username` (String) for that user’s region-based clock
+  - **Output:** String, local time `dd MMM yyyy HH:mm` in the Windows time zone inferred from team membership (stable priority NZ, AU, US, UK when multiple region codes appear).
+
+#### Example
+
+```text
+AutexNowLocal()
+```
+
+- **As task** (picker: **Autex Now Local**)
+  - **Inputs:** `username` (optional; blank = current user)
+  - **Outputs:** Local Time (String)
+- **Details:** [Now Local reference](/driveworks/plugins/autexcustom/now-local)
+
+### AutexMachineMovementTime
+
+- **Availability:** Both
+- **As Function:** `AutexMachineMovementTime(distance,maxVelocity,acceleration,dwellTime,quantity)`
+- **Output:** Number, seconds
+
+#### Example
+
+```text
+AutexMachineMovementTime(1000,500,100,0.5,2)
+```
+
+- **As task** (picker: **Autex Machine Movement Time**):
+  - **Inputs:** distance, maxVelocity, acceleration, dwellTime, quantity
+  - **Outputs:** Time (Number)
+- **Details:** [Machine Movement Time reference](/driveworks/plugins/autexcustom/machine-movement-time)
+
+### AutexGetUserState
+
+- **Availability:** Function
+- **Inputs:** `country` (String, two-letter). For `AU` only, scans current user’s team names for Australian state tokens (WA, NSW, QLD, VIC, TAS, SA, ACT, NT). Other countries return empty string from this Function.
+- **Output:** String (state code or empty)
+
+#### Example
+
+```text
+AutexGetUserState("AU")
+```
+
+- **Details:** [User country and region](/driveworks/plugins/autexcustom/user-country-and-region)
+
+### AutexGetUserCountry
+
+- **Availability:** Both (Function + task with different wiring)
+- **As Function**
+  - **Inputs:** none
+  - **Output:** String, two-letter country code (NZ, AU, US, UK) from team membership / Login Group constant resolution (`Common.GetUserCountry`). On unexpected error the extender returns `"NZ"`.
+
+#### Example
+
+```text
+AutexGetUserCountry()
+```
+
+- **As task** (picker: **Autex User Country**)
+  - **Inputs:** none (uses Specification context)
+  - **Outputs:** Country (String)
+- **Details:** [User country and region](/driveworks/plugins/autexcustom/user-country-and-region)
+
+### Autex Get User State
+
+- **Availability:** Task (picker: **Autex Get User State**). Differs from the `AutexGetUserState` Function: task resolves country from Specification context, then state.
+- **Inputs:** none
+- **Outputs:** State (String), Australian state when country resolves to AU; otherwise empty
+- **Details:** [User country and region](/driveworks/plugins/autexcustom/user-country-and-region)
+
+### AutexImageSwatch
+
+- **Availability:** Function
+- **Inputs:** `fileName` (String). Resolved under the Group’s content folder `Assets\Swatches`. Extension optional; tries `.svg`, `.png`, `.jpg`, `.bmp`.
+- **Output:** String, full path, or `#REF! File does not exist`
+
+#### Example
+
+```text
+AutexImageSwatch("Oak")
+```
+
+### AutexImageProductView
+
+- **Availability:** Function
+- **Inputs:** `fileName` (String), under `Assets\ProductViews` with the same extension rules as swatches.
+- **Output:** String, full path, or `#REF! File does not exist`
+
+#### Example
+
+```text
+AutexImageProductView("Widget-A")
+```
+
+### AutexGetLocalised
+
+- **Availability:** Function
+- **Inputs:** `key` (String); optional `region` (String). Reads Group table named `TextStrings` or `DWGroupTableTextStrings`: column 0 = key, column 1 = default, header row columns 2+ = region codes (NZ, AU, US, UK). Empty `region` uses current user’s resolved country for the Project.
+- **Output:** String, cell text, or `#REF!` / `#KEY!` prefixed errors (including “did you mean …” when a value matches a non-key column)
+
+#### Example
+
+```text
+AutexGetLocalised("Title")
+```
+
+### AutexPolygonCreateRoundedBox
+
+- **Availability:** Function
+- **Overload A**
+  - **Inputs:** `x`, `y`, `width`, `height` (Number, mm); `cornerRadius` (Number or pipe list `topLeft|topRight|bottomRight|bottomLeft`); `segments` (Number)
+  - **Output:** Table/array value of `x|y` points, or `#INVALIDINPUT!` / `#VALUE!` string on failure
+- **Overload B**
+  - **Inputs:** `x`, `y`, `width`, `height`; `radiusTopLeft`, `radiusTopRight`, `radiusBottomRight`, `radiusBottomLeft`; `segments`
+  - **Output:** same as overload A
+
+#### Example
+
+```text
+AutexPolygonCreateRoundedBox(0,0,100,50,5,8)
+```
+
+### AutexCircleFromThreePoints
+
+- **Availability:** Function
+- **Inputs:** `pointsList` (String), `x1,y1|x2,y2|x3,y3`
+- **Output:** String `cx|cy|r` (invariant culture) or `#INVALIDINPUT!` / `#VALUE!` if collinear or bad input
+
+#### Example
+
+```text
+AutexCircleFromThreePoints("0,0|100,0|50,80")
+```
+
+### AutexCoMTriangle
+
+Returns the **centroid** (center of mass) of a triangle in **millimetres**, using the same **Y-down** nest convention as **Autex Slab Packing** (`PartRotation` about the origin). Useful for label anchors, form layout, and rules that need a point inside the shape rather than the bounding-box centre.
+
+- **Availability:** Function (three overloads; **Autex Custom Functions**)
+- **Output:** String `x|y` (invariant culture), or `#INVALIDINPUT!` when dimensions are invalid or the three scalene sides do not form a triangle
+
+#### Overloads
+
+| Overload | Arguments                             | Triangle type | At rotation 0                                                                                                                         |
+| -------- | ------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| A        | `side`, `rotation`                    | Equilateral   | Base horizontal on the x-axis; apex at the top                                                                                        |
+| B        | `length`, `width`, `rotation`         | Right         | Right angle at `(0,0)`; `length` = vertical leg, `width` = horizontal leg on the x-axis (matches Slab Packing **Length** / **Width**) |
+| C        | `side1`, `side2`, `side3`, `rotation` | Scalene       | Base `side1` on the x-axis from `(0,0)` to `(side1,0)`; third vertex below the base (positive Y-down)                                 |
+
+Slab Packing does **not** accept arbitrary scalene triangles in the parts table; overload C is for general rules and geometry outside the packer.
+
+#### Mathematics
+
+Vertices \((x_1,y_1)\), \((x_2,y_2)\), \((x_3,y_3)\) in local mm (Y-down). The centroid is the arithmetic mean of the vertices:
+
+$$
+\bar\{x\} = \frac\{x_1 + x_2 + x_3\}\{3\}, \qquad \bar\{y\} = \frac\{y_1 + y_2 + y_3\}\{3\}
+$$
+
+**Rotation** \(\theta\) (degrees, same as Slab Packing) is applied about the origin:
+
+$$
+\begin\{pmatrix\} x' \\ y' \end\{pmatrix\}
+=
+\begin\{pmatrix\}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta
+\end\{pmatrix\}
+\begin\{pmatrix\} \bar\{x\} \\ \bar\{y\} \end\{pmatrix\}
+$$
+
+The function returns \(x'|y'\).
+
+**Scalene** third vertex with base \(s_1\) on the x-axis and edges \(s_2\), \(s_3\) to \((0,0)\) and \((s_1,0)\):
+
+$$
+x_3 = \frac\{s_1^2 + s_3^2 - s_2^2\}\{2 s_1\}, \qquad
+y_3 = \sqrt\{s_3^2 - x_3^2\}
+$$
+
+(Requires triangle inequality on \(s_1,s_2,s_3\) and \(y_3 > 0\).)
+
+**Equilateral** example (\(s\) = side): \((s/2,0)\), \((0, s\sqrt\{3\}/2)\), \((s, s\sqrt\{3\}/2)\). **Right** example: \((0,0)\), \((W,0)\), \((0,L)\).
+
+#### Example
+
+```text
+AutexCoMTriangle(500,500,0)
+```
+
+Right triangle 500 mm × 500 mm, no rotation → `166.666666667|166.666666667` (approximately \(W/3\), \(L/3\)).
+
+#### Related behaviour
+
+Nest **SVG** and **DXF** part ID labels for **Triangle** shapes use the same polygon centroid as the drawn outline (not the placed bounding-box centre). See **Autex Slab Packing** and **DXF Document (Nest)** below.
+
+### AutexPolygonTiling
+
+- **Availability:** Function
+- **Inputs:** `pointsList` (String, polygon `x,y|…`); `tileSize` (Number, greater than zero, same units as coordinates)
+- **Output:** Number (tile count) or error String
+
+#### Example
+
+```text
+AutexPolygonTiling("0,0|100,0|100,100|0,100",50)
+```
+
+### AutexPolygonTilingSvgRects
+
+- **Availability:** Function
+- **Inputs:** same as `AutexPolygonTiling`
+- **Output:** String, SVG fragment (`polygon` elements per counted tile), or error String
+
+#### Example
+
+```text
+AutexPolygonTilingSvgRects("0,0|100,0|100,100|0,100",50)
+```
+
+### AutexSlabPackingImage
+
+- **Availability:** Function
+- **Inputs:** `nestedTable` (table/array from **Autex Slab Packing** task or equivalent); `pageNumber` (Number, 0 = all layouts); **required** `settingsTable` (two-column property/value table with at least **SlabWidth** and **SlabLength**; see **Nest settings table** below); optional `returnSvgRaw` last (truthy = raw SVG text, falsey/omitted = data URI `data:image/svg+xml;base64,...`; for very large nests prefer raw SVG or Web Frame HTML)
+- **Output:** object (SVG string / data URI, empty string for valid empty nest, or `#ERROR!` / `#VALUE!` message strings)
+- **Host:** Picture control (static nest layout)
+
+#### Example
+
+```text
+AutexSlabPackingImage(DwLookupNested,1,DWLookupSlabPackingSettings,TRUE)
+```
+
+### AutexSlabPackingAnimation
+
+- **Availability:** Function (Release). **AutexSlabPackingAnimationHtml** is the same cut simulation as **AutexSlabPackingCutSimulationHtmlFromTable** but is registered only in **Debug** builds for Web Frame experiments.
+- **Inputs:** `nestedTable`; `cutListTable` (from **Autex Cut Order From Nest** or **From DXF**); `pageNumber` (1+ only); **required** `settingsTable`; optional `animationSpeed` (5-arg); optional `returnSvgRaw` on the 6-arg overload only (truthy = raw animated SVG, default = data URI or temp `.svg` path for Picture)
+- **Output:** object (animated SVG / data URI, or `#ERROR!`)
+- **Host:** Picture control
+
+#### Example
+
+```text
+AutexSlabPackingAnimation(DWVariableNested,DWVariableCutList,1,DWLookupSlabPackingSettings)
+```
+
+---
+
+## Color catalog lookups (Pantone and RAL)
+
+Embedded catalogs ship in **AutexCustom** (no Group table required). Rule Builder category: **Autex Custom Functions**. Successful lookups return hex as `#RRGGBB` (e.g. `#FF0000`). Lookup failures return Excel-style error strings (`#INVALIDINPUT!`, `#KEY!`, `#VALUE!`); near-miss Pantone/RAL codes may include a **did you mean** suggestion on `#KEY!`.
+
+### AutexGetPantoneHex
+
+- **Availability:** Function
+- **Inputs:** `pantone` (String). PMS number or catalog name (e.g. `186`, `Cool Gray 5`, `Process Yellow`). Optional leading `Pantone ` prefix (case-insensitive).
+- **Output:** String, hex `#RRGGBB` for the match, or an error string
+
+#### Example
+
+```text
+AutexGetPantoneHex(186)
+```
+
+### AutexPantoneCodesAsList
+
+- **Availability:** Function
+- **Inputs:** none
+- **Output:** String, pipe-delimited list of all Pantone PMS codes and names in the embedded catalog
+
+#### Example
+
+```text
+AutexPantoneCodesAsList()
+```
+
+### AutexPantoneAsTable
+
+- **Availability:** Function
+- **Inputs:** none
+- **Output:** Table with header row `Code` | `Hex` and one data row per catalog entry
+
+#### Example
+
+```text
+AutexPantoneAsTable()
+```
+
+### AutexGetRalHex
+
+- **Availability:** Function
+- **Inputs:** `ral` (String). RAL Classic number (e.g. `9010`, `3020`). Optional `RAL` prefix with flexible spacing or punctuation (e.g. `RAL 9010`, `RAL-9010`).
+- **Output:** String, hex `#RRGGBB` for the match, or an error string
+
+#### Example
+
+```text
+AutexGetRalHex("RAL 9010")
+```
+
+### AutexRalCodesAsList
+
+- **Availability:** Function
+- **Inputs:** none
+- **Output:** String, pipe-delimited list of all RAL Classic codes in the embedded catalog
+
+#### Example
+
+```text
+AutexRalCodesAsList()
+```
+
+### AutexRalAsTable
+
+- **Availability:** Function
+- **Inputs:** none
+- **Output:** Table with header row `Code` | `Hex` and one data row per catalog entry
+
+#### Example
+
+```text
+AutexRalAsTable()
+```
+
+### AutexGetProjectTables
+
+- **Availability:** Function (overload with optional filter)
+- **Inputs:** optional `filter` (String). Pipe-delimited tokens, case-insensitive. Omit or use `all` for every project table kind.
+- **Output:** String, pipe-delimited rule reference names (e.g. `DWLookupCustomers|DWCalcOrderDetails`). Uses SDK `GetTableReferenceName` (spaces removed from display names). Not group tables; use Specification PowerPack `SppGetGroupTables` for those.
+- **Filter tokens:** `all`, `lookup` / `datatable` / `define` (all Define Tables); `simple`; `excel` / `imported`; `odbc`; `sql` / `sqlserver`; `rollup`; `calc` / `calculation` / `calctable`.
+
+#### Example
+
+```text
+AutexGetProjectTables("simple|calc")
+```
+
+---
+
+## Autex Custom Functions (Table By Column Name)
+
+Same semantics as the native table functions they wrap; column arguments are **header text on row 1** (1-based “first data row is row 2” in the descriptions in code). Category in Rule Builder: **Autex Custom Functions (Table By Column Name)**.
+
+### AutexListAllByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table` (Table); `columnName` (String); optional `sortAscending` (Boolean)
+- **Output:** Table (ListAll family)
+
+#### Example
+
+```text
+AutexListAllByColumnName(DWLookupParts,"PartNumber",TRUE)
+```
+
+### AutexListAllDistinctByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexListAllDistinctByColumnName(DWLookupParts,"Category")
+```
+
+### AutexListAllConditionalByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `valueColumnName`; `conditionColumnName`; `condition`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexListAllConditionalByColumnName(DWLookupParts,"PartNumber","Category","Panel")
+```
+
+### AutexListAllConditionalDistinctByColumnName
+
+- **Availability:** Function
+- **Inputs:** same as conditional list-all
+- **Output:** Table
+
+#### Example
+
+```text
+AutexListAllConditionalDistinctByColumnName(DWLookupParts,"PartNumber","Category","Panel")
+```
+
+### AutexTableSortByListByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `list`; optional `hasHeaders` (Boolean); optional `caseInsensitive` (Boolean); optional `sortAscending` (Boolean)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableSortByListByColumnName(DWLookupParts,"PartNumber","A|B|C",TRUE,TRUE,TRUE)
+```
+
+### AutexTableFilterByListByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `filterList` (String); `include` (Boolean)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableFilterByListByColumnName(DWLookupParts,"Category","Panel|Trim",TRUE)
+```
+
+### AutexTableSortByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; optional `hasHeaders`; optional `sortAscending`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableSortByColumnName(DWLookupParts,"PartNumber",TRUE,TRUE)
+```
+
+### AutexTableSortByDateByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; optional `hasHeaders`; optional `sortAscending`; optional `culture` (String)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableSortByDateByColumnName(DWLookupOrders,"OrderDate",TRUE,TRUE,"en-NZ")
+```
+
+### AutexTableDistinctByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableDistinctByColumnName(DWLookupParts,"Category")
+```
+
+### AutexTableFilterByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhiteSpace` (Boolean)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableFilterByColumnName(DWLookupParts,"Category","Panel")
+```
+
+### AutexTableFilterByTwoColumnNames
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName1`; `condition1`; `columnName2`; `condition2`; optional `ignoreWhitespace`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableFilterByTwoColumnNames(DWLookupParts,"Category","Panel","Status","Active")
+```
+
+### AutexTableFilterByThreeColumnNames
+
+- **Availability:** Function
+- **Inputs:** `table`; three column/condition pairs; optional `ignoreWhitespace`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableFilterByThreeColumnNames(DWLookupParts,"Category","Panel","Status","Active","Region","NZ")
+```
+
+### AutexTableFormatByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `format` (String)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableFormatByColumnName(DWLookupParts,"Price","0.00")
+```
+
+### AutexTableWithSequenceByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `insertAtColumnName`; optional `newColumnText` (String)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableWithSequenceByColumnName(DWLookupParts,"LineNo","Seq")
+```
+
+### AutexTableMinByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableMinByColumnName(DWLookupParts,"Price")
+```
+
+### AutexTableMaxByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableMaxByColumnName(DWLookupParts,"Price")
+```
+
+### AutexTableMinValueByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Number
+
+#### Example
+
+```text
+AutexTableMinValueByColumnName(DWLookupParts,"Price")
+```
+
+### AutexTableMaxValueByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; optional `defaultValue` (Number)
+- **Output:** Number
+
+#### Example
+
+```text
+AutexTableMaxValueByColumnName(DWLookupParts,"Price",0)
+```
+
+### AutexTableSumByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Number
+
+#### Example
+
+```text
+AutexTableSumByColumnName(DWLookupParts,"Qty")
+```
+
+### AutexTableAverageByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Number
+
+#### Example
+
+```text
+AutexTableAverageByColumnName(DWLookupParts,"Price")
+```
+
+### AutexTableDistinctCountByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; optional `ignoreCase`; optional `includeHeaderRow`; optional `sortAscending`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableDistinctCountByColumnName(DWLookupParts,"Category")
+```
+
+### AutexTableDistinctSumByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `groupColumnName`; `sumColumnName`; optional `ignoreCase`, `includeHeaderRow`, `sortAscending`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableDistinctSumByColumnName(DWLookupParts,"Category","Qty")
+```
+
+### AutexTableBreakByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `condition`; `top` (Boolean); `includeBreakRow` (Boolean); optional `ignoreWhitespace`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableBreakByColumnName(DWLookupParts,"Category","Panel",TRUE,TRUE)
+```
+
+### AutexTableSubstituteByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `oldText`; `newText`; optional `instanceNumber` (Number); optional `caseInsensitive` (Boolean)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableSubstituteByColumnName(DWLookupParts,"Description","old","new")
+```
+
+### AutexDCountByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhitespace`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexDCountByColumnName(DWLookupParts,"Category","Panel")
+```
+
+### AutexDMaxByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhitespace`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexDMaxByColumnName(DWLookupParts,"Price","Category","Panel")
+```
+
+### AutexDMinByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`; `condition`; optional `ignoreWhitespace`
+- **Output:** Table
+
+#### Example
+
+```text
+AutexDMinByColumnName(DWLookupParts,"Price","Category","Panel")
+```
+
+### AutexGetTableValueByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `rowIndex` (Number); `columnName`
+- **Output:** Table cell value (native type)
+
+#### Example
+
+```text
+AutexGetTableValueByColumnName(DWLookupParts,2,"PartNumber")
+```
+
+### AutexSumTableColumnByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnName`
+- **Output:** Number
+
+#### Example
+
+```text
+AutexSumTableColumnByColumnName(DWLookupParts,"Qty")
+```
+
+### AutexVLookupByColumnName
+
+- **Availability:** Function
+- **Inputs:** `lookupValue`; `table`; `resultColumnName`; optional `closestMatch` (Boolean)
+- **Output:** same as native VLookup
+
+#### Example
+
+```text
+AutexVLookupByColumnName("P-100",DWLookupParts,"Description")
+```
+
+### AutexDWVLookupByColumnName
+
+- **Availability:** Function
+- **Inputs:** `lookupValue`; `table`; `lookupColumnName`; `resultColumnName`; optional `closestMatch`
+- **Output:** same as native DWVLookup
+
+#### Example
+
+```text
+AutexDWVLookupByColumnName("P-100",DWLookupParts,"PartNumber","Description")
+```
+
+### AutexTableJoinByColumnName
+
+- **Availability:** Function
+- **Inputs:** `left` (Table); `leftColumnName`; `right` (Table); `rightColumnName`; optional `joinType` (String); optional `dataRowsOnly` (Boolean); optional `includeHeaders` (Boolean)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableJoinByColumnName(DWLookupOrders,"OrderId",DWLookupLines,"OrderId")
+```
+
+### AutexTableSelectColumnsByColumnName
+
+- **Availability:** Function
+- **Inputs:** `table`; `columnNamesPipeDelimited` (String, `|` between header names)
+- **Output:** Table
+
+#### Example
+
+```text
+AutexTableSelectColumnsByColumnName(DWLookupParts,"PartNumber|Category|Qty")
+```
+
+---
+
+## Specification Flow tasks (task only)
+
+### Autex Slab Packing
+
+- **Availability:** Task
+- **Inputs:** Parts Table (table/array per `PartsTable_Description` in `SlabPacking.cs`: Shape, Length, optional Width, Side, Qty, Rotation, Bevel, BevelOffset, **CornerRadius**); Slab Width; Slab Length; **Allow Rotation** (Boolean, default **true** on the task); Optimize Order (Boolean, optional sort-by-length descending before greedy pack); optional **Settings Table** (two-column property/value table; see **Nest settings table** below)
+- **Outputs:** Nested table (packed layout array, includes **CornerRadius** when set on input rows); Total sheets; Unique sheets; Diagnostic (empty on success; otherwise failure reason or brief settings warnings when invalid settings values were ignored)
+- **Allow Rotation:** When **true**, the packer may try extra orientations (for example a 90° footprint swap on rectangles). When **false**, only each row’s **Rotation** value (0, 90, 180, or 270) is used. Bind your form **Can Rotate** checkbox to this task input (not a column on the Parts Table; per-row **CanRotate** is ignored). Leaving **Allow Rotation** unbound defaults to **true**.
+- **Length / Width on the nest drawing:** **Length** is the vertical extent and **Width** the horizontal extent in nest coordinates (Y downward). A 1000×250 rectangle at **PartRotation** 0 appears tall (250 mm wide, 1000 mm long on the layout); that is not an extra packer rotation when **Allow Rotation** is false.
+- **On-sheet cuts:** Every placed part’s cut footprint must lie inside the slab margins (standard runout: 10 mm horizontal, 20 mm vertical per side). If a part cannot fit, the packer adds another slab rather than emitting coordinates outside the sheet.
+- **CornerRadius:** Optional mm per part row. Export-only: rounded corners in nest **SVG** and **DXF** for **Rectangle** and **Triangle** shapes. Does not change packing clearance (clearance uses the sharp outline).
+- **Bevel:** Optional (`False`, truthy, `Length`, or `Width`). On rectangles, `Length`/`Width` affect packing clearance on those edges only; other shapes use `True`/`False` only. Nest **SVG** draws dashed hyperlink-blue lines (`#0060DF`, 6/4 mm dash) inset 5 mm on straight edges parallel to the chosen legs (stops short at **CornerRadius** arcs). Packing uses clearance between beveled edges (see **BevelOffset**).
+
+#### Nest settings table
+
+Optional two-column table: column 1 = property name, column 2 = value. Header row optional (`Property` / `Value`). Names match ignoring case, spaces, and punctuation.
+
+Scaffold with defaults in DriveWorks Administrator: Autex Toolkit release script **Table from slab packing settings** (project Simple table).
+
+| Property              | Default   | Effect                                                                                                                |
+| --------------------- | --------- | --------------------------------------------------------------------------------------------------------------------- |
+| SlabVerticalPadding   | 20 mm     | Y runout (packing margin); affects usable slab length and nested X/Y                                                  |
+| SlabHorizontalPadding | 10 mm     | X runout (packing margin)                                                                                             |
+| LabelFont             | Tahoma    | SVG/DXF part and slab title font                                                                                      |
+| SlabColour            | `#ffffff` | Slab fill (SVG) / SHEET layer (DXF)                                                                                   |
+| PartColour            | `#f5f5f5` | Part fill (SVG) / cut layers (DXF)                                                                                    |
+| BevelColour           | `#0060DF` | SVG bevel indicator stroke                                                                                            |
+| BevelLineWeight       | 1 mm      | SVG bevel stroke width                                                                                                |
+| BevelOffset           | 5 mm      | Minimum clearance (mm) between beveled edges when packing; collapses to one offset between two adjacent beveled parts |
+| BevelDisplayInset     | 5 mm      | Visual gap (mm) between part outline and dashed bevel indicator in SVG                                                |
+| BevelDashLength       | 6 mm      | SVG bevel dash length                                                                                                 |
+| BevelDashGap          | 4 mm      | SVG bevel dash gap                                                                                                    |
+| SlabStrokeColour      | `#333333` | Slab outline stroke (SVG)                                                                                             |
+| SlabStrokeWeight      | 2 mm      | Slab outline stroke width                                                                                             |
+| PartStrokeColour      | `#222222` | Part outline stroke (SVG)                                                                                             |
+| PartStrokeWeight      | 1 mm      | Part outline stroke width                                                                                             |
+| LabelColour           | `#111111` | Part label fill (SVG)                                                                                                 |
+| TitleColour           | `#333132` | Slab title fill (SVG)                                                                                                 |
+| TitleFontSizePt       | 7 pt      | Slab title font size                                                                                                  |
+| PartLabelFontSizePt   | 24 pt     | Part ID label font size                                                                                               |
+
+Task: invalid known values fall back to defaults (warning in Diagnostic). UDF / DXF document: invalid values return `#VALUE!` / `#ERROR!` or block export with a report message.
+
+### Autex Copy Form Control
+
+- **Availability:** Task
+- **Inputs:** Form Control to copy; Form Name (optional); Top; Left; Name (optional new control name)
+- **Outputs:** New Control Name; Diagnostic (Debug builds only)
+
+### Autex Batch Copy Form Controls
+
+- **Availability:** Task
+- **Inputs:** Form Control to copy (pipe-separated multi); Form Name; Count; Top spacing; Left
+- **Outputs:** Last Control Name; Diagnostic (Debug builds only)
+
+### Autex Drive Form Control From Table
+
+- **Availability:** Task
+- **Inputs:** Form control name; Properties table (wide layout: row 0 = column headers, row 1+ = data); Data row index (1-based data row; `1` = first row after headers)
+- **Outputs:** Result (summary string); Diagnostic (Debug builds only)
+- **Workflow:** Scaffold the table with Toolkit **Table from form control type**, fill values, then run this task in a **Specification Macro**. Only non-empty cells apply; empty cells do not clear properties. See [Table-driven form control properties](/driveworks/how-to/table-driven-form-control-properties).
+
+### Autex Change Form Control Type
+
+- **Availability:** Task
+- **Inputs:** Form Control Name; Target Control Type (property-editor constrained list; default `NumericTextBox`). Unsupported conversions (e.g. from CheckBoxGroup / OptionGroup) fail per Toolkit conversion rules.
+- **Outputs:** none (success/fail on task state only)
+
+---
+
+## Document types
+
+### DXF Document (Nest)
+
+- **Picker name:** **DXF Document (Nest)** (`DxfDocumentDesigner`)
+- **Purpose:** On release, writes a nest DXF (slab outline, cut lines, labels) from the same nested table shape as **Autex Slab Packing** output.
+- **ProjectDocumentRule rows:** DocumentPath, DocumentName, nested table rule (column name matches Slab Packing constants), Slab Width, Slab Length, page number, optional settings table (`settingsTable`), plus hide-from-list flag in the document XML.
+
+### PDF Document
+
+- **Picker name:** **PDF Document** (`PdfDocumentDesigner`; generation in **AutexPdfExport** assembly)
+- **Purpose:** Renders a local `.html` / `.htm` / `.svg` through WebView2 and prints to PDF (A4 landscape, fixed print settings per designer HTML).
+- **ProjectDocumentRule rows:** DocumentPath, DocumentName, **PdfSource** (full or spec-relative path to the source file).
+
+---
+
+## Related
+
+- [Plugins hub](/driveworks/plugins)

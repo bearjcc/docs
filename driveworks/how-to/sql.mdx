@@ -1,0 +1,80 @@
+---
+title: SQL
+sidebarTitle: Run SQL Queries
+description: SQL procedures used for DriveWorks support, maintenance, and troubleshooting.
+---
+
+
+## Run SQL Queries
+
+1. Open SQL Server Management Studio.
+2. Open the target table with `Select Top 1000 Rows` or a new query window.
+3. Write and execute SQL statements.
+
+Example:
+
+```sql
+SELECT * FROM dbo.Specifications;
+```
+
+## Create and Link a Table
+
+### Create Table
+
+1. Create table in SQL UI.
+2. Use a unique ID column with `newid()` default where appropriate.
+3. Add required data columns.
+
+### Link to DriveWorks
+
+1. In DriveWorks Administrator, create a Stage 4 `Documents > Data` export.
+2. Choose SQL Server data export.
+3. Configure server, authentication, database, and table.
+4. Map DriveWorks values to SQL columns.
+5. Trigger export from project macros.
+
+## Edit and Delete Tables
+
+- Edit columns in SQL table design view.
+- Refresh query views (`Ctrl+Shift+R`) after schema changes.
+- Before deleting tables, check dependencies and remove linked DriveWorks logic first.
+
+## Database Backup and Restore
+
+### Back Up SQL Database Manually
+
+1. Create backup folder.
+2. In SQL, open database `Tasks > Back Up`.
+3. Replace destination path and run backup.
+4. Repeat for all required databases.
+
+### Restore SQL Database Manually
+
+1. In SQL, select `Databases > Restore Database`.
+2. Select backup device file.
+3. Provide target database name.
+4. Use overwrite option where needed.
+
+## Delete SQL Database Contents
+
+Use this only for controlled environment resets:
+
+1. Back up databases first.
+2. Confirm target database repeatedly.
+3. Execute cleanup scripts carefully.
+
+## Unlock Frozen Item
+
+If a DriveApp item is stuck in `running` state after a crash:
+
+1. Find `OrderNumber` in `driveApp-CPQ-Order`.
+2. Resolve related `SpecificationId` via `driveApp-CPQ-OrderItems`.
+3. Update state values in `AutexGLOBAL.dbo.Specifications` to unlocked state.
+
+Example update:
+
+```sql
+UPDATE [AutexGLOBAL].[dbo].[Specifications]
+SET StateId = '<unlocked-state-id>', StateName = 'Complete', StateType = 1
+WHERE Id = '<specification-id>';
+```

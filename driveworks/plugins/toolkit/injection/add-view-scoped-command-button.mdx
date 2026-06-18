@@ -1,0 +1,195 @@
+---
+title: Adding a View-Scoped Command Button
+sidebarTitle: Adding a View-Scoped Command Button
+description: How to register a DriveWorks Administrator command bar button on one view only, with selection-driven enablement, using Macro triggers as the shipping example.
+---
+
+
+
+This guide explains how the Autex Toolkit plugin adds a **Command Manager** button that appears only on one Administrator view and enables or disables based on host selection state. The shipping example is **Macro triggers** on the **Specification Macros** view.
+
+Use this pattern when a command should feel native to a single DriveWorks workspace (for example **Form Designer**, **Specification Macros**, or **Model Rules**) and when `CommandUnavailableBehavior.Hide` is not enough because the button should stay visible but disabled until context is valid.
+
+## When to use this pattern
+
+Use view-scoped command registration when your feature:
+
+- depends on the active **Administrator** view name (`IViewEnvironment.ViewName`)
+- should read selection or view-model state that DriveWorks does not expose on a public SDK API
+- needs `ICommand.IsEnabled` updated as the user changes tree or list selection
+
+Use a shell-wide command instead when the action is valid from any view (see [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button)).
+
+Use a **virtual split** dropdown when the command presents a dynamic list of targets (see [Adding a Virtual Split Command Button](/driveworks/plugins/toolkit/injection/add-virtual-split-command-button)).
+
+<Info>
+View-scoped commands still use the official `ICommandManager` and `ICommandBarGroup` APIs. Selection probing uses reflection on internal DriveWorks types.
+</Info>
+
+## Architecture overview
+
+Macro triggers splits work across three layers:
+
+| Layer                      | Responsibility                                                     | Key files                                                                                         |
+| -------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| **Command registration**   | Register command + button on the correct view; wire `Invoking`     | `ToolkitPlugin.CommandRegistration.cs`                                                            |
+| **Selection / enablement** | Probe host UI; set `ICommand.IsEnabled`; cache selected macro name | `SpecificationMacroCommandBarSupport.cs`, `SpecificationMacroCommandBarSupport.SelectionProbe.cs` |
+| **Feature entry point**    | Run query and show results window                                  | `MacroTriggersCommandEntryPoint.cs`                                                               |
+
+**Lifecycle hooks:**
+
+- `TryAttachCommandsToView` registers shell commands and calls `TryAttachMacroTriggersCommandToView` when the view is **Specification Macros**.
+- `OnActiveViewChanged` in `ToolkitPlugin.ViewLifecycle.cs` re-attaches macro triggers if a view was command-attached before the macro command existed, then calls `SpecificationMacroCommandBarSupport.NotifyActiveViewChanged`.
+
+## Step-by-step: add a view-scoped command
+
+### 1. Define command constants
+
+In `ToolkitPlugin.CommandRegistration.cs`:
+
+```csharp
+private const string MyViewScopedCommandName = "Autex Toolkit.MyViewFeature";
+```
+
+Reuse `GetSemanticCommandImageHandle` or add a dedicated icon loader.
+
+### 2. Gate registration by view name
+
+Add a dedicated attach method that returns early unless `view.ViewEnvironment.ViewName` matches your target. Macro triggers compares against `AdministratorViewNames.SpecificationMacros`:
+
+```csharp
+if (!string.Equals(
+    view.ViewEnvironment.ViewName,
+    AdministratorViewNames.SpecificationMacros,
+    StringComparison.OrdinalIgnoreCase))
+    return;
+```
+
+Guard with a `HashSet<IView>` so each view instance attaches once (Administrator re-creates views when navigating).
+
+### 3. Register the command with initial disabled state
+
+Register through the view's `ICommandManager`. Macro triggers passes `enabled: false` because no macro is selected at attach time:
+
+```csharp
+var cmd = viewCmdMgr.RegisterCommand(
+    MyViewScopedCommandName,
+    StateFilter.Empty,
+    "My feature",
+    imageHandle,
+    enabled: false);
+cmd.Invoking += OnMyViewFeatureCommandInvoking;
+```
+
+Add the button to the existing **Autex Toolkit** group (or a view-specific group). Use `CommandUnavailableBehavior.Disable` so the button stays visible when context is invalid:
+
+```csharp
+group.AddCommandButton(
+    commandContext: null,
+    commandName: MyViewScopedCommandName,
+    displayHint: CommandBarDisplayHint.LargeAndText,
+    unavailableBehavior: CommandUnavailableBehavior.Disable);
+```
+
+Track the `ICommand` in `_viewCommands` for disposal, same as shell-wide commands.
+
+### 4. Add a support class for enablement
+
+Create a static support type (partial class if reflection probes grow large). Responsibilities:
+
+1. **Register** each `ICommand` instance (`RegisterMyFeatureCommand`).
+2. **Notify** on active view changes (`NotifyActiveViewChanged`).
+3. **Refresh** `ICommand.IsEnabled` on the UI thread after selection changes.
+4. **Expose** cached context for the entry point (Macro triggers uses `CurrentMacroName`).
+
+Macro triggers enables the command only when:
+
+- the active view is **Specification Macros**, and
+- a **Specification Macro** (not a category folder) is selected in the macros tree.
+
+### 5. Probe host selection via reflection
+
+DriveWorks does not publish `MacroFlowsViewControl` or `MacroTreeItem` on the public SDK. Toolkit resolves selection by:
+
+- finding `MacroFlowsViewControl` on the view or its `Content` property
+- reading `MacrosTree` (field or property)
+- subscribing to `SelectionChanged` on the tree
+- reading `SelectedItem` when it is a `MacroTreeItem`, then `Macro.Name`
+
+Fallback path: `DataContext` or `mViewModel` on the host, then `SelectedCategoryOrMacro` on `MainViewModel`.
+
+Keep probes defensive (`#pragma warning disable CA1031` at the boundary, log with `ToolkitLog`). Failed probes should leave the command disabled, not crash Administrator.
+
+### 6. Refresh on the UI thread with deferred passes
+
+Selection and view activation can fire before the tree is ready. Macro triggers:
+
+- calls `RefreshCommandAvailability` immediately from `NotifyActiveViewChanged`
+- schedules `ApplicationIdle` and `ContextIdle` dispatcher callbacks for a second refresh
+- calls `IUpdateable.ResumeUpdates()` on the view's `CommandBarManager` after toggling `IsEnabled`
+
+Mirror this pattern when your host control initializes selection asynchronously.
+
+### 7. Implement the entry point
+
+Keep `Invoking` handlers thin. Macro triggers delegates to `MacroTriggersCommandEntryPoint.Run()`, which reads `SpecificationMacroCommandBarSupport.CurrentMacroName`, queries trigger locations, and opens `MacroTriggersResultsWindow`.
+
+### 8. Wire view lifecycle
+
+In `ToolkitPlugin.ViewLifecycle.cs`:
+
+- call your attach method from `TryAttachCommandsToView` (or a dedicated helper called from there)
+- call `NotifyActiveViewChanged` from `OnActiveViewChanged`
+- add a repair attach path when a view already has the Autex group but missed the view-scoped command (see `TryAttachMacroTriggersCommandToView(IView view)` overload)
+
+### 9. Dispose
+
+In `DisposeCommandRegistration()`:
+
+- unsubscribe `Invoking`
+- remove selection and view-activating handlers if your support class exposes teardown
+
+### 10. Build and verify
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+Manual checks:
+
+1. Open a **Project** and navigate to **Specification Macros**.
+2. Confirm **Macro triggers** appears in the **Autex Toolkit** command group.
+3. With no macro selected, the button is disabled.
+4. Select a **Specification Macro**; the button enables.
+5. Click it; results window lists trigger locations.
+6. Navigate away; command state resets without errors.
+
+## Shipping example: Macro triggers
+
+| Item         | Value                                                             |
+| ------------ | ----------------------------------------------------------------- |
+| Command name | `Autex Toolkit.MacroTriggers`                                     |
+| View         | `AdministratorViewNames.SpecificationMacros`                      |
+| Button label | Macro triggers                                                    |
+| Icon         | `Toolbar.MacroTriggers` (fallback: `Toolbar.RulesBuilderAnalyze`) |
+| Enablement   | One `MacroTreeItem` selected                                      |
+| Click action | `MacroTriggersQuery` + `MacroTriggersResultsWindow`               |
+
+## Under the hood (DriveWorks SDK)
+
+View-scoped commands use the same SDK surfaces as shell-wide commands:
+
+- `ICommandManager.RegisterCommand(..., enabled)`
+- `ICommand.IsEnabled`
+- `ICommandBarGroup.AddCommandButton(..., CommandUnavailableBehavior.Disable)`
+- `ICommandBarManager` implementing `IUpdateable` for bar refresh
+
+Selection state is not part of the public extensibility contract; Toolkit reads it through reflection on Administrator integration assemblies.
+
+## Related
+
+- [Adding a Command Manager Button](/driveworks/plugins/toolkit/injection/add-command-manager-button) — shell-wide commands on every view with a command bar
+- [Adding a Virtual Split Command Button](/driveworks/plugins/toolkit/injection/add-virtual-split-command-button) — dynamic dropdown items (Form Designer Convert)
+- [Injection guides index](/driveworks/plugins/toolkit/injection) — all Administrator injection patterns
+- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces) — where Toolkit appears for operators
+- [Build and deploy](/driveworks/plugins/toolkit/build-and-deploy)

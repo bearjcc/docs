@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" agent="Autex Wiki" version="22.1.0">
+  <diagram id="form-designer" name="FormDesignerView">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="view" value="&lt;b&gt;Web Form Designer view&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;FormDesignerView (IView in ContentHost)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#f5f5f5;strokeColor=#333333;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1020" height="620" as="geometry" />
+        </mxCell>
+        <mxCell id="vbar" value="&lt;b&gt;View Command Manager&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;IViewEnvironment.CommandBarManager&lt;br&gt;zoom, test mode, alignment groups&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="view">
+          <mxGeometry x="12" y="32" width="996" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="forms" value="&lt;b&gt;Forms list band&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;FormListRow / FormsListSplitter&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;" vertex="1" parent="view">
+          <mxGeometry x="12" y="84" width="996" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="left" value="&lt;b&gt;Control tree column&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;ControlTreeFilterTextBox&lt;br&gt;tree toolbar: ZOrderTreeButton, NameOrderTreeButton, ...&lt;br&gt;&lt;b&gt;ControlTreeView&lt;/b&gt; (CommandTreeView)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=6;spacingTop=4;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="view">
+          <mxGeometry x="12" y="128" width="240" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="canvas" value="&lt;b&gt;Form designer canvas&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;WebFormDesigner (WebView2)&lt;br&gt;DesignerContextMenu / ConvertMenuItem&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="view">
+          <mxGeometry x="260" y="128" width="500" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="psplit" value="&lt;font style=&quot;font-size:10px&quot;&gt;PropertyGridSplitter&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="view">
+          <mxGeometry x="768" y="128" width="8" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="grid" value="&lt;b&gt;Property grid&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;PropertyGridHost&lt;br&gt;DesignerPropertyGrid&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="view">
+          <mxGeometry x="784" y="128" width="224" height="420" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,112 @@
+---
+title: Autex Toolkit — Group Constants
+sidebarTitle: Group Constants
+description: File-backed Group Constants for DriveWorks Administrator teams using Autex Toolkit.
+---
+
+
+## Group Constants
+
+**Group Constants** in Autex Toolkit are shared literal values stored with the DriveWorks **Group** and reused by multiple **Projects**. They help teams keep common values such as colours, URLs, environment names, and integration settings in one Group-level file instead of duplicating Project **Constants** or **Variables**.
+
+Autex Toolkit stores these values in `GroupContentFolder\AutexToolkit\GroupConstants.toml`. Older `GroupConstants.json` files may still be read for compatibility, but TOML is the primary current file shape.
+
+## Why file-backed constants
+
+Some DriveWorks environments have native Group-level constant features, and some teams still need a portable file that travels with the Group content and review process. Toolkit's file-backed Group Constants solve three practical problems:
+
+- **Promotion:** the same `GroupConstants.toml` can move with development, test, and production changes.
+- **Review:** a text file can be diffed before release.
+- **Team workflow:** implementers can share literal values without copying Project Constants into every Project.
+
+Use native DriveWorks Group Constants where your implementation standard already uses them. Use Toolkit Group Constants when you need the file-backed workflow or the Toolkit Rule functions listed below.
+
+## When to use
+
+Use Group Constants when the value belongs to the Group, not one Project.
+
+- Use them for shared styling tokens, business labels, service endpoints, feature flags, and other values that must move consistently from development to test to production.
+- Use them when several Projects currently carry the same Project **Constant** or **Variable** only to share a literal value.
+- Use them when a team wants reviewable text-file changes in the Group content folder.
+- Avoid them for logic. A Group Constant holds data only. It is not a Rule Builder formula surface.
+
+<Warning>
+**Constants hold literals.** Store the final value, not a **Rule** such as `=DWVariableWidth * 2`. Dynamic behaviour belongs in **Variables**, **Calc Tables**, form control rules, document rules, or **Specification Flow** logic.
+</Warning>
+
+## Where to open it
+
+**Primary path (left sidebar):**
+
+1. Open **DriveWorks Administrator**.
+2. Connect to the target **Group**.
+3. In the left sidebar, open **Group Setup** and choose **Group Constants** (listed after **Drive Apps**).
+4. Add, edit, rename, delete, or import constants in the content pane.
+
+If no Group is open, Toolkit shows an overlay asking you to open a Group first.
+
+**From Rule Builder:**
+
+1. Open **Rule Builder** on a Project.
+2. Click **Group const** on the Rules Builder toolbar.
+3. Pick a constant to insert `AutexGroupConstant("…")`, or choose **Manage** in the picker to open the floating Group Constants window.
+
+The sidebar and floating window share the same WebView surface and file store.
+
+## What administrators can do
+
+The Group Constants editor manages four fields per constant:
+
+| Field        | Purpose                                                 |
+| ------------ | ------------------------------------------------------- |
+| **Name**     | Case-insensitive lookup name used by Toolkit functions. |
+| **Value**    | Literal value returned to Rules.                        |
+| **Comment**  | Notes for maintainers and reviewers.                    |
+| **Category** | Optional display grouping in the window.                |
+
+Supported actions in the current code include adding constants, editing values and comments, renaming constants, deleting one or many selected constants, adding and renaming categories, marking favourites/recents in the UI, and importing a replacement TOML file after validation.
+
+## Using values in Rules
+
+Toolkit registers Group Constant functions under **Autex Custom Functions**. Depending on your build, these functions may be available in **Rule Builder**:
+
+| Function                        | Use                                                                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `AutexGroupConstant("Name")`    | Returns the constant value, or an empty string when not found.                                                     |
+| `AutexGroupConstants()`         | Returns a DriveWorks table of all constants.                                                                       |
+| `AutexGroupConstants("A", "B")` | Returns a DriveWorks table filtered to named constants.                                                            |
+| `AutexGroupConstant("Name", 1)` | Returns a specific property: `1` value, `2` comment, `3` category path, `0` pipe-delimited value/comment/category. |
+
+Example:
+
+```text
+AutexGroupConstant("BrandPrimary")
+```
+
+## Promotion and team workflow
+
+The Group Constants file lives beside other Toolkit Group files in `GroupContentFolder\AutexToolkit`. This makes it practical to review and promote changes between development, test, and production Groups.
+
+Recommended workflow:
+
+1. Change constants in a development Group.
+2. Review the TOML change with your normal change-control process.
+3. Promote the file with the matching Project changes.
+4. Reopen or refresh Administrator if a running session still shows old values.
+
+For secrets or credentials, keep the value out of Project snapshots where possible, restrict access to the Group content folder, and avoid committing production secrets to ordinary review branches. Do not paste passwords into wiki pages, screenshots, or change notes.
+
+## Safety notes
+
+- Back up the Group or take a **Pack and Go** before bulk edits.
+- Treat rename and delete as breaking changes until you have searched Rules for references.
+- Import replaces the in-memory constants and categories after validation; review the selected TOML file before confirming.
+- Missing constants return blank values, so a typo can look like an empty setting rather than an obvious failure.
+
+## Related
+
+- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces) — where Group Constants appears in Administrator
+- [Getting started](/driveworks/plugins/toolkit/getting-started)
+- [Scripts](/driveworks/plugins/toolkit/scripts)
+- [Project comparison and snapshots](/driveworks/plugins/toolkit/project-compare-and-snapshots)
+- [Toolkit hub](/driveworks/plugins/toolkit/index)

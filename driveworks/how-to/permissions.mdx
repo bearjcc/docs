@@ -1,0 +1,46 @@
+---
+title: Permissions
+sidebarTitle: Permission Layers
+description: Procedures for DriveWorks user, team, DriveApp, and project permission management.
+---
+
+
+## Permission Layers
+
+Permissions are controlled at multiple levels:
+
+1. DriveWorks login access
+2. DriveApp access by region/team
+3. Project run/edit permissions
+4. Catalog item and category visibility
+
+## Group Security Settings
+
+In Stage 1 > Security Settings:
+
+1. Create users and teams.
+2. Assign users to teams.
+3. Set project-level permissions (typically Run only for non-admin teams).
+
+## DriveApp Permissions
+
+In Stage 7 DriveApp:
+
+1. Open Admin dashboard.
+2. Add or remove project items in the catalog.
+3. Configure category content visibility for teams.
+4. Validate tab-level settings (General, Catalog, Custom Fields, Orders, Tabs, Columns).
+
+## Regional Access Notes
+
+- Team-region mapping should be explicit.
+- Multi-region user setups can cause runtime ambiguity if not configured correctly.
+- Revalidate permissions after Group copy or environment restore operations.
+
+## Troubleshooting Permission Drift
+
+If all categories become unavailable:
+
+1. Compare security teams with a known-good Group.
+2. Recreate missing administrator team structure if needed.
+3. Copy security users and teams from a working environment.

@@ -1,0 +1,47 @@
+---
+title: Autex Toolkit — Delete data
+sidebarTitle: Delete data
+description: Delete a single DriveWorks item by data type and name or form message code; writes during Run when confirmed.
+---
+
+
+## Delete data
+
+This Release script removes **one** item per run, chosen by **Data type** and either **Name** or **Form Messages** numeric **Code**. It uses the same `TryDelete` paths as **Unreferenced data** and ships with **Writes on Run** behavior when **Confirm delete** is checked.
+
+Implementation reference: `Autex Toolkit/DWPlugin/Scripts/Release/DeleteDataScript.cs`.
+
+## How to open and run
+
+1. Open **DriveWorks Administrator**, connect to the **Group** (and open a **Project** when deleting **Project**-scoped types).
+2. Open **Autex Tools** ( **Autex Toolkit** / **DW Tools** ) and pick **Delete data**.
+3. Choose **Data type** from the dropdown (`ScriptDataTypeLists.ForDeleteData` in source).
+4. Enter **Name** (or **Code** when **Form Messages** is selected).
+5. Check **Confirm delete** (required; without it the script stops with a blocked result).
+6. Choose **Run** once. Successful **Project** deletes call `Project.Save()` in the script.
+
+For **Group Tables**, **Teams**, or **Users**, an open **Group** is required; **Name** identifies the row. Other types require an open **Project** (the active **Project** in **Project** mode). In **Group** mode, **Project**-level types follow `ShouldLoopOverProjectsWhenGroupMode` (non-group-only types loop per **Project**).
+
+## Prerequisites
+
+- Correct **Group**/**Project** context for the selected **Data type**.
+- Valid identifier: non-empty **Name** except **Form Messages**, which requires a non-zero integer **Code** (defaults to `1001` in inputs until you change it).
+
+## Safety
+
+This script sets `MutationsOnlyInApplySelected` to **false**: **Run performs the delete** once **Confirm delete** is true.
+
+<Danger>
+Deleted **Project** data is persisted immediately (`Save()` on success). Treat deletes as irreversible without backup or snapshots.
+</Danger>
+
+## Verify labels in build
+
+Confirm **Delete data**, **Data type**, **Name**, **Code**, **Confirm delete**, and blocked message text in **Autex Tools** align with `DeleteDataScript.BuildInputSpecs()` and `Run()`.
+
+## Related
+
+- [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog)
+- [Release scripts index](/driveworks/plugins/toolkit/scripts-release)
+- [Scripts overview](/driveworks/plugins/toolkit/scripts)
+- **Unreferenced data** (bulk cleanup workflow) is summarized in the [Release scripts catalog](/driveworks/plugins/toolkit/scripts-release-catalog).

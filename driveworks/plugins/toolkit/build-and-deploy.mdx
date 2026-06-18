@@ -1,0 +1,40 @@
+---
+title: Autex Toolkit — Advanced build and deploy
+sidebarTitle: Advanced build and deploy
+description: Short IT and maintainer notes for installing or building Autex Toolkit.
+---
+
+
+## Advanced build and deploy
+
+Most DriveWorks Administrator users do not need this page. IT installs `Autex Toolkit.dll` in the approved DriveWorks plugin location for your environment.
+
+## Maintainer build
+
+Maintainers build Autex Toolkit with the repository PowerShell script:
+
+```powershell
+.\Autex Toolkit\Build.ps1
+```
+
+Do not build the Toolkit plugin project with direct .NET CLI commands. The script handles DriveWorks-specific build and file-lock steps.
+
+## Release deploy
+
+Production deployment is handled by the maintainer release process. Do not run a production release script from a casual working copy.
+
+## User verification after install
+
+After IT installs or updates Toolkit:
+
+1. Open **DriveWorks Administrator**.
+2. Connect to a test **Group**.
+3. Confirm the **Autex Toolkit** / **DW Tools** command group appears.
+4. Open **Autex Tools**.
+5. Run a read-only script such as **List data** on a test Project.
+
+## Related
+
+- [Toolkit hub](/driveworks/plugins/toolkit/index)
+- [Getting started](/driveworks/plugins/toolkit/getting-started)
+- [Administrator surfaces](/driveworks/plugins/toolkit/administrator-surfaces)
